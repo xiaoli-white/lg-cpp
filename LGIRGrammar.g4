@@ -97,6 +97,8 @@ SEXT: 'sext';
 TRUNC: 'trunc';
 ITOF: 'itof';
 FTOI: 'ftoi';
+ITOP: 'itop';
+PTOI: 'ptoi';
 FEXT: 'fext';
 FTRUNC: 'ftrunc';
 

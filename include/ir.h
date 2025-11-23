@@ -103,7 +103,7 @@ namespace lg::ir
             virtual std::string toString() = 0;
         };
 
-        class IRGlobalVariable : public IRNode
+        class IRGlobalVariable final : public IRNode
         {
         public:
             type::IRType* type;
@@ -113,7 +113,7 @@ namespace lg::ir
             std::string toString() override;
         };
 
-        class IRControlFlowGraph
+        class IRControlFlowGraph final
         {
         public:
             function::IRFunction* function = nullptr;
@@ -123,7 +123,7 @@ namespace lg::ir
             std::string toString();
         };
 
-        class IRBasicBlock
+        class IRBasicBlock final
         {
         public:
             IRBasicBlock* cfg = nullptr;
@@ -150,7 +150,7 @@ namespace lg::ir
             IF_FALSE
         };
 
-        std::string conditionToString();
+        std::string conditionToString(IRCondition condition);
     }
 
     namespace type
@@ -236,6 +236,7 @@ namespace lg::ir
         public:
             virtual type::IRType* getType() = 0;
         };
+
         class IRRegister final : public IRValue
         {
         public:
@@ -247,15 +248,17 @@ namespace lg::ir
             std::any accept(IRVisitor* visitor, std::any additional) override;
             std::string toString() override;
         };
+
         class IRFunctionReference final : public IRValue
         {
         public:
             function::IRFunction* function;
-            explicit IRFunctionReference(function::IRFunction*  function);
+            explicit IRFunctionReference(function::IRFunction* function);
             type::IRType* getType() override;
             std::any accept(IRVisitor* visitor, std::any additional) override;
             std::string toString() override;
         };
+
         class IRGlobalVariableReference final : public IRValue
         {
         public:
@@ -266,6 +269,7 @@ namespace lg::ir
             std::any accept(IRVisitor* visitor, std::any additional) override;
             std::string toString() override;
         };
+
         class IRLocalVariableReference final : public IRValue
         {
         public:
@@ -279,7 +283,10 @@ namespace lg::ir
 
         namespace constant
         {
-            class IRConstant:public IRValue{};
+            class IRConstant : public IRValue
+            {
+            };
+
             class IRIntegerConstant final : public IRConstant
             {
             public:
@@ -290,6 +297,7 @@ namespace lg::ir
                 std::any accept(IRVisitor* visitor, std::any additional) override;
                 std::string toString() override;
             };
+
             class IRFloatConstant final : public IRConstant
             {
             public:
@@ -299,6 +307,7 @@ namespace lg::ir
                 std::any accept(IRVisitor* visitor, std::any additional) override;
                 std::string toString() override;
             };
+
             class IRDoubleConstant final : public IRConstant
             {
             public:
@@ -308,6 +317,7 @@ namespace lg::ir
                 std::any accept(IRVisitor* visitor, std::any additional) override;
                 std::string toString() override;
             };
+
             class IRArrayConstant final : public IRConstant
             {
             public:
@@ -318,6 +328,7 @@ namespace lg::ir
                 std::any accept(IRVisitor* visitor, std::any additional) override;
                 std::string toString() override;
             };
+
             class IRStringConstant final : public IRConstant
             {
             public:
@@ -342,7 +353,9 @@ namespace lg::ir
             std::vector<IRLocalVariable*> args;
             std::vector<IRLocalVariable*> locals;
             base::IRControlFlowGraph* cfg;
-            IRFunction(std::vector<std::string> attributes, type::IRType* returnType, std::string name, std::vector<IRLocalVariable*> args, std::vector<IRLocalVariable*> locals, base::IRControlFlowGraph* cfg);
+            IRFunction(std::vector<std::string> attributes, type::IRType* returnType, std::string name,
+                       std::vector<IRLocalVariable*> args, std::vector<IRLocalVariable*> locals,
+                       base::IRControlFlowGraph* cfg);
             std::any accept(IRVisitor* visitor, std::any additional) override;
             std::string toString() override;
         };
@@ -370,6 +383,7 @@ namespace lg::ir
             std::any accept(IRVisitor* visitor, std::any additional) override;
             std::string toString() override;
         };
+
         class IRField final : public base::IRNode
         {
         public:
@@ -385,6 +399,192 @@ namespace lg::ir
     {
         class IRInstruction : public base::IRNode
         {
+        };
+
+        class IRAssembly final : public IRInstruction
+        {
+        public:
+            std::string assembly;
+            std::string constraints;
+            std::vector<value::IRValue*> operands;
+            IRAssembly(std::string assembly, std::string constraints, std::vector<value::IRValue*> operands);
+            std::any accept(IRVisitor* visitor, std::any additional) override;
+            std::string toString() override;
+        };
+
+        class IRBinaryOperates final : public IRInstruction
+        {
+        public:
+            enum class Operator
+            {
+                ADD,
+                SUB,
+                MUL,
+                DIV,
+                MOD,
+                AND,
+                OR,
+                XOR,
+                SHL,
+                SHR,
+                USHR
+            };
+
+            Operator op;
+            value::IRValue* operand1;
+            value::IRValue* operand2;
+            value::IRRegister* target;
+            IRBinaryOperates(Operator op, value::IRValue* operand1, value::IRValue* operand2,
+                             value::IRRegister* target);
+            std::any accept(IRVisitor* visitor, std::any additional) override;
+            std::string toString() override;
+            static std::string operatorToString(Operator op);
+        };
+        class IRUnaryOperates final : public IRInstruction
+        {
+        public:
+            enum class Operator
+            {
+                INC,
+                DEC,
+                NOT,
+                NEG
+            };
+
+            Operator op;
+            value::IRValue* operand;
+            value::IRRegister* target;
+            IRUnaryOperates(Operator op, value::IRValue* operand, value::IRRegister* target);
+            std::any accept(IRVisitor* visitor, std::any additional) override;
+            std::string toString() override;
+            static std::string operatorToString(Operator op);
+        };
+        class IRGetElementPointer final : public IRInstruction
+        {
+        public:
+            value::IRValue* pointer;
+            std::vector<value::IRValue*> indices;
+            value::IRRegister* target;
+            IRGetElementPointer(value::IRValue* pointer, std::vector<value::IRValue*> indices,value::IRRegister* target);
+            std::any accept(IRVisitor* visitor, std::any additional) override;
+            std::string toString() override;
+        };
+        class IRCompare final : public IRInstruction
+        {
+        public:
+            base::IRCondition condition;
+            value::IRValue* operand1;
+            value::IRValue* operand2;
+            value::IRRegister* target;
+            IRCompare(base::IRCondition condition, value::IRValue* operand1, value::IRValue* operand2,value::IRRegister* target);
+            std::any accept(IRVisitor* visitor, std::any additional) override;
+            std::string toString() override;
+        };
+        class IRConditionalJump final : public IRInstruction
+        {
+        public:
+            base::IRCondition condition;
+            value::IRValue* operand1;
+            value::IRValue* operand2;
+            base::IRBasicBlock* target;
+            IRConditionalJump(base::IRCondition condition, value::IRValue* operand1, value::IRValue* operand2,base::IRBasicBlock* target);
+            std::any accept(IRVisitor* visitor, std::any additional) override;
+            std::string toString() override;
+        };
+        class IRGoto final : public IRInstruction
+        {
+        public:
+            base::IRBasicBlock* target;
+            explicit IRGoto(base::IRBasicBlock* target);
+            std::any accept(IRVisitor* visitor, std::any additional) override;
+            std::string toString() override;
+        };
+        class IRInvoke final : public IRInstruction
+        {
+        public:
+            type::IRType* returnType;
+            value::IRValue* func;
+            std::vector<value::IRValue*> arguments;
+            value::IRRegister* target;
+            IRInvoke(type::IRType* returnType, value::IRValue* func, std::vector<value::IRValue*> arguments,value::IRRegister* target);
+            std::any accept(IRVisitor* visitor, std::any additional) override;
+            std::string toString() override;
+        };
+        class IRReturn final : public IRInstruction
+        {
+        public:
+            value::IRValue* value;
+            explicit IRReturn(value::IRValue* value);
+            std::any accept(IRVisitor* visitor, std::any additional) override;
+            std::string toString() override;
+        };
+        class IRLoad final : public IRInstruction
+        {
+        public:
+            value::IRValue* ptr;
+            value::IRRegister* target;
+            IRLoad(value::IRValue* ptr, value::IRRegister* target);
+            std::any accept(IRVisitor* visitor, std::any additional) override;
+            std::string toString() override;
+        };
+        class IRStore final : public IRInstruction
+        {
+        public:
+            value::IRValue* ptr;
+            value::IRValue* value;
+            IRStore(value::IRValue* ptr, value::IRValue* value);
+            std::any accept(IRVisitor* visitor, std::any additional) override;
+            std::string toString() override;
+        };
+        class IRNop final : public IRInstruction
+        {
+        public:
+            IRNop();
+            std::any accept(IRVisitor* visitor, std::any additional) override;
+            std::string toString() override;
+        };
+        class IRSetRegister final : public IRInstruction
+        {
+        public:
+            value::IRValue* value;
+            value::IRRegister* target;
+            IRSetRegister(value::IRValue* value, value::IRRegister* target);
+            std::any accept(IRVisitor* visitor, std::any additional) override;
+            std::string toString() override;
+        };
+        class IRStackAllocate final : public IRInstruction
+        {
+        public:
+            value::IRValue* size;
+            value::IRRegister* target;
+            IRStackAllocate(value::IRValue* size, value::IRRegister* target);
+            std::any accept(IRVisitor* visitor, std::any additional) override;
+            std::string toString() override;
+        };
+        class IRTypeCast final : public IRInstruction
+        {
+        public:
+            enum class Kind
+            {
+                ZEXT,
+                SEXT,
+                TRUNC,
+                FTOI,
+                ITOF,
+                ITOP,
+                PTOI,
+                FEXT,
+                FTRUNC
+            };
+
+            Kind kind;
+            value::IRValue* source;
+            type::IRType* targetType;
+            value::IRRegister* target;
+            IRTypeCast(Kind kind, value::IRValue* source, type::IRType* targetType,value::IRRegister* target);
+            std::any accept(IRVisitor* visitor, std::any additional) override;
+            std::string toString() override;
+            static std::string kindToString(Kind kind);
         };
     }
 

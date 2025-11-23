@@ -1,0 +1,113 @@
+grammar LGIRGrammar;
+
+program: (globalVariable | structure | function)* EOF;
+
+globalVariable: GLOBAL IDENTIFIER '=' constant;
+structure: STRUCTURE IDENTIFIER '{' fields '}';
+fields: field (',' field)* |;
+field: type IDENTIFIER;
+function: FUNCTION IDENTIFIER '(' fields ')' '{'fields '}' '{' (statement)* '}';
+statement: NOP | stack_alloc | load | store | asm | goto | invoke | return | setRegister | getElementPointer | cmp | conditionalJump | unaryOperates | binaryOperates;
+stack_alloc: registerName '=' STACK_ALLOC value;
+load: registerName '=' LOAD value;
+store: STORE value value;
+asm: ASM STRING_LITERAL ',' STRING_LITERAL '(' values ')';
+goto: GOTO label;
+invoke: (registerName '=')? INVOKE type value '(' values ')';
+return: RETURN value?;
+setRegister: registerName '=' value;
+getElementPointer: registerName '=' GETELEMENTPTR value (',' value);
+cmp: registerName '=' CMP condition ',' value ',' value;
+conditionalJump: CONDITIONAL_JUMP condition ',' value ',' value ',' label;
+unaryOperates: registerName '=' unaryOperator value;
+binaryOperates: registerName '=' binaryOperator value ',' value;
+
+type: baseType '*'*;
+baseType: integerType | decimalType | arrayType | voidType | structureType;
+integerType: I1 | U1 | I8 | U8 | I16 | U16 | I32 | U32 | I64 | U64;
+decimalType: FLOAT | DOUBLE;
+arrayType: '[' INT_NUMBER 'x' type ']';
+voidType: VOID;
+structureType: STRUCTURE IDENTIFIER;
+values: value (',' value)* | ;
+value: register | constant | functionReference | globalReference | localReference;
+constant: integerConstant | decimalConstant | arrayConstant;
+integerConstant: integerType INT_NUMBER;
+decimalConstant: decimalType DECIMAL_NUMBER;
+arrayConstant: arrayType '[' ((constant (',' constant)*) | constant) ']';
+functionReference: FUNCREF IDENTIFIER;
+globalReference: GLOBALREF IDENTIFIER;
+localReference: LOCALREF IDENTIFIER;
+
+register: type registerName;
+registerName: '%' IDENTIFIER;
+
+label: LABEL IDENTIFIER;
+condition: 'if_true' | 'if_false' | 'e' | 'ne' | 'ne' | 'l' | 'le' | 'g' | 'ge';
+
+unaryOperator: INC | DEC | NOT | NEG;
+binaryOperator: ADD | SUB | MUL | DIV | MOD | AND | OR | XOR | SHL | SHR | USHR;
+
+I1: 'i1';
+U1: 'u1';
+I8: 'i8';
+U8: 'u8';
+I16: 'i16';
+U16: 'u16';
+I32: 'i32';
+U32: 'u32';
+I64: 'i64';
+U64: 'u64';
+FLOAT: 'float';
+DOUBLE: 'double';
+VOID: 'void';
+
+GLOBAL: 'global';
+STRUCTURE: 'structure';
+FUNCTION: 'function';
+
+NOP: 'nop';
+STACK_ALLOC: 'stack_alloc';
+LOAD: 'load';
+STORE: 'store';
+ASM: 'asm';
+GOTO: 'goto';
+INVOKE: 'invoke';
+RETURN: 'return';
+GETELEMENTPTR: 'getelementptr';
+CMP: 'cmp';
+CONDITIONAL_JUMP: 'conditional_jump';
+INC: 'inc';
+DEC: 'dec';
+NOT: 'not';
+NEG: 'neg';
+ADD: 'add';
+SUB: 'sub';
+MUL: 'mul';
+DIV: 'div';
+MOD: 'mod';
+AND: 'and';
+OR: 'or';
+XOR: 'xor';
+SHL: 'shl';
+SHR: 'shr';
+USHR: 'ushr';
+ZEXT: 'zext';
+SEXT: 'sext';
+TRUNC: 'trunc';
+ITOF: 'itof';
+FTOI: 'ftoi';
+FEXT: 'fext';
+FTRUNC: 'ftrunc';
+
+FUNCREF: 'funcref';
+GLOBALREF: 'globalref';
+LOCALREF: 'localref';
+LABEL: 'label';
+
+INT_NUMBER : [0-9]+;
+DECIMAL_NUMBER: [0-9]+ '.' [0-9]+;
+WS : [ \t\r\n]+ -> skip;
+
+STRING_LITERAL: '"' (~["\\] | '\\' .)* '"';
+IDENTIFIER: [\p{L}_] [\p{L}0-9_]* | STRING_LITERAL;

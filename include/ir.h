@@ -193,6 +193,7 @@ namespace lg::ir
         {
         private:
             IRFloatType() = default;
+
         public:
             std::any accept(IRVisitor* visitor, std::any additional) override;
             std::string toString() override;
@@ -204,11 +205,12 @@ namespace lg::ir
         {
         private:
             IRDoubleType() = default;
+
         public:
             std::any accept(IRVisitor* visitor, std::any additional) override;
             std::string toString() override;
 
-            static  IRDoubleType* get();
+            static IRDoubleType* get();
         };
 
         class IRStructureType final : public IRType
@@ -237,17 +239,20 @@ namespace lg::ir
             explicit IRPointerType(IRType* base);
             std::any accept(IRVisitor* visitor, std::any additional) override;
             std::string toString() override;
+
+            static IRPointerType* get(IRType* base);
         };
 
         class IRVoidType : public IRType
         {
         private:
             IRVoidType() = default;
+
         public:
             std::any accept(IRVisitor* visitor, std::any additional) override;
             std::string toString() override;
 
-            static  IRVoidType* get();
+            static IRVoidType* get();
         };
     }
 
@@ -262,7 +267,7 @@ namespace lg::ir
         class IRRegister final : public IRValue
         {
         public:
-           instruction::IRInstruction* def = nullptr;
+            instruction::IRInstruction* def = nullptr;
             type::IRType* type;
             std::string name;
             IRRegister(type::IRType* type, std::string name);
@@ -586,7 +591,7 @@ namespace lg::ir
         class IRNop final : public IRInstruction
         {
         public:
-            IRNop();
+            IRNop() = default;
             std::any accept(IRVisitor* visitor, std::any additional) override;
             std::string toString() override;
         };
@@ -642,9 +647,10 @@ namespace lg::ir
     class IRBuilder
     {
     private:
-        base::IRBasicBlock* insertPoint;
+        base::IRBasicBlock* insertPoint = nullptr;
 
     public:
+        IRBuilder() = default;
         void setInsertPoint(base::IRBasicBlock* insertPoint);
         void createReturn();
         void createReturn(value::IRValue* value);

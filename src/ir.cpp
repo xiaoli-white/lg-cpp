@@ -1,4 +1,5 @@
 #include <ir.h>
+#include <ranges>
 
 #include <utility>
 
@@ -199,6 +200,12 @@ namespace lg::ir
         {
             return base->toString() + "*";
         }
+
+        IRPointerType* IRPointerType::get(IRType* base)
+        {
+            return new IRPointerType(base);
+        }
+
 
         std::any IRVoidType::accept(IRVisitor* visitor, std::any additional)
         {
@@ -493,6 +500,348 @@ namespace lg::ir
         }
     }
 
+    namespace instruction
+    {
+        IRAssembly::IRAssembly(std::string assembly, std::string constraints, std::vector<value::IRValue*> operands) :
+            assembly(std::move(assembly)), constraints(std::move(constraints)), operands(std::move(operands))
+        {
+        }
+
+        std::any IRAssembly::accept(IRVisitor* visitor, std::any additional)
+        {
+            return visitor->visitAssembly(this, std::move(additional));
+        }
+
+        std::string IRAssembly::toString()
+        {
+            std::string result = "asm \"" + assembly + "\", \"" + constraints + "\"(";
+            for (int i = 0; i < operands.size(); i++)
+            {
+                result += operands[i]->toString();
+                if (i < operands.size() - 1)result += ", ";
+            }
+            result += ")";
+            return result;
+        }
+
+        IRBinaryOperates::IRBinaryOperates(Operator op, value::IRValue* operand1, value::IRValue* operand2,
+                                           value::IRRegister* target) : op(op), operand1(operand1), operand2(operand2),
+                                                                        target(target)
+        {
+            target->def = this;
+            target->type = operand1->getType();
+        }
+
+        std::any IRBinaryOperates::accept(IRVisitor* visitor, std::any additional)
+        {
+            return visitor->visitBinaryOperates(this, std::move(additional));
+        }
+
+        std::string IRBinaryOperates::toString()
+        {
+            return "%" + target->name + " = " + operatorToString(op) + " " + operand1->toString() + ", " + operand2->
+                toString();
+        }
+
+        std::string IRBinaryOperates::operatorToString(Operator op)
+        {
+            switch (op)
+            {
+            case Operator::ADD:
+                return "add";
+            case Operator::SUB:
+                return "sub";
+            case Operator::MUL:
+                return "mul";
+            case Operator::DIV:
+                return "div";
+            case Operator::MOD:
+                return "mod";
+            case Operator::AND:
+                return "and";
+            case Operator::OR:
+                return "or";
+            case Operator::XOR:
+                return "xor";
+            case Operator::SHL:
+                return "shl";
+            case Operator::SHR:
+                return "shr";
+            case Operator::USHR:
+                return "ushr";
+            default:
+                return "";
+            }
+        }
+
+        IRUnaryOperates::IRUnaryOperates(Operator op, value::IRValue* operand,
+                                         value::IRRegister* target) : op(op), operand(operand), target(target)
+        {
+            target->def = this;
+            target->type = operand->getType();
+        }
+
+        std::any IRUnaryOperates::accept(IRVisitor* visitor, std::any additional)
+        {
+            return visitor->visitUnaryOperates(this, std::move(additional));
+        }
+
+        std::string IRUnaryOperates::toString()
+        {
+            return "%" + target->name + " = " + operatorToString(op) + " " + operand->toString();
+        }
+
+        std::string IRUnaryOperates::operatorToString(Operator op)
+        {
+            switch (op)
+            {
+            case Operator::INC:
+                return "inc";
+            case Operator::DEC:
+                return "dec";
+            case Operator::NOT:
+                return "not";
+            case Operator::NEG:
+                return "neg";
+            default:
+                return "";
+            }
+        }
+
+        std::any IRGetElementPointer::accept(IRVisitor* visitor, std::any additional)
+        {
+            return visitor->visitGetElementPointer(this, std::move(additional));
+        }
+
+        std::string IRGetElementPointer::toString()
+        {
+            std::string result = "%" + target->name + " = getelementptr " + pointer->toString();
+            for (const auto& index : indices)
+            {
+                result += ", " + index->toString();
+            }
+            return result;
+        }
+
+        IRCompare::IRCompare(base::IRCondition condition, value::IRValue* operand1, value::IRValue* operand2,
+                             value::IRRegister* target) : condition(condition), operand1(operand1), operand2(operand2),
+                                                          target(target)
+        {
+            target->def = this;
+            target->type = type::IRIntegerType::getBooleanType();
+        }
+
+        std::any IRCompare::accept(IRVisitor* visitor, std::any additional)
+        {
+            return visitor->visitCompare(this, std::move(additional));
+        }
+
+        std::string IRCompare::toString()
+        {
+            return "%" + target->name + " = cmp " + conditionToString(condition) + ", " + operand1->toString() + ", " +
+                operand2->toString();
+        }
+
+        IRConditionalJump::IRConditionalJump(base::IRCondition condition, value::IRValue* operand1,
+                                             value::IRValue* operand2,
+                                             base::IRBasicBlock* target) : condition(condition), operand1(operand1),
+                                                                           operand2(operand2), target(target)
+        {
+        }
+
+        std::any IRConditionalJump::accept(IRVisitor* visitor, std::any additional)
+        {
+            return visitor->visitConditionalJump(this, std::move(additional));
+        }
+
+        std::string IRConditionalJump::toString()
+        {
+            return "conditional_jump " + conditionToString(condition) + ", " + operand1->toString() + (
+                operand2 != nullptr ? ", " + operand2->toString() : "") + ", label" + target->name;
+        }
+
+        IRGoto::IRGoto(base::IRBasicBlock* target) : target(target)
+        {
+        }
+
+        std::any IRGoto::accept(IRVisitor* visitor, std::any additional)
+        {
+            return visitor->visitGoto(this, std::move(additional));
+        }
+
+        std::string IRGoto::toString()
+        {
+            return "goto label" + target->name;
+        }
+
+        IRInvoke::IRInvoke(type::IRType* returnType, value::IRValue* func, std::vector<value::IRValue*> arguments,
+                           value::IRRegister* target) : returnType(returnType), func(func),
+                                                        arguments(std::move(arguments)), target(target)
+        {
+            if (target != nullptr)
+            {
+                target->def = this;
+                target->type = returnType;
+            }
+        }
+
+        std::any IRInvoke::accept(IRVisitor* visitor, std::any additional)
+        {
+            return visitor->visitInvoke(this, std::move(additional));
+        }
+
+        std::string IRInvoke::toString()
+        {
+            std::string result;
+            if (target != nullptr)
+            {
+                result += "%" + target->name + " = ";
+            }
+            result += "invoke " + returnType->toString() + " " + func->toString() + "(";
+            for (int i = 0; i < arguments.size(); i++)
+            {
+                result += arguments[i]->toString();
+                if (i < arguments.size() - 1)
+                {
+                    result += ", ";
+                }
+            }
+            result += ")";
+            return result;
+        }
+
+        IRReturn::IRReturn(value::IRValue* value) : value(value)
+        {
+        }
+
+        std::any IRReturn::accept(IRVisitor* visitor, std::any additional)
+        {
+            return visitor->visitReturn(this, std::move(additional));
+        }
+
+        std::string IRReturn::toString()
+        {
+            return "return" + (value != nullptr ? " " + value->toString() : "");
+        }
+
+        IRLoad::IRLoad(value::IRValue* ptr, value::IRRegister* target) : ptr(ptr), target(target)
+        {
+            target->def = this;
+            target->type = dynamic_cast<type::IRPointerType*>(ptr->getType())->base;
+        }
+
+        std::any IRLoad::accept(IRVisitor* visitor, std::any additional)
+        {
+            return visitor->visitLoad(this, std::move(additional));
+        }
+
+        std::string IRLoad::toString()
+        {
+            return "%" + target->name + " = load " + ptr->toString();
+        }
+
+        IRStore::IRStore(value::IRValue* ptr, value::IRValue* value) : ptr(ptr), value(value)
+        {
+        }
+
+        std::any IRStore::accept(IRVisitor* visitor, std::any additional)
+        {
+            return visitor->visitStore(this, std::move(additional));
+        }
+
+        std::string IRStore::toString()
+        {
+            return "store " + ptr->toString() + ", " + value->toString();
+        }
+
+        std::any IRNop::accept(IRVisitor* visitor, std::any additional)
+        {
+            return visitor->visitNop(this, std::move(additional));
+        }
+
+        std::string IRNop::toString()
+        {
+            return "nop";
+        }
+
+        IRSetRegister::IRSetRegister(value::IRValue* value, value::IRRegister* target) : value(value), target(target)
+        {
+            target->def = this;
+            target->type = value->getType();
+        }
+
+        std::any IRSetRegister::accept(IRVisitor* visitor, std::any additional)
+        {
+            return visitor->visitSetRegister(this, std::move(additional));
+        }
+
+        std::string IRSetRegister::toString()
+        {
+            return "%" + target->name + " = " + value->toString();
+        }
+
+        IRStackAllocate::IRStackAllocate(value::IRValue* size, value::IRRegister* target) : size(size), target(target)
+        {
+            target->def = this;
+            target->type = type::IRPointerType::get(type::IRVoidType::get());
+        }
+
+        std::any IRStackAllocate::accept(IRVisitor* visitor, std::any additional)
+        {
+            return visitor->visitStackAllocate(this, std::move(additional));
+        }
+
+        std::string IRStackAllocate::toString()
+        {
+            return "%" + target->name + " = stack_alloc " + size->toString();
+        }
+
+        IRTypeCast::IRTypeCast(Kind kind, value::IRValue* source, type::IRType* targetType, value::IRRegister* target) :
+            kind(kind), source(source), targetType(targetType), target(target)
+        {
+            target->def = this;
+            target->type = targetType;
+        }
+
+        std::any IRTypeCast::accept(IRVisitor* visitor, std::any additional)
+        {
+            return visitor->visitTypeCast(this, std::move(additional));
+        }
+
+        std::string IRTypeCast::toString()
+        {
+            return "%" + target->name + " = " + kindToString(kind) + " " + source->toString() + " to " + targetType->
+                toString();
+        }
+
+        std::string IRTypeCast::kindToString(Kind kind)
+        {
+            switch (kind)
+            {
+            case Kind::ZEXT:
+                return "zext";
+            case Kind::SEXT:
+                return "sext";
+            case Kind::TRUNC:
+                return "trunc";
+            case Kind::FTOI:
+                return "ftoi";
+            case Kind::ITOF:
+                return "itof";
+            case Kind::ITOP:
+                return "itop";
+            case Kind::PTOI:
+                return "ptoi";
+            case Kind::FEXT:
+                return "fext";
+            case Kind::FTRUNC:
+                return "ftrunc";
+            default:
+                return "";
+            }
+        }
+    }
+
     std::any IRVisitor::visit(base::IRNode* node, std::any additional)
     {
         return node->accept(this, std::move(additional));
@@ -500,15 +849,15 @@ namespace lg::ir
 
     std::any IRVisitor::visitModule(IRModule* module, std::any additional)
     {
-        for (auto& [name, function] : module->functions)
+        for (auto& function : module->functions | std::views::values)
         {
             visit(function, additional);
         }
-        for (auto& [name, structure] : module->structures)
+        for (auto& structure : module->structures | std::views::values)
         {
             visit(structure, additional);
         }
-        for (auto& [name, global] : module->globals)
+        for (auto& global : module->globals | std::views::values)
         {
             visit(global, additional);
         }

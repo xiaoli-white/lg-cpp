@@ -23,6 +23,8 @@ add_library(lg_cpp_binding SHARED
         src/builder.cpp
         include/dumper.h
         src/dumper.cpp
+        src/parser.cpp
+        include/parser.h
 )
 include_directories(${ANTLR4_INCLUDE_DIR} include/)
 

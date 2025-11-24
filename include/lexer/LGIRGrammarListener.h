@@ -5,7 +5,7 @@
 
 
 #include "antlr4-runtime.h"
-#include "lexer/LGIRGrammarParser.h"
+#include "../../src/lexer/LGIRGrammarParser.h"
 
 
 /**
@@ -74,6 +74,9 @@ public:
   virtual void enterBinaryOperates(LGIRGrammarParser::BinaryOperatesContext *ctx) = 0;
   virtual void exitBinaryOperates(LGIRGrammarParser::BinaryOperatesContext *ctx) = 0;
 
+  virtual void enterTypeCast(LGIRGrammarParser::TypeCastContext *ctx) = 0;
+  virtual void exitTypeCast(LGIRGrammarParser::TypeCastContext *ctx) = 0;
+
   virtual void enterType(LGIRGrammarParser::TypeContext *ctx) = 0;
   virtual void exitType(LGIRGrammarParser::TypeContext *ctx) = 0;
 
@@ -139,6 +142,9 @@ public:
 
   virtual void enterBinaryOperator(LGIRGrammarParser::BinaryOperatorContext *ctx) = 0;
   virtual void exitBinaryOperator(LGIRGrammarParser::BinaryOperatorContext *ctx) = 0;
+
+  virtual void enterTypeCastKind(LGIRGrammarParser::TypeCastKindContext *ctx) = 0;
+  virtual void exitTypeCastKind(LGIRGrammarParser::TypeCastKindContext *ctx) = 0;
 
 
 };

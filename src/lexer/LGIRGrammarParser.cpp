@@ -3,6 +3,7 @@
 
 
 #include "../../include/lexer/LGIRGrammarListener.h"
+#include "LGIRGrammarVisitor.h"
 
 #include "../../include/lexer/LGIRGrammarParser.h"
 
@@ -55,11 +56,12 @@ void lgirgrammarParserInitialize() {
       "program", "globalVariable", "structure", "fields", "field", "function", 
       "statement", "stack_alloc", "load", "store", "asm", "goto", "invoke", 
       "return", "setRegister", "getElementPointer", "cmp", "conditionalJump", 
-      "unaryOperates", "binaryOperates", "type", "baseType", "integerType", 
-      "decimalType", "arrayType", "voidType", "structureType", "values", 
-      "value", "constant", "integerConstant", "decimalConstant", "arrayConstant", 
-      "functionReference", "globalReference", "localReference", "register", 
-      "registerName", "label", "condition", "unaryOperator", "binaryOperator"
+      "unaryOperates", "binaryOperates", "typeCast", "type", "baseType", 
+      "integerType", "decimalType", "arrayType", "voidType", "structureType", 
+      "values", "value", "constant", "integerConstant", "decimalConstant", 
+      "arrayConstant", "functionReference", "globalReference", "localReference", 
+      "register", "registerName", "label", "condition", "unaryOperator", 
+      "binaryOperator", "typeCastKind"
     },
     std::vector<std::string>{
       "", "'='", "'{'", "'}'", "','", "'('", "')'", "'*'", "'['", "'x'", 
@@ -71,7 +73,7 @@ void lgirgrammarParserInitialize() {
       "'conditional_jump'", "'inc'", "'dec'", "'not'", "'neg'", "'add'", 
       "'sub'", "'mul'", "'div'", "'mod'", "'and'", "'or'", "'xor'", "'shl'", 
       "'shr'", "'ushr'", "'zext'", "'sext'", "'trunc'", "'itof'", "'ftoi'", 
-      "'itop'", "'ptoi'", "'fext'", "'ftrunc'", "'funcref'", "'globalref'", 
+      "'itop'", "'ptoi'", "'ptop'", "'fext'", "'ftrunc'", "'funcref'", "'globalref'", 
       "'localref'", "'label'"
     },
     std::vector<std::string>{
@@ -81,115 +83,118 @@ void lgirgrammarParserInitialize() {
       "NOP", "STACK_ALLOC", "LOAD", "STORE", "ASM", "GOTO", "INVOKE", "RETURN", 
       "GETELEMENTPTR", "CMP", "CONDITIONAL_JUMP", "INC", "DEC", "NOT", "NEG", 
       "ADD", "SUB", "MUL", "DIV", "MOD", "AND", "OR", "XOR", "SHL", "SHR", 
-      "USHR", "ZEXT", "SEXT", "TRUNC", "ITOF", "FTOI", "ITOP", "PTOI", "FEXT", 
-      "FTRUNC", "FUNCREF", "GLOBALREF", "LOCALREF", "LABEL", "INT_NUMBER", 
+      "USHR", "ZEXT", "SEXT", "TRUNC", "ITOF", "FTOI", "ITOP", "PTOI", "PTOP", 
+      "FEXT", "FTRUNC", "FUNCREF", "GLOBALREF", "LOCALREF", "LABEL", "INT_NUMBER", 
       "DECIMAL_NUMBER", "WS", "STRING_LITERAL", "IDENTIFIER"
     }
   );
   static const int32_t serializedATNSegment[] = {
-  	4,1,79,332,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,
+  	4,1,80,343,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,
   	7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,2,14,7,
   	14,2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,2,19,7,19,2,20,7,20,2,21,7,
   	21,2,22,7,22,2,23,7,23,2,24,7,24,2,25,7,25,2,26,7,26,2,27,7,27,2,28,7,
   	28,2,29,7,29,2,30,7,30,2,31,7,31,2,32,7,32,2,33,7,33,2,34,7,34,2,35,7,
-  	35,2,36,7,36,2,37,7,37,2,38,7,38,2,39,7,39,2,40,7,40,2,41,7,41,1,0,1,
-  	0,1,0,5,0,88,8,0,10,0,12,0,91,9,0,1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,2,1,2,
-  	1,2,1,2,1,2,1,2,1,3,1,3,1,3,5,3,109,8,3,10,3,12,3,112,9,3,1,3,3,3,115,
-  	8,3,1,4,1,4,1,4,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,5,5,130,8,5,10,
-  	5,12,5,133,9,5,1,5,1,5,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,
-  	6,1,6,1,6,3,6,151,8,6,1,7,1,7,1,7,1,7,1,7,1,8,1,8,1,8,1,8,1,8,1,9,1,9,
-  	1,9,1,9,1,10,1,10,1,10,1,10,1,10,1,10,1,10,1,10,1,11,1,11,1,11,1,12,1,
-  	12,1,12,3,12,181,8,12,1,12,1,12,1,12,1,12,1,12,1,12,1,12,1,13,1,13,3,
-  	13,192,8,13,1,14,1,14,1,14,1,14,1,15,1,15,1,15,1,15,1,15,1,15,1,15,1,
-  	16,1,16,1,16,1,16,1,16,1,16,1,16,1,16,1,16,1,17,1,17,1,17,1,17,1,17,1,
-  	17,1,17,1,17,1,17,1,18,1,18,1,18,1,18,1,18,1,19,1,19,1,19,1,19,1,19,1,
-  	19,1,19,1,20,1,20,5,20,237,8,20,10,20,12,20,240,9,20,1,21,1,21,1,21,1,
-  	21,1,21,3,21,247,8,21,1,22,1,22,1,23,1,23,1,24,1,24,1,24,1,24,1,24,1,
-  	24,1,25,1,25,1,26,1,26,1,26,1,27,1,27,1,27,5,27,267,8,27,10,27,12,27,
-  	270,9,27,1,27,3,27,273,8,27,1,28,1,28,1,28,1,28,1,28,3,28,280,8,28,1,
-  	29,1,29,1,29,3,29,285,8,29,1,30,1,30,1,30,1,31,1,31,1,31,1,32,1,32,1,
-  	32,1,32,1,32,5,32,298,8,32,10,32,12,32,301,9,32,1,32,3,32,304,8,32,1,
-  	32,1,32,1,33,1,33,1,33,1,34,1,34,1,34,1,35,1,35,1,35,1,36,1,36,1,36,1,
-  	37,1,37,1,37,1,38,1,38,1,38,1,39,1,39,1,40,1,40,1,41,1,41,1,41,0,0,42,
-  	0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,
-  	50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,0,5,1,0,20,29,1,0,
-  	30,31,1,0,12,19,1,0,47,50,1,0,51,61,325,0,89,1,0,0,0,2,94,1,0,0,0,4,99,
-  	1,0,0,0,6,114,1,0,0,0,8,116,1,0,0,0,10,119,1,0,0,0,12,150,1,0,0,0,14,
-  	152,1,0,0,0,16,157,1,0,0,0,18,162,1,0,0,0,20,166,1,0,0,0,22,174,1,0,0,
-  	0,24,180,1,0,0,0,26,189,1,0,0,0,28,193,1,0,0,0,30,197,1,0,0,0,32,204,
-  	1,0,0,0,34,213,1,0,0,0,36,222,1,0,0,0,38,227,1,0,0,0,40,234,1,0,0,0,42,
-  	246,1,0,0,0,44,248,1,0,0,0,46,250,1,0,0,0,48,252,1,0,0,0,50,258,1,0,0,
-  	0,52,260,1,0,0,0,54,272,1,0,0,0,56,279,1,0,0,0,58,284,1,0,0,0,60,286,
-  	1,0,0,0,62,289,1,0,0,0,64,292,1,0,0,0,66,307,1,0,0,0,68,310,1,0,0,0,70,
-  	313,1,0,0,0,72,316,1,0,0,0,74,319,1,0,0,0,76,322,1,0,0,0,78,325,1,0,0,
-  	0,80,327,1,0,0,0,82,329,1,0,0,0,84,88,3,2,1,0,85,88,3,4,2,0,86,88,3,10,
-  	5,0,87,84,1,0,0,0,87,85,1,0,0,0,87,86,1,0,0,0,88,91,1,0,0,0,89,87,1,0,
-  	0,0,89,90,1,0,0,0,90,92,1,0,0,0,91,89,1,0,0,0,92,93,5,0,0,1,93,1,1,0,
-  	0,0,94,95,5,33,0,0,95,96,5,79,0,0,96,97,5,1,0,0,97,98,3,58,29,0,98,3,
-  	1,0,0,0,99,100,5,34,0,0,100,101,5,79,0,0,101,102,5,2,0,0,102,103,3,6,
-  	3,0,103,104,5,3,0,0,104,5,1,0,0,0,105,110,3,8,4,0,106,107,5,4,0,0,107,
-  	109,3,8,4,0,108,106,1,0,0,0,109,112,1,0,0,0,110,108,1,0,0,0,110,111,1,
-  	0,0,0,111,115,1,0,0,0,112,110,1,0,0,0,113,115,1,0,0,0,114,105,1,0,0,0,
-  	114,113,1,0,0,0,115,7,1,0,0,0,116,117,3,40,20,0,117,118,5,79,0,0,118,
-  	9,1,0,0,0,119,120,5,35,0,0,120,121,5,79,0,0,121,122,5,5,0,0,122,123,3,
-  	6,3,0,123,124,5,6,0,0,124,125,5,2,0,0,125,126,3,6,3,0,126,127,5,3,0,0,
-  	127,131,5,2,0,0,128,130,3,12,6,0,129,128,1,0,0,0,130,133,1,0,0,0,131,
-  	129,1,0,0,0,131,132,1,0,0,0,132,134,1,0,0,0,133,131,1,0,0,0,134,135,5,
-  	3,0,0,135,11,1,0,0,0,136,151,5,36,0,0,137,151,3,14,7,0,138,151,3,16,8,
-  	0,139,151,3,18,9,0,140,151,3,20,10,0,141,151,3,22,11,0,142,151,3,24,12,
-  	0,143,151,3,26,13,0,144,151,3,28,14,0,145,151,3,30,15,0,146,151,3,32,
-  	16,0,147,151,3,34,17,0,148,151,3,36,18,0,149,151,3,38,19,0,150,136,1,
-  	0,0,0,150,137,1,0,0,0,150,138,1,0,0,0,150,139,1,0,0,0,150,140,1,0,0,0,
-  	150,141,1,0,0,0,150,142,1,0,0,0,150,143,1,0,0,0,150,144,1,0,0,0,150,145,
-  	1,0,0,0,150,146,1,0,0,0,150,147,1,0,0,0,150,148,1,0,0,0,150,149,1,0,0,
-  	0,151,13,1,0,0,0,152,153,3,74,37,0,153,154,5,1,0,0,154,155,5,37,0,0,155,
-  	156,3,56,28,0,156,15,1,0,0,0,157,158,3,74,37,0,158,159,5,1,0,0,159,160,
-  	5,38,0,0,160,161,3,56,28,0,161,17,1,0,0,0,162,163,5,39,0,0,163,164,3,
-  	56,28,0,164,165,3,56,28,0,165,19,1,0,0,0,166,167,5,40,0,0,167,168,5,78,
-  	0,0,168,169,5,4,0,0,169,170,5,78,0,0,170,171,5,5,0,0,171,172,3,54,27,
-  	0,172,173,5,6,0,0,173,21,1,0,0,0,174,175,5,41,0,0,175,176,3,76,38,0,176,
-  	23,1,0,0,0,177,178,3,74,37,0,178,179,5,1,0,0,179,181,1,0,0,0,180,177,
-  	1,0,0,0,180,181,1,0,0,0,181,182,1,0,0,0,182,183,5,42,0,0,183,184,3,40,
-  	20,0,184,185,3,56,28,0,185,186,5,5,0,0,186,187,3,54,27,0,187,188,5,6,
-  	0,0,188,25,1,0,0,0,189,191,5,43,0,0,190,192,3,56,28,0,191,190,1,0,0,0,
-  	191,192,1,0,0,0,192,27,1,0,0,0,193,194,3,74,37,0,194,195,5,1,0,0,195,
-  	196,3,56,28,0,196,29,1,0,0,0,197,198,3,74,37,0,198,199,5,1,0,0,199,200,
-  	5,44,0,0,200,201,3,56,28,0,201,202,5,4,0,0,202,203,3,56,28,0,203,31,1,
-  	0,0,0,204,205,3,74,37,0,205,206,5,1,0,0,206,207,5,45,0,0,207,208,3,78,
-  	39,0,208,209,5,4,0,0,209,210,3,56,28,0,210,211,5,4,0,0,211,212,3,56,28,
-  	0,212,33,1,0,0,0,213,214,5,46,0,0,214,215,3,78,39,0,215,216,5,4,0,0,216,
-  	217,3,56,28,0,217,218,5,4,0,0,218,219,3,56,28,0,219,220,5,4,0,0,220,221,
-  	3,76,38,0,221,35,1,0,0,0,222,223,3,74,37,0,223,224,5,1,0,0,224,225,3,
-  	80,40,0,225,226,3,56,28,0,226,37,1,0,0,0,227,228,3,74,37,0,228,229,5,
-  	1,0,0,229,230,3,82,41,0,230,231,3,56,28,0,231,232,5,4,0,0,232,233,3,56,
-  	28,0,233,39,1,0,0,0,234,238,3,42,21,0,235,237,5,7,0,0,236,235,1,0,0,0,
-  	237,240,1,0,0,0,238,236,1,0,0,0,238,239,1,0,0,0,239,41,1,0,0,0,240,238,
-  	1,0,0,0,241,247,3,44,22,0,242,247,3,46,23,0,243,247,3,48,24,0,244,247,
-  	3,50,25,0,245,247,3,52,26,0,246,241,1,0,0,0,246,242,1,0,0,0,246,243,1,
-  	0,0,0,246,244,1,0,0,0,246,245,1,0,0,0,247,43,1,0,0,0,248,249,7,0,0,0,
-  	249,45,1,0,0,0,250,251,7,1,0,0,251,47,1,0,0,0,252,253,5,8,0,0,253,254,
-  	5,75,0,0,254,255,5,9,0,0,255,256,3,40,20,0,256,257,5,10,0,0,257,49,1,
-  	0,0,0,258,259,5,32,0,0,259,51,1,0,0,0,260,261,5,34,0,0,261,262,5,79,0,
-  	0,262,53,1,0,0,0,263,268,3,56,28,0,264,265,5,4,0,0,265,267,3,56,28,0,
-  	266,264,1,0,0,0,267,270,1,0,0,0,268,266,1,0,0,0,268,269,1,0,0,0,269,273,
-  	1,0,0,0,270,268,1,0,0,0,271,273,1,0,0,0,272,263,1,0,0,0,272,271,1,0,0,
-  	0,273,55,1,0,0,0,274,280,3,72,36,0,275,280,3,58,29,0,276,280,3,66,33,
-  	0,277,280,3,68,34,0,278,280,3,70,35,0,279,274,1,0,0,0,279,275,1,0,0,0,
-  	279,276,1,0,0,0,279,277,1,0,0,0,279,278,1,0,0,0,280,57,1,0,0,0,281,285,
-  	3,60,30,0,282,285,3,62,31,0,283,285,3,64,32,0,284,281,1,0,0,0,284,282,
-  	1,0,0,0,284,283,1,0,0,0,285,59,1,0,0,0,286,287,3,44,22,0,287,288,5,75,
-  	0,0,288,61,1,0,0,0,289,290,3,46,23,0,290,291,5,76,0,0,291,63,1,0,0,0,
-  	292,293,3,48,24,0,293,303,5,8,0,0,294,299,3,58,29,0,295,296,5,4,0,0,296,
-  	298,3,58,29,0,297,295,1,0,0,0,298,301,1,0,0,0,299,297,1,0,0,0,299,300,
-  	1,0,0,0,300,304,1,0,0,0,301,299,1,0,0,0,302,304,3,58,29,0,303,294,1,0,
-  	0,0,303,302,1,0,0,0,304,305,1,0,0,0,305,306,5,10,0,0,306,65,1,0,0,0,307,
-  	308,5,71,0,0,308,309,5,79,0,0,309,67,1,0,0,0,310,311,5,72,0,0,311,312,
-  	5,79,0,0,312,69,1,0,0,0,313,314,5,73,0,0,314,315,5,79,0,0,315,71,1,0,
-  	0,0,316,317,3,40,20,0,317,318,3,74,37,0,318,73,1,0,0,0,319,320,5,11,0,
-  	0,320,321,5,79,0,0,321,75,1,0,0,0,322,323,5,74,0,0,323,324,5,79,0,0,324,
-  	77,1,0,0,0,325,326,7,2,0,0,326,79,1,0,0,0,327,328,7,3,0,0,328,81,1,0,
-  	0,0,329,330,7,4,0,0,330,83,1,0,0,0,16,87,89,110,114,131,150,180,191,238,
-  	246,268,272,279,284,299,303
+  	35,2,36,7,36,2,37,7,37,2,38,7,38,2,39,7,39,2,40,7,40,2,41,7,41,2,42,7,
+  	42,2,43,7,43,1,0,1,0,1,0,5,0,92,8,0,10,0,12,0,95,9,0,1,0,1,0,1,1,1,1,
+  	1,1,1,1,1,1,1,2,1,2,1,2,1,2,1,2,1,2,1,3,1,3,1,3,5,3,113,8,3,10,3,12,3,
+  	116,9,3,1,3,3,3,119,8,3,1,4,1,4,1,4,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,
+  	5,1,5,5,5,134,8,5,10,5,12,5,137,9,5,1,5,1,5,1,6,1,6,1,6,1,6,1,6,1,6,1,
+  	6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,3,6,155,8,6,1,7,1,7,1,7,1,7,1,7,1,8,1,8,
+  	1,8,1,8,1,8,1,9,1,9,1,9,1,9,1,10,1,10,1,10,1,10,1,10,1,10,1,10,1,10,1,
+  	11,1,11,1,11,1,12,1,12,1,12,3,12,185,8,12,1,12,1,12,1,12,1,12,1,12,1,
+  	12,1,12,1,13,1,13,3,13,196,8,13,1,14,1,14,1,14,1,14,1,15,1,15,1,15,1,
+  	15,1,15,1,15,1,15,1,16,1,16,1,16,1,16,1,16,1,16,1,16,1,16,1,16,1,17,1,
+  	17,1,17,1,17,1,17,1,17,1,17,1,17,1,17,1,18,1,18,1,18,1,18,1,18,1,19,1,
+  	19,1,19,1,19,1,19,1,19,1,19,1,20,1,20,1,20,1,20,1,20,1,21,1,21,5,21,246,
+  	8,21,10,21,12,21,249,9,21,1,22,1,22,1,22,1,22,1,22,3,22,256,8,22,1,23,
+  	1,23,1,24,1,24,1,25,1,25,1,25,1,25,1,25,1,25,1,26,1,26,1,27,1,27,1,27,
+  	1,28,1,28,1,28,5,28,276,8,28,10,28,12,28,279,9,28,1,28,3,28,282,8,28,
+  	1,29,1,29,1,29,1,29,1,29,3,29,289,8,29,1,30,1,30,1,30,3,30,294,8,30,1,
+  	31,1,31,1,31,1,32,1,32,1,32,1,33,1,33,1,33,1,33,1,33,5,33,307,8,33,10,
+  	33,12,33,310,9,33,1,33,3,33,313,8,33,1,33,1,33,1,34,1,34,1,34,1,35,1,
+  	35,1,35,1,36,1,36,1,36,1,37,1,37,1,37,1,38,1,38,1,38,1,39,1,39,1,39,1,
+  	40,1,40,1,41,1,41,1,42,1,42,1,43,1,43,1,43,0,0,44,0,2,4,6,8,10,12,14,
+  	16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,
+  	62,64,66,68,70,72,74,76,78,80,82,84,86,0,6,1,0,20,29,1,0,30,31,1,0,12,
+  	19,1,0,47,50,1,0,51,61,1,0,62,71,334,0,93,1,0,0,0,2,98,1,0,0,0,4,103,
+  	1,0,0,0,6,118,1,0,0,0,8,120,1,0,0,0,10,123,1,0,0,0,12,154,1,0,0,0,14,
+  	156,1,0,0,0,16,161,1,0,0,0,18,166,1,0,0,0,20,170,1,0,0,0,22,178,1,0,0,
+  	0,24,184,1,0,0,0,26,193,1,0,0,0,28,197,1,0,0,0,30,201,1,0,0,0,32,208,
+  	1,0,0,0,34,217,1,0,0,0,36,226,1,0,0,0,38,231,1,0,0,0,40,238,1,0,0,0,42,
+  	243,1,0,0,0,44,255,1,0,0,0,46,257,1,0,0,0,48,259,1,0,0,0,50,261,1,0,0,
+  	0,52,267,1,0,0,0,54,269,1,0,0,0,56,281,1,0,0,0,58,288,1,0,0,0,60,293,
+  	1,0,0,0,62,295,1,0,0,0,64,298,1,0,0,0,66,301,1,0,0,0,68,316,1,0,0,0,70,
+  	319,1,0,0,0,72,322,1,0,0,0,74,325,1,0,0,0,76,328,1,0,0,0,78,331,1,0,0,
+  	0,80,334,1,0,0,0,82,336,1,0,0,0,84,338,1,0,0,0,86,340,1,0,0,0,88,92,3,
+  	2,1,0,89,92,3,4,2,0,90,92,3,10,5,0,91,88,1,0,0,0,91,89,1,0,0,0,91,90,
+  	1,0,0,0,92,95,1,0,0,0,93,91,1,0,0,0,93,94,1,0,0,0,94,96,1,0,0,0,95,93,
+  	1,0,0,0,96,97,5,0,0,1,97,1,1,0,0,0,98,99,5,33,0,0,99,100,5,80,0,0,100,
+  	101,5,1,0,0,101,102,3,60,30,0,102,3,1,0,0,0,103,104,5,34,0,0,104,105,
+  	5,80,0,0,105,106,5,2,0,0,106,107,3,6,3,0,107,108,5,3,0,0,108,5,1,0,0,
+  	0,109,114,3,8,4,0,110,111,5,4,0,0,111,113,3,8,4,0,112,110,1,0,0,0,113,
+  	116,1,0,0,0,114,112,1,0,0,0,114,115,1,0,0,0,115,119,1,0,0,0,116,114,1,
+  	0,0,0,117,119,1,0,0,0,118,109,1,0,0,0,118,117,1,0,0,0,119,7,1,0,0,0,120,
+  	121,3,42,21,0,121,122,5,80,0,0,122,9,1,0,0,0,123,124,5,35,0,0,124,125,
+  	5,80,0,0,125,126,5,5,0,0,126,127,3,6,3,0,127,128,5,6,0,0,128,129,5,2,
+  	0,0,129,130,3,6,3,0,130,131,5,3,0,0,131,135,5,2,0,0,132,134,3,12,6,0,
+  	133,132,1,0,0,0,134,137,1,0,0,0,135,133,1,0,0,0,135,136,1,0,0,0,136,138,
+  	1,0,0,0,137,135,1,0,0,0,138,139,5,3,0,0,139,11,1,0,0,0,140,155,5,36,0,
+  	0,141,155,3,14,7,0,142,155,3,16,8,0,143,155,3,18,9,0,144,155,3,20,10,
+  	0,145,155,3,22,11,0,146,155,3,24,12,0,147,155,3,26,13,0,148,155,3,28,
+  	14,0,149,155,3,30,15,0,150,155,3,32,16,0,151,155,3,34,17,0,152,155,3,
+  	36,18,0,153,155,3,38,19,0,154,140,1,0,0,0,154,141,1,0,0,0,154,142,1,0,
+  	0,0,154,143,1,0,0,0,154,144,1,0,0,0,154,145,1,0,0,0,154,146,1,0,0,0,154,
+  	147,1,0,0,0,154,148,1,0,0,0,154,149,1,0,0,0,154,150,1,0,0,0,154,151,1,
+  	0,0,0,154,152,1,0,0,0,154,153,1,0,0,0,155,13,1,0,0,0,156,157,3,76,38,
+  	0,157,158,5,1,0,0,158,159,5,37,0,0,159,160,3,58,29,0,160,15,1,0,0,0,161,
+  	162,3,76,38,0,162,163,5,1,0,0,163,164,5,38,0,0,164,165,3,58,29,0,165,
+  	17,1,0,0,0,166,167,5,39,0,0,167,168,3,58,29,0,168,169,3,58,29,0,169,19,
+  	1,0,0,0,170,171,5,40,0,0,171,172,5,79,0,0,172,173,5,4,0,0,173,174,5,79,
+  	0,0,174,175,5,5,0,0,175,176,3,56,28,0,176,177,5,6,0,0,177,21,1,0,0,0,
+  	178,179,5,41,0,0,179,180,3,78,39,0,180,23,1,0,0,0,181,182,3,76,38,0,182,
+  	183,5,1,0,0,183,185,1,0,0,0,184,181,1,0,0,0,184,185,1,0,0,0,185,186,1,
+  	0,0,0,186,187,5,42,0,0,187,188,3,42,21,0,188,189,3,58,29,0,189,190,5,
+  	5,0,0,190,191,3,56,28,0,191,192,5,6,0,0,192,25,1,0,0,0,193,195,5,43,0,
+  	0,194,196,3,58,29,0,195,194,1,0,0,0,195,196,1,0,0,0,196,27,1,0,0,0,197,
+  	198,3,76,38,0,198,199,5,1,0,0,199,200,3,58,29,0,200,29,1,0,0,0,201,202,
+  	3,76,38,0,202,203,5,1,0,0,203,204,5,44,0,0,204,205,3,58,29,0,205,206,
+  	5,4,0,0,206,207,3,58,29,0,207,31,1,0,0,0,208,209,3,76,38,0,209,210,5,
+  	1,0,0,210,211,5,45,0,0,211,212,3,80,40,0,212,213,5,4,0,0,213,214,3,58,
+  	29,0,214,215,5,4,0,0,215,216,3,58,29,0,216,33,1,0,0,0,217,218,5,46,0,
+  	0,218,219,3,80,40,0,219,220,5,4,0,0,220,221,3,58,29,0,221,222,5,4,0,0,
+  	222,223,3,58,29,0,223,224,5,4,0,0,224,225,3,78,39,0,225,35,1,0,0,0,226,
+  	227,3,76,38,0,227,228,5,1,0,0,228,229,3,82,41,0,229,230,3,58,29,0,230,
+  	37,1,0,0,0,231,232,3,76,38,0,232,233,5,1,0,0,233,234,3,84,42,0,234,235,
+  	3,58,29,0,235,236,5,4,0,0,236,237,3,58,29,0,237,39,1,0,0,0,238,239,3,
+  	76,38,0,239,240,5,1,0,0,240,241,3,86,43,0,241,242,3,58,29,0,242,41,1,
+  	0,0,0,243,247,3,44,22,0,244,246,5,7,0,0,245,244,1,0,0,0,246,249,1,0,0,
+  	0,247,245,1,0,0,0,247,248,1,0,0,0,248,43,1,0,0,0,249,247,1,0,0,0,250,
+  	256,3,46,23,0,251,256,3,48,24,0,252,256,3,50,25,0,253,256,3,52,26,0,254,
+  	256,3,54,27,0,255,250,1,0,0,0,255,251,1,0,0,0,255,252,1,0,0,0,255,253,
+  	1,0,0,0,255,254,1,0,0,0,256,45,1,0,0,0,257,258,7,0,0,0,258,47,1,0,0,0,
+  	259,260,7,1,0,0,260,49,1,0,0,0,261,262,5,8,0,0,262,263,5,76,0,0,263,264,
+  	5,9,0,0,264,265,3,42,21,0,265,266,5,10,0,0,266,51,1,0,0,0,267,268,5,32,
+  	0,0,268,53,1,0,0,0,269,270,5,34,0,0,270,271,5,80,0,0,271,55,1,0,0,0,272,
+  	277,3,58,29,0,273,274,5,4,0,0,274,276,3,58,29,0,275,273,1,0,0,0,276,279,
+  	1,0,0,0,277,275,1,0,0,0,277,278,1,0,0,0,278,282,1,0,0,0,279,277,1,0,0,
+  	0,280,282,1,0,0,0,281,272,1,0,0,0,281,280,1,0,0,0,282,57,1,0,0,0,283,
+  	289,3,74,37,0,284,289,3,60,30,0,285,289,3,68,34,0,286,289,3,70,35,0,287,
+  	289,3,72,36,0,288,283,1,0,0,0,288,284,1,0,0,0,288,285,1,0,0,0,288,286,
+  	1,0,0,0,288,287,1,0,0,0,289,59,1,0,0,0,290,294,3,62,31,0,291,294,3,64,
+  	32,0,292,294,3,66,33,0,293,290,1,0,0,0,293,291,1,0,0,0,293,292,1,0,0,
+  	0,294,61,1,0,0,0,295,296,3,46,23,0,296,297,5,76,0,0,297,63,1,0,0,0,298,
+  	299,3,48,24,0,299,300,5,77,0,0,300,65,1,0,0,0,301,302,3,50,25,0,302,312,
+  	5,8,0,0,303,308,3,60,30,0,304,305,5,4,0,0,305,307,3,60,30,0,306,304,1,
+  	0,0,0,307,310,1,0,0,0,308,306,1,0,0,0,308,309,1,0,0,0,309,313,1,0,0,0,
+  	310,308,1,0,0,0,311,313,3,60,30,0,312,303,1,0,0,0,312,311,1,0,0,0,313,
+  	314,1,0,0,0,314,315,5,10,0,0,315,67,1,0,0,0,316,317,5,72,0,0,317,318,
+  	5,80,0,0,318,69,1,0,0,0,319,320,5,73,0,0,320,321,5,80,0,0,321,71,1,0,
+  	0,0,322,323,5,74,0,0,323,324,5,80,0,0,324,73,1,0,0,0,325,326,3,42,21,
+  	0,326,327,3,76,38,0,327,75,1,0,0,0,328,329,5,11,0,0,329,330,5,80,0,0,
+  	330,77,1,0,0,0,331,332,5,75,0,0,332,333,5,80,0,0,333,79,1,0,0,0,334,335,
+  	7,2,0,0,335,81,1,0,0,0,336,337,7,3,0,0,337,83,1,0,0,0,338,339,7,4,0,0,
+  	339,85,1,0,0,0,340,341,7,5,0,0,341,87,1,0,0,0,16,91,93,114,118,135,154,
+  	184,195,247,255,277,281,288,293,308,312
   };
   staticData->serializedATN = antlr4::atn::SerializedATNView(serializedATNSegment, sizeof(serializedATNSegment) / sizeof(serializedATNSegment[0]));
 
@@ -289,6 +294,14 @@ void LGIRGrammarParser::ProgramContext::exitRule(tree::ParseTreeListener *listen
     parserListener->exitProgram(this);
 }
 
+
+std::any LGIRGrammarParser::ProgramContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitProgram(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::ProgramContext* LGIRGrammarParser::program() {
   ProgramContext *_localctx = _tracker.createInstance<ProgramContext>(_ctx, getState());
   enterRule(_localctx, 0, LGIRGrammarParser::RuleProgram);
@@ -303,28 +316,28 @@ LGIRGrammarParser::ProgramContext* LGIRGrammarParser::program() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(89);
+    setState(93);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while ((((_la & ~ 0x3fULL) == 0) &&
       ((1ULL << _la) & 60129542144) != 0)) {
-      setState(87);
+      setState(91);
       _errHandler->sync(this);
       switch (_input->LA(1)) {
         case LGIRGrammarParser::GLOBAL: {
-          setState(84);
+          setState(88);
           globalVariable();
           break;
         }
 
         case LGIRGrammarParser::STRUCTURE: {
-          setState(85);
+          setState(89);
           structure();
           break;
         }
 
         case LGIRGrammarParser::FUNCTION: {
-          setState(86);
+          setState(90);
           function();
           break;
         }
@@ -332,11 +345,11 @@ LGIRGrammarParser::ProgramContext* LGIRGrammarParser::program() {
       default:
         throw NoViableAltException(this);
       }
-      setState(91);
+      setState(95);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
-    setState(92);
+    setState(96);
     match(LGIRGrammarParser::EOF);
    
   }
@@ -384,6 +397,14 @@ void LGIRGrammarParser::GlobalVariableContext::exitRule(tree::ParseTreeListener 
     parserListener->exitGlobalVariable(this);
 }
 
+
+std::any LGIRGrammarParser::GlobalVariableContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitGlobalVariable(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::GlobalVariableContext* LGIRGrammarParser::globalVariable() {
   GlobalVariableContext *_localctx = _tracker.createInstance<GlobalVariableContext>(_ctx, getState());
   enterRule(_localctx, 2, LGIRGrammarParser::RuleGlobalVariable);
@@ -397,13 +418,13 @@ LGIRGrammarParser::GlobalVariableContext* LGIRGrammarParser::globalVariable() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(94);
+    setState(98);
     match(LGIRGrammarParser::GLOBAL);
-    setState(95);
+    setState(99);
     match(LGIRGrammarParser::IDENTIFIER);
-    setState(96);
+    setState(100);
     match(LGIRGrammarParser::T__0);
-    setState(97);
+    setState(101);
     constant();
    
   }
@@ -451,6 +472,14 @@ void LGIRGrammarParser::StructureContext::exitRule(tree::ParseTreeListener *list
     parserListener->exitStructure(this);
 }
 
+
+std::any LGIRGrammarParser::StructureContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitStructure(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::StructureContext* LGIRGrammarParser::structure() {
   StructureContext *_localctx = _tracker.createInstance<StructureContext>(_ctx, getState());
   enterRule(_localctx, 4, LGIRGrammarParser::RuleStructure);
@@ -464,15 +493,15 @@ LGIRGrammarParser::StructureContext* LGIRGrammarParser::structure() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(99);
-    match(LGIRGrammarParser::STRUCTURE);
-    setState(100);
-    match(LGIRGrammarParser::IDENTIFIER);
-    setState(101);
-    match(LGIRGrammarParser::T__1);
-    setState(102);
-    fields();
     setState(103);
+    match(LGIRGrammarParser::STRUCTURE);
+    setState(104);
+    match(LGIRGrammarParser::IDENTIFIER);
+    setState(105);
+    match(LGIRGrammarParser::T__1);
+    setState(106);
+    fields();
+    setState(107);
     match(LGIRGrammarParser::T__2);
    
   }
@@ -516,6 +545,14 @@ void LGIRGrammarParser::FieldsContext::exitRule(tree::ParseTreeListener *listene
     parserListener->exitFields(this);
 }
 
+
+std::any LGIRGrammarParser::FieldsContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitFields(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::FieldsContext* LGIRGrammarParser::fields() {
   FieldsContext *_localctx = _tracker.createInstance<FieldsContext>(_ctx, getState());
   enterRule(_localctx, 6, LGIRGrammarParser::RuleFields);
@@ -529,7 +566,7 @@ LGIRGrammarParser::FieldsContext* LGIRGrammarParser::fields() {
     exitRule();
   });
   try {
-    setState(114);
+    setState(118);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
       case LGIRGrammarParser::T__7:
@@ -548,17 +585,17 @@ LGIRGrammarParser::FieldsContext* LGIRGrammarParser::fields() {
       case LGIRGrammarParser::VOID:
       case LGIRGrammarParser::STRUCTURE: {
         enterOuterAlt(_localctx, 1);
-        setState(105);
+        setState(109);
         field();
-        setState(110);
+        setState(114);
         _errHandler->sync(this);
         _la = _input->LA(1);
         while (_la == LGIRGrammarParser::T__3) {
-          setState(106);
+          setState(110);
           match(LGIRGrammarParser::T__3);
-          setState(107);
+          setState(111);
           field();
-          setState(112);
+          setState(116);
           _errHandler->sync(this);
           _la = _input->LA(1);
         }
@@ -617,6 +654,14 @@ void LGIRGrammarParser::FieldContext::exitRule(tree::ParseTreeListener *listener
     parserListener->exitField(this);
 }
 
+
+std::any LGIRGrammarParser::FieldContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitField(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::FieldContext* LGIRGrammarParser::field() {
   FieldContext *_localctx = _tracker.createInstance<FieldContext>(_ctx, getState());
   enterRule(_localctx, 8, LGIRGrammarParser::RuleField);
@@ -630,9 +675,9 @@ LGIRGrammarParser::FieldContext* LGIRGrammarParser::field() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(116);
+    setState(120);
     type();
-    setState(117);
+    setState(121);
     match(LGIRGrammarParser::IDENTIFIER);
    
   }
@@ -692,6 +737,14 @@ void LGIRGrammarParser::FunctionContext::exitRule(tree::ParseTreeListener *liste
     parserListener->exitFunction(this);
 }
 
+
+std::any LGIRGrammarParser::FunctionContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitFunction(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::FunctionContext* LGIRGrammarParser::function() {
   FunctionContext *_localctx = _tracker.createInstance<FunctionContext>(_ctx, getState());
   enterRule(_localctx, 10, LGIRGrammarParser::RuleFunction);
@@ -706,36 +759,36 @@ LGIRGrammarParser::FunctionContext* LGIRGrammarParser::function() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(119);
-    match(LGIRGrammarParser::FUNCTION);
-    setState(120);
-    match(LGIRGrammarParser::IDENTIFIER);
-    setState(121);
-    match(LGIRGrammarParser::T__4);
-    setState(122);
-    fields();
     setState(123);
-    match(LGIRGrammarParser::T__5);
+    match(LGIRGrammarParser::FUNCTION);
     setState(124);
-    match(LGIRGrammarParser::T__1);
+    match(LGIRGrammarParser::IDENTIFIER);
     setState(125);
-    fields();
+    match(LGIRGrammarParser::T__4);
     setState(126);
-    match(LGIRGrammarParser::T__2);
+    fields();
     setState(127);
+    match(LGIRGrammarParser::T__5);
+    setState(128);
     match(LGIRGrammarParser::T__1);
+    setState(129);
+    fields();
+    setState(130);
+    match(LGIRGrammarParser::T__2);
     setState(131);
+    match(LGIRGrammarParser::T__1);
+    setState(135);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while ((((_la & ~ 0x3fULL) == 0) &&
       ((1ULL << _la) & 87479893886976) != 0)) {
-      setState(128);
+      setState(132);
       statement();
-      setState(133);
+      setState(137);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
-    setState(134);
+    setState(138);
     match(LGIRGrammarParser::T__2);
    
   }
@@ -827,6 +880,14 @@ void LGIRGrammarParser::StatementContext::exitRule(tree::ParseTreeListener *list
     parserListener->exitStatement(this);
 }
 
+
+std::any LGIRGrammarParser::StatementContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitStatement(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::StatementContext* LGIRGrammarParser::statement() {
   StatementContext *_localctx = _tracker.createInstance<StatementContext>(_ctx, getState());
   enterRule(_localctx, 12, LGIRGrammarParser::RuleStatement);
@@ -839,103 +900,103 @@ LGIRGrammarParser::StatementContext* LGIRGrammarParser::statement() {
     exitRule();
   });
   try {
-    setState(150);
+    setState(154);
     _errHandler->sync(this);
     switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 5, _ctx)) {
     case 1: {
       enterOuterAlt(_localctx, 1);
-      setState(136);
+      setState(140);
       match(LGIRGrammarParser::NOP);
       break;
     }
 
     case 2: {
       enterOuterAlt(_localctx, 2);
-      setState(137);
+      setState(141);
       stack_alloc();
       break;
     }
 
     case 3: {
       enterOuterAlt(_localctx, 3);
-      setState(138);
+      setState(142);
       load();
       break;
     }
 
     case 4: {
       enterOuterAlt(_localctx, 4);
-      setState(139);
+      setState(143);
       store();
       break;
     }
 
     case 5: {
       enterOuterAlt(_localctx, 5);
-      setState(140);
+      setState(144);
       asm_();
       break;
     }
 
     case 6: {
       enterOuterAlt(_localctx, 6);
-      setState(141);
+      setState(145);
       goto_();
       break;
     }
 
     case 7: {
       enterOuterAlt(_localctx, 7);
-      setState(142);
+      setState(146);
       invoke();
       break;
     }
 
     case 8: {
       enterOuterAlt(_localctx, 8);
-      setState(143);
+      setState(147);
       return_();
       break;
     }
 
     case 9: {
       enterOuterAlt(_localctx, 9);
-      setState(144);
+      setState(148);
       setRegister();
       break;
     }
 
     case 10: {
       enterOuterAlt(_localctx, 10);
-      setState(145);
+      setState(149);
       getElementPointer();
       break;
     }
 
     case 11: {
       enterOuterAlt(_localctx, 11);
-      setState(146);
+      setState(150);
       cmp();
       break;
     }
 
     case 12: {
       enterOuterAlt(_localctx, 12);
-      setState(147);
+      setState(151);
       conditionalJump();
       break;
     }
 
     case 13: {
       enterOuterAlt(_localctx, 13);
-      setState(148);
+      setState(152);
       unaryOperates();
       break;
     }
 
     case 14: {
       enterOuterAlt(_localctx, 14);
-      setState(149);
+      setState(153);
       binaryOperates();
       break;
     }
@@ -989,6 +1050,14 @@ void LGIRGrammarParser::Stack_allocContext::exitRule(tree::ParseTreeListener *li
     parserListener->exitStack_alloc(this);
 }
 
+
+std::any LGIRGrammarParser::Stack_allocContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitStack_alloc(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::Stack_allocContext* LGIRGrammarParser::stack_alloc() {
   Stack_allocContext *_localctx = _tracker.createInstance<Stack_allocContext>(_ctx, getState());
   enterRule(_localctx, 14, LGIRGrammarParser::RuleStack_alloc);
@@ -1002,13 +1071,13 @@ LGIRGrammarParser::Stack_allocContext* LGIRGrammarParser::stack_alloc() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(152);
+    setState(156);
     registerName();
-    setState(153);
+    setState(157);
     match(LGIRGrammarParser::T__0);
-    setState(154);
+    setState(158);
     match(LGIRGrammarParser::STACK_ALLOC);
-    setState(155);
+    setState(159);
     value();
    
   }
@@ -1056,6 +1125,14 @@ void LGIRGrammarParser::LoadContext::exitRule(tree::ParseTreeListener *listener)
     parserListener->exitLoad(this);
 }
 
+
+std::any LGIRGrammarParser::LoadContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitLoad(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::LoadContext* LGIRGrammarParser::load() {
   LoadContext *_localctx = _tracker.createInstance<LoadContext>(_ctx, getState());
   enterRule(_localctx, 16, LGIRGrammarParser::RuleLoad);
@@ -1069,13 +1146,13 @@ LGIRGrammarParser::LoadContext* LGIRGrammarParser::load() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(157);
+    setState(161);
     registerName();
-    setState(158);
+    setState(162);
     match(LGIRGrammarParser::T__0);
-    setState(159);
+    setState(163);
     match(LGIRGrammarParser::LOAD);
-    setState(160);
+    setState(164);
     value();
    
   }
@@ -1123,6 +1200,14 @@ void LGIRGrammarParser::StoreContext::exitRule(tree::ParseTreeListener *listener
     parserListener->exitStore(this);
 }
 
+
+std::any LGIRGrammarParser::StoreContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitStore(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::StoreContext* LGIRGrammarParser::store() {
   StoreContext *_localctx = _tracker.createInstance<StoreContext>(_ctx, getState());
   enterRule(_localctx, 18, LGIRGrammarParser::RuleStore);
@@ -1136,11 +1221,11 @@ LGIRGrammarParser::StoreContext* LGIRGrammarParser::store() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(162);
+    setState(166);
     match(LGIRGrammarParser::STORE);
-    setState(163);
+    setState(167);
     value();
-    setState(164);
+    setState(168);
     value();
    
   }
@@ -1192,6 +1277,14 @@ void LGIRGrammarParser::AsmContext::exitRule(tree::ParseTreeListener *listener) 
     parserListener->exitAsm(this);
 }
 
+
+std::any LGIRGrammarParser::AsmContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitAsm(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::AsmContext* LGIRGrammarParser::asm_() {
   AsmContext *_localctx = _tracker.createInstance<AsmContext>(_ctx, getState());
   enterRule(_localctx, 20, LGIRGrammarParser::RuleAsm);
@@ -1205,19 +1298,19 @@ LGIRGrammarParser::AsmContext* LGIRGrammarParser::asm_() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(166);
-    match(LGIRGrammarParser::ASM);
-    setState(167);
-    match(LGIRGrammarParser::STRING_LITERAL);
-    setState(168);
-    match(LGIRGrammarParser::T__3);
-    setState(169);
-    match(LGIRGrammarParser::STRING_LITERAL);
     setState(170);
-    match(LGIRGrammarParser::T__4);
+    match(LGIRGrammarParser::ASM);
     setState(171);
-    values();
+    match(LGIRGrammarParser::STRING_LITERAL);
     setState(172);
+    match(LGIRGrammarParser::T__3);
+    setState(173);
+    match(LGIRGrammarParser::STRING_LITERAL);
+    setState(174);
+    match(LGIRGrammarParser::T__4);
+    setState(175);
+    values();
+    setState(176);
     match(LGIRGrammarParser::T__5);
    
   }
@@ -1261,6 +1354,14 @@ void LGIRGrammarParser::GotoContext::exitRule(tree::ParseTreeListener *listener)
     parserListener->exitGoto(this);
 }
 
+
+std::any LGIRGrammarParser::GotoContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitGoto(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::GotoContext* LGIRGrammarParser::goto_() {
   GotoContext *_localctx = _tracker.createInstance<GotoContext>(_ctx, getState());
   enterRule(_localctx, 22, LGIRGrammarParser::RuleGoto);
@@ -1274,9 +1375,9 @@ LGIRGrammarParser::GotoContext* LGIRGrammarParser::goto_() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(174);
+    setState(178);
     match(LGIRGrammarParser::GOTO);
-    setState(175);
+    setState(179);
     label();
    
   }
@@ -1332,6 +1433,14 @@ void LGIRGrammarParser::InvokeContext::exitRule(tree::ParseTreeListener *listene
     parserListener->exitInvoke(this);
 }
 
+
+std::any LGIRGrammarParser::InvokeContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitInvoke(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::InvokeContext* LGIRGrammarParser::invoke() {
   InvokeContext *_localctx = _tracker.createInstance<InvokeContext>(_ctx, getState());
   enterRule(_localctx, 24, LGIRGrammarParser::RuleInvoke);
@@ -1346,27 +1455,27 @@ LGIRGrammarParser::InvokeContext* LGIRGrammarParser::invoke() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(180);
+    setState(184);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == LGIRGrammarParser::T__10) {
-      setState(177);
+      setState(181);
       registerName();
-      setState(178);
+      setState(182);
       match(LGIRGrammarParser::T__0);
     }
-    setState(182);
-    match(LGIRGrammarParser::INVOKE);
-    setState(183);
-    type();
-    setState(184);
-    value();
-    setState(185);
-    match(LGIRGrammarParser::T__4);
     setState(186);
-    values();
+    match(LGIRGrammarParser::INVOKE);
     setState(187);
+    type();
+    setState(188);
+    value();
+    setState(189);
+    match(LGIRGrammarParser::T__4);
+    setState(190);
+    values();
+    setState(191);
     match(LGIRGrammarParser::T__5);
    
   }
@@ -1410,6 +1519,14 @@ void LGIRGrammarParser::ReturnContext::exitRule(tree::ParseTreeListener *listene
     parserListener->exitReturn(this);
 }
 
+
+std::any LGIRGrammarParser::ReturnContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitReturn(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::ReturnContext* LGIRGrammarParser::return_() {
   ReturnContext *_localctx = _tracker.createInstance<ReturnContext>(_ctx, getState());
   enterRule(_localctx, 26, LGIRGrammarParser::RuleReturn);
@@ -1424,16 +1541,16 @@ LGIRGrammarParser::ReturnContext* LGIRGrammarParser::return_() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(189);
+    setState(193);
     match(LGIRGrammarParser::RETURN);
-    setState(191);
+    setState(195);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 25768755456) != 0) || ((((_la - 71) & ~ 0x3fULL) == 0) &&
-      ((1ULL << (_la - 71)) & 7) != 0)) {
-      setState(190);
+      ((1ULL << _la) & 25768755456) != 0) || ((((_la - 72) & ~ 0x3fULL) == 0) &&
+      ((1ULL << (_la - 72)) & 7) != 0)) {
+      setState(194);
       value();
     }
    
@@ -1478,6 +1595,14 @@ void LGIRGrammarParser::SetRegisterContext::exitRule(tree::ParseTreeListener *li
     parserListener->exitSetRegister(this);
 }
 
+
+std::any LGIRGrammarParser::SetRegisterContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitSetRegister(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::SetRegisterContext* LGIRGrammarParser::setRegister() {
   SetRegisterContext *_localctx = _tracker.createInstance<SetRegisterContext>(_ctx, getState());
   enterRule(_localctx, 28, LGIRGrammarParser::RuleSetRegister);
@@ -1491,11 +1616,11 @@ LGIRGrammarParser::SetRegisterContext* LGIRGrammarParser::setRegister() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(193);
+    setState(197);
     registerName();
-    setState(194);
+    setState(198);
     match(LGIRGrammarParser::T__0);
-    setState(195);
+    setState(199);
     value();
    
   }
@@ -1547,6 +1672,14 @@ void LGIRGrammarParser::GetElementPointerContext::exitRule(tree::ParseTreeListen
     parserListener->exitGetElementPointer(this);
 }
 
+
+std::any LGIRGrammarParser::GetElementPointerContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitGetElementPointer(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::GetElementPointerContext* LGIRGrammarParser::getElementPointer() {
   GetElementPointerContext *_localctx = _tracker.createInstance<GetElementPointerContext>(_ctx, getState());
   enterRule(_localctx, 30, LGIRGrammarParser::RuleGetElementPointer);
@@ -1560,18 +1693,18 @@ LGIRGrammarParser::GetElementPointerContext* LGIRGrammarParser::getElementPointe
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(197);
+    setState(201);
     registerName();
-    setState(198);
+    setState(202);
     match(LGIRGrammarParser::T__0);
-    setState(199);
+    setState(203);
     match(LGIRGrammarParser::GETELEMENTPTR);
-    setState(200);
+    setState(204);
     value();
 
-    setState(201);
+    setState(205);
     match(LGIRGrammarParser::T__3);
-    setState(202);
+    setState(206);
     value();
    
   }
@@ -1627,6 +1760,14 @@ void LGIRGrammarParser::CmpContext::exitRule(tree::ParseTreeListener *listener) 
     parserListener->exitCmp(this);
 }
 
+
+std::any LGIRGrammarParser::CmpContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitCmp(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::CmpContext* LGIRGrammarParser::cmp() {
   CmpContext *_localctx = _tracker.createInstance<CmpContext>(_ctx, getState());
   enterRule(_localctx, 32, LGIRGrammarParser::RuleCmp);
@@ -1640,21 +1781,21 @@ LGIRGrammarParser::CmpContext* LGIRGrammarParser::cmp() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(204);
-    registerName();
-    setState(205);
-    match(LGIRGrammarParser::T__0);
-    setState(206);
-    match(LGIRGrammarParser::CMP);
-    setState(207);
-    condition();
     setState(208);
-    match(LGIRGrammarParser::T__3);
+    registerName();
     setState(209);
-    value();
+    match(LGIRGrammarParser::T__0);
     setState(210);
-    match(LGIRGrammarParser::T__3);
+    match(LGIRGrammarParser::CMP);
     setState(211);
+    condition();
+    setState(212);
+    match(LGIRGrammarParser::T__3);
+    setState(213);
+    value();
+    setState(214);
+    match(LGIRGrammarParser::T__3);
+    setState(215);
     value();
    
   }
@@ -1710,6 +1851,14 @@ void LGIRGrammarParser::ConditionalJumpContext::exitRule(tree::ParseTreeListener
     parserListener->exitConditionalJump(this);
 }
 
+
+std::any LGIRGrammarParser::ConditionalJumpContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitConditionalJump(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::ConditionalJumpContext* LGIRGrammarParser::conditionalJump() {
   ConditionalJumpContext *_localctx = _tracker.createInstance<ConditionalJumpContext>(_ctx, getState());
   enterRule(_localctx, 34, LGIRGrammarParser::RuleConditionalJump);
@@ -1723,21 +1872,21 @@ LGIRGrammarParser::ConditionalJumpContext* LGIRGrammarParser::conditionalJump() 
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(213);
-    match(LGIRGrammarParser::CONDITIONAL_JUMP);
-    setState(214);
-    condition();
-    setState(215);
-    match(LGIRGrammarParser::T__3);
-    setState(216);
-    value();
     setState(217);
-    match(LGIRGrammarParser::T__3);
+    match(LGIRGrammarParser::CONDITIONAL_JUMP);
     setState(218);
-    value();
+    condition();
     setState(219);
     match(LGIRGrammarParser::T__3);
     setState(220);
+    value();
+    setState(221);
+    match(LGIRGrammarParser::T__3);
+    setState(222);
+    value();
+    setState(223);
+    match(LGIRGrammarParser::T__3);
+    setState(224);
     label();
    
   }
@@ -1785,6 +1934,14 @@ void LGIRGrammarParser::UnaryOperatesContext::exitRule(tree::ParseTreeListener *
     parserListener->exitUnaryOperates(this);
 }
 
+
+std::any LGIRGrammarParser::UnaryOperatesContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitUnaryOperates(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::UnaryOperatesContext* LGIRGrammarParser::unaryOperates() {
   UnaryOperatesContext *_localctx = _tracker.createInstance<UnaryOperatesContext>(_ctx, getState());
   enterRule(_localctx, 36, LGIRGrammarParser::RuleUnaryOperates);
@@ -1798,13 +1955,13 @@ LGIRGrammarParser::UnaryOperatesContext* LGIRGrammarParser::unaryOperates() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(222);
+    setState(226);
     registerName();
-    setState(223);
+    setState(227);
     match(LGIRGrammarParser::T__0);
-    setState(224);
+    setState(228);
     unaryOperator();
-    setState(225);
+    setState(229);
     value();
    
   }
@@ -1856,6 +2013,14 @@ void LGIRGrammarParser::BinaryOperatesContext::exitRule(tree::ParseTreeListener 
     parserListener->exitBinaryOperates(this);
 }
 
+
+std::any LGIRGrammarParser::BinaryOperatesContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitBinaryOperates(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::BinaryOperatesContext* LGIRGrammarParser::binaryOperates() {
   BinaryOperatesContext *_localctx = _tracker.createInstance<BinaryOperatesContext>(_ctx, getState());
   enterRule(_localctx, 38, LGIRGrammarParser::RuleBinaryOperates);
@@ -1869,17 +2034,92 @@ LGIRGrammarParser::BinaryOperatesContext* LGIRGrammarParser::binaryOperates() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(227);
-    registerName();
-    setState(228);
-    match(LGIRGrammarParser::T__0);
-    setState(229);
-    binaryOperator();
-    setState(230);
-    value();
     setState(231);
-    match(LGIRGrammarParser::T__3);
+    registerName();
     setState(232);
+    match(LGIRGrammarParser::T__0);
+    setState(233);
+    binaryOperator();
+    setState(234);
+    value();
+    setState(235);
+    match(LGIRGrammarParser::T__3);
+    setState(236);
+    value();
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- TypeCastContext ------------------------------------------------------------------
+
+LGIRGrammarParser::TypeCastContext::TypeCastContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+LGIRGrammarParser::RegisterNameContext* LGIRGrammarParser::TypeCastContext::registerName() {
+  return getRuleContext<LGIRGrammarParser::RegisterNameContext>(0);
+}
+
+LGIRGrammarParser::TypeCastKindContext* LGIRGrammarParser::TypeCastContext::typeCastKind() {
+  return getRuleContext<LGIRGrammarParser::TypeCastKindContext>(0);
+}
+
+LGIRGrammarParser::ValueContext* LGIRGrammarParser::TypeCastContext::value() {
+  return getRuleContext<LGIRGrammarParser::ValueContext>(0);
+}
+
+
+size_t LGIRGrammarParser::TypeCastContext::getRuleIndex() const {
+  return LGIRGrammarParser::RuleTypeCast;
+}
+
+void LGIRGrammarParser::TypeCastContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<LGIRGrammarListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterTypeCast(this);
+}
+
+void LGIRGrammarParser::TypeCastContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<LGIRGrammarListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitTypeCast(this);
+}
+
+
+std::any LGIRGrammarParser::TypeCastContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitTypeCast(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+LGIRGrammarParser::TypeCastContext* LGIRGrammarParser::typeCast() {
+  TypeCastContext *_localctx = _tracker.createInstance<TypeCastContext>(_ctx, getState());
+  enterRule(_localctx, 40, LGIRGrammarParser::RuleTypeCast);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    enterOuterAlt(_localctx, 1);
+    setState(238);
+    registerName();
+    setState(239);
+    match(LGIRGrammarParser::T__0);
+    setState(240);
+    typeCastKind();
+    setState(241);
     value();
    
   }
@@ -1919,9 +2159,17 @@ void LGIRGrammarParser::TypeContext::exitRule(tree::ParseTreeListener *listener)
     parserListener->exitType(this);
 }
 
+
+std::any LGIRGrammarParser::TypeContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitType(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::TypeContext* LGIRGrammarParser::type() {
   TypeContext *_localctx = _tracker.createInstance<TypeContext>(_ctx, getState());
-  enterRule(_localctx, 40, LGIRGrammarParser::RuleType);
+  enterRule(_localctx, 42, LGIRGrammarParser::RuleType);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -1933,15 +2181,15 @@ LGIRGrammarParser::TypeContext* LGIRGrammarParser::type() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(234);
+    setState(243);
     baseType();
-    setState(238);
+    setState(247);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while (_la == LGIRGrammarParser::T__6) {
-      setState(235);
+      setState(244);
       match(LGIRGrammarParser::T__6);
-      setState(240);
+      setState(249);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
@@ -1999,9 +2247,17 @@ void LGIRGrammarParser::BaseTypeContext::exitRule(tree::ParseTreeListener *liste
     parserListener->exitBaseType(this);
 }
 
+
+std::any LGIRGrammarParser::BaseTypeContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitBaseType(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::BaseTypeContext* LGIRGrammarParser::baseType() {
   BaseTypeContext *_localctx = _tracker.createInstance<BaseTypeContext>(_ctx, getState());
-  enterRule(_localctx, 42, LGIRGrammarParser::RuleBaseType);
+  enterRule(_localctx, 44, LGIRGrammarParser::RuleBaseType);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -2011,7 +2267,7 @@ LGIRGrammarParser::BaseTypeContext* LGIRGrammarParser::baseType() {
     exitRule();
   });
   try {
-    setState(246);
+    setState(255);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
       case LGIRGrammarParser::I1:
@@ -2025,7 +2281,7 @@ LGIRGrammarParser::BaseTypeContext* LGIRGrammarParser::baseType() {
       case LGIRGrammarParser::I64:
       case LGIRGrammarParser::U64: {
         enterOuterAlt(_localctx, 1);
-        setState(241);
+        setState(250);
         integerType();
         break;
       }
@@ -2033,28 +2289,28 @@ LGIRGrammarParser::BaseTypeContext* LGIRGrammarParser::baseType() {
       case LGIRGrammarParser::FLOAT:
       case LGIRGrammarParser::DOUBLE: {
         enterOuterAlt(_localctx, 2);
-        setState(242);
+        setState(251);
         decimalType();
         break;
       }
 
       case LGIRGrammarParser::T__7: {
         enterOuterAlt(_localctx, 3);
-        setState(243);
+        setState(252);
         arrayType();
         break;
       }
 
       case LGIRGrammarParser::VOID: {
         enterOuterAlt(_localctx, 4);
-        setState(244);
+        setState(253);
         voidType();
         break;
       }
 
       case LGIRGrammarParser::STRUCTURE: {
         enterOuterAlt(_localctx, 5);
-        setState(245);
+        setState(254);
         structureType();
         break;
       }
@@ -2136,9 +2392,17 @@ void LGIRGrammarParser::IntegerTypeContext::exitRule(tree::ParseTreeListener *li
     parserListener->exitIntegerType(this);
 }
 
+
+std::any LGIRGrammarParser::IntegerTypeContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitIntegerType(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::IntegerTypeContext* LGIRGrammarParser::integerType() {
   IntegerTypeContext *_localctx = _tracker.createInstance<IntegerTypeContext>(_ctx, getState());
-  enterRule(_localctx, 44, LGIRGrammarParser::RuleIntegerType);
+  enterRule(_localctx, 46, LGIRGrammarParser::RuleIntegerType);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -2150,7 +2414,7 @@ LGIRGrammarParser::IntegerTypeContext* LGIRGrammarParser::integerType() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(248);
+    setState(257);
     _la = _input->LA(1);
     if (!((((_la & ~ 0x3fULL) == 0) &&
       ((1ULL << _la) & 1072693248) != 0))) {
@@ -2202,9 +2466,17 @@ void LGIRGrammarParser::DecimalTypeContext::exitRule(tree::ParseTreeListener *li
     parserListener->exitDecimalType(this);
 }
 
+
+std::any LGIRGrammarParser::DecimalTypeContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitDecimalType(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::DecimalTypeContext* LGIRGrammarParser::decimalType() {
   DecimalTypeContext *_localctx = _tracker.createInstance<DecimalTypeContext>(_ctx, getState());
-  enterRule(_localctx, 46, LGIRGrammarParser::RuleDecimalType);
+  enterRule(_localctx, 48, LGIRGrammarParser::RuleDecimalType);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -2216,7 +2488,7 @@ LGIRGrammarParser::DecimalTypeContext* LGIRGrammarParser::decimalType() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(250);
+    setState(259);
     _la = _input->LA(1);
     if (!(_la == LGIRGrammarParser::FLOAT
 
@@ -2269,9 +2541,17 @@ void LGIRGrammarParser::ArrayTypeContext::exitRule(tree::ParseTreeListener *list
     parserListener->exitArrayType(this);
 }
 
+
+std::any LGIRGrammarParser::ArrayTypeContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitArrayType(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::ArrayTypeContext* LGIRGrammarParser::arrayType() {
   ArrayTypeContext *_localctx = _tracker.createInstance<ArrayTypeContext>(_ctx, getState());
-  enterRule(_localctx, 48, LGIRGrammarParser::RuleArrayType);
+  enterRule(_localctx, 50, LGIRGrammarParser::RuleArrayType);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -2282,15 +2562,15 @@ LGIRGrammarParser::ArrayTypeContext* LGIRGrammarParser::arrayType() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(252);
+    setState(261);
     match(LGIRGrammarParser::T__7);
-    setState(253);
+    setState(262);
     match(LGIRGrammarParser::INT_NUMBER);
-    setState(254);
+    setState(263);
     match(LGIRGrammarParser::T__8);
-    setState(255);
+    setState(264);
     type();
-    setState(256);
+    setState(265);
     match(LGIRGrammarParser::T__9);
    
   }
@@ -2330,9 +2610,17 @@ void LGIRGrammarParser::VoidTypeContext::exitRule(tree::ParseTreeListener *liste
     parserListener->exitVoidType(this);
 }
 
+
+std::any LGIRGrammarParser::VoidTypeContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitVoidType(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::VoidTypeContext* LGIRGrammarParser::voidType() {
   VoidTypeContext *_localctx = _tracker.createInstance<VoidTypeContext>(_ctx, getState());
-  enterRule(_localctx, 50, LGIRGrammarParser::RuleVoidType);
+  enterRule(_localctx, 52, LGIRGrammarParser::RuleVoidType);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -2343,7 +2631,7 @@ LGIRGrammarParser::VoidTypeContext* LGIRGrammarParser::voidType() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(258);
+    setState(267);
     match(LGIRGrammarParser::VOID);
    
   }
@@ -2387,9 +2675,17 @@ void LGIRGrammarParser::StructureTypeContext::exitRule(tree::ParseTreeListener *
     parserListener->exitStructureType(this);
 }
 
+
+std::any LGIRGrammarParser::StructureTypeContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitStructureType(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::StructureTypeContext* LGIRGrammarParser::structureType() {
   StructureTypeContext *_localctx = _tracker.createInstance<StructureTypeContext>(_ctx, getState());
-  enterRule(_localctx, 52, LGIRGrammarParser::RuleStructureType);
+  enterRule(_localctx, 54, LGIRGrammarParser::RuleStructureType);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -2400,9 +2696,9 @@ LGIRGrammarParser::StructureTypeContext* LGIRGrammarParser::structureType() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(260);
+    setState(269);
     match(LGIRGrammarParser::STRUCTURE);
-    setState(261);
+    setState(270);
     match(LGIRGrammarParser::IDENTIFIER);
    
   }
@@ -2446,9 +2742,17 @@ void LGIRGrammarParser::ValuesContext::exitRule(tree::ParseTreeListener *listene
     parserListener->exitValues(this);
 }
 
+
+std::any LGIRGrammarParser::ValuesContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitValues(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::ValuesContext* LGIRGrammarParser::values() {
   ValuesContext *_localctx = _tracker.createInstance<ValuesContext>(_ctx, getState());
-  enterRule(_localctx, 54, LGIRGrammarParser::RuleValues);
+  enterRule(_localctx, 56, LGIRGrammarParser::RuleValues);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -2459,7 +2763,7 @@ LGIRGrammarParser::ValuesContext* LGIRGrammarParser::values() {
     exitRule();
   });
   try {
-    setState(272);
+    setState(281);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
       case LGIRGrammarParser::T__7:
@@ -2481,17 +2785,17 @@ LGIRGrammarParser::ValuesContext* LGIRGrammarParser::values() {
       case LGIRGrammarParser::GLOBALREF:
       case LGIRGrammarParser::LOCALREF: {
         enterOuterAlt(_localctx, 1);
-        setState(263);
+        setState(272);
         value();
-        setState(268);
+        setState(277);
         _errHandler->sync(this);
         _la = _input->LA(1);
         while (_la == LGIRGrammarParser::T__3) {
-          setState(264);
+          setState(273);
           match(LGIRGrammarParser::T__3);
-          setState(265);
+          setState(274);
           value();
-          setState(270);
+          setState(279);
           _errHandler->sync(this);
           _la = _input->LA(1);
         }
@@ -2561,9 +2865,17 @@ void LGIRGrammarParser::ValueContext::exitRule(tree::ParseTreeListener *listener
     parserListener->exitValue(this);
 }
 
+
+std::any LGIRGrammarParser::ValueContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitValue(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::ValueContext* LGIRGrammarParser::value() {
   ValueContext *_localctx = _tracker.createInstance<ValueContext>(_ctx, getState());
-  enterRule(_localctx, 56, LGIRGrammarParser::RuleValue);
+  enterRule(_localctx, 58, LGIRGrammarParser::RuleValue);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -2573,40 +2885,40 @@ LGIRGrammarParser::ValueContext* LGIRGrammarParser::value() {
     exitRule();
   });
   try {
-    setState(279);
+    setState(288);
     _errHandler->sync(this);
     switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 12, _ctx)) {
     case 1: {
       enterOuterAlt(_localctx, 1);
-      setState(274);
+      setState(283);
       register_();
       break;
     }
 
     case 2: {
       enterOuterAlt(_localctx, 2);
-      setState(275);
+      setState(284);
       constant();
       break;
     }
 
     case 3: {
       enterOuterAlt(_localctx, 3);
-      setState(276);
+      setState(285);
       functionReference();
       break;
     }
 
     case 4: {
       enterOuterAlt(_localctx, 4);
-      setState(277);
+      setState(286);
       globalReference();
       break;
     }
 
     case 5: {
       enterOuterAlt(_localctx, 5);
-      setState(278);
+      setState(287);
       localReference();
       break;
     }
@@ -2660,9 +2972,17 @@ void LGIRGrammarParser::ConstantContext::exitRule(tree::ParseTreeListener *liste
     parserListener->exitConstant(this);
 }
 
+
+std::any LGIRGrammarParser::ConstantContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitConstant(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::ConstantContext* LGIRGrammarParser::constant() {
   ConstantContext *_localctx = _tracker.createInstance<ConstantContext>(_ctx, getState());
-  enterRule(_localctx, 58, LGIRGrammarParser::RuleConstant);
+  enterRule(_localctx, 60, LGIRGrammarParser::RuleConstant);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -2672,7 +2992,7 @@ LGIRGrammarParser::ConstantContext* LGIRGrammarParser::constant() {
     exitRule();
   });
   try {
-    setState(284);
+    setState(293);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
       case LGIRGrammarParser::I1:
@@ -2686,7 +3006,7 @@ LGIRGrammarParser::ConstantContext* LGIRGrammarParser::constant() {
       case LGIRGrammarParser::I64:
       case LGIRGrammarParser::U64: {
         enterOuterAlt(_localctx, 1);
-        setState(281);
+        setState(290);
         integerConstant();
         break;
       }
@@ -2694,14 +3014,14 @@ LGIRGrammarParser::ConstantContext* LGIRGrammarParser::constant() {
       case LGIRGrammarParser::FLOAT:
       case LGIRGrammarParser::DOUBLE: {
         enterOuterAlt(_localctx, 2);
-        setState(282);
+        setState(291);
         decimalConstant();
         break;
       }
 
       case LGIRGrammarParser::T__7: {
         enterOuterAlt(_localctx, 3);
-        setState(283);
+        setState(292);
         arrayConstant();
         break;
       }
@@ -2751,9 +3071,17 @@ void LGIRGrammarParser::IntegerConstantContext::exitRule(tree::ParseTreeListener
     parserListener->exitIntegerConstant(this);
 }
 
+
+std::any LGIRGrammarParser::IntegerConstantContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitIntegerConstant(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::IntegerConstantContext* LGIRGrammarParser::integerConstant() {
   IntegerConstantContext *_localctx = _tracker.createInstance<IntegerConstantContext>(_ctx, getState());
-  enterRule(_localctx, 60, LGIRGrammarParser::RuleIntegerConstant);
+  enterRule(_localctx, 62, LGIRGrammarParser::RuleIntegerConstant);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -2764,9 +3092,9 @@ LGIRGrammarParser::IntegerConstantContext* LGIRGrammarParser::integerConstant() 
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(286);
+    setState(295);
     integerType();
-    setState(287);
+    setState(296);
     match(LGIRGrammarParser::INT_NUMBER);
    
   }
@@ -2810,9 +3138,17 @@ void LGIRGrammarParser::DecimalConstantContext::exitRule(tree::ParseTreeListener
     parserListener->exitDecimalConstant(this);
 }
 
+
+std::any LGIRGrammarParser::DecimalConstantContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitDecimalConstant(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::DecimalConstantContext* LGIRGrammarParser::decimalConstant() {
   DecimalConstantContext *_localctx = _tracker.createInstance<DecimalConstantContext>(_ctx, getState());
-  enterRule(_localctx, 62, LGIRGrammarParser::RuleDecimalConstant);
+  enterRule(_localctx, 64, LGIRGrammarParser::RuleDecimalConstant);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -2823,9 +3159,9 @@ LGIRGrammarParser::DecimalConstantContext* LGIRGrammarParser::decimalConstant() 
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(289);
+    setState(298);
     decimalType();
-    setState(290);
+    setState(299);
     match(LGIRGrammarParser::DECIMAL_NUMBER);
    
   }
@@ -2873,9 +3209,17 @@ void LGIRGrammarParser::ArrayConstantContext::exitRule(tree::ParseTreeListener *
     parserListener->exitArrayConstant(this);
 }
 
+
+std::any LGIRGrammarParser::ArrayConstantContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitArrayConstant(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::ArrayConstantContext* LGIRGrammarParser::arrayConstant() {
   ArrayConstantContext *_localctx = _tracker.createInstance<ArrayConstantContext>(_ctx, getState());
-  enterRule(_localctx, 64, LGIRGrammarParser::RuleArrayConstant);
+  enterRule(_localctx, 66, LGIRGrammarParser::RuleArrayConstant);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -2887,25 +3231,25 @@ LGIRGrammarParser::ArrayConstantContext* LGIRGrammarParser::arrayConstant() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(292);
+    setState(301);
     arrayType();
-    setState(293);
+    setState(302);
     match(LGIRGrammarParser::T__7);
-    setState(303);
+    setState(312);
     _errHandler->sync(this);
     switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 15, _ctx)) {
     case 1: {
-      setState(294);
+      setState(303);
       constant();
-      setState(299);
+      setState(308);
       _errHandler->sync(this);
       _la = _input->LA(1);
       while (_la == LGIRGrammarParser::T__3) {
-        setState(295);
+        setState(304);
         match(LGIRGrammarParser::T__3);
-        setState(296);
+        setState(305);
         constant();
-        setState(301);
+        setState(310);
         _errHandler->sync(this);
         _la = _input->LA(1);
       }
@@ -2913,7 +3257,7 @@ LGIRGrammarParser::ArrayConstantContext* LGIRGrammarParser::arrayConstant() {
     }
 
     case 2: {
-      setState(302);
+      setState(311);
       constant();
       break;
     }
@@ -2921,7 +3265,7 @@ LGIRGrammarParser::ArrayConstantContext* LGIRGrammarParser::arrayConstant() {
     default:
       break;
     }
-    setState(305);
+    setState(314);
     match(LGIRGrammarParser::T__9);
    
   }
@@ -2965,9 +3309,17 @@ void LGIRGrammarParser::FunctionReferenceContext::exitRule(tree::ParseTreeListen
     parserListener->exitFunctionReference(this);
 }
 
+
+std::any LGIRGrammarParser::FunctionReferenceContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitFunctionReference(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::FunctionReferenceContext* LGIRGrammarParser::functionReference() {
   FunctionReferenceContext *_localctx = _tracker.createInstance<FunctionReferenceContext>(_ctx, getState());
-  enterRule(_localctx, 66, LGIRGrammarParser::RuleFunctionReference);
+  enterRule(_localctx, 68, LGIRGrammarParser::RuleFunctionReference);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -2978,9 +3330,9 @@ LGIRGrammarParser::FunctionReferenceContext* LGIRGrammarParser::functionReferenc
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(307);
+    setState(316);
     match(LGIRGrammarParser::FUNCREF);
-    setState(308);
+    setState(317);
     match(LGIRGrammarParser::IDENTIFIER);
    
   }
@@ -3024,9 +3376,17 @@ void LGIRGrammarParser::GlobalReferenceContext::exitRule(tree::ParseTreeListener
     parserListener->exitGlobalReference(this);
 }
 
+
+std::any LGIRGrammarParser::GlobalReferenceContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitGlobalReference(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::GlobalReferenceContext* LGIRGrammarParser::globalReference() {
   GlobalReferenceContext *_localctx = _tracker.createInstance<GlobalReferenceContext>(_ctx, getState());
-  enterRule(_localctx, 68, LGIRGrammarParser::RuleGlobalReference);
+  enterRule(_localctx, 70, LGIRGrammarParser::RuleGlobalReference);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -3037,9 +3397,9 @@ LGIRGrammarParser::GlobalReferenceContext* LGIRGrammarParser::globalReference() 
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(310);
+    setState(319);
     match(LGIRGrammarParser::GLOBALREF);
-    setState(311);
+    setState(320);
     match(LGIRGrammarParser::IDENTIFIER);
    
   }
@@ -3083,9 +3443,17 @@ void LGIRGrammarParser::LocalReferenceContext::exitRule(tree::ParseTreeListener 
     parserListener->exitLocalReference(this);
 }
 
+
+std::any LGIRGrammarParser::LocalReferenceContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitLocalReference(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::LocalReferenceContext* LGIRGrammarParser::localReference() {
   LocalReferenceContext *_localctx = _tracker.createInstance<LocalReferenceContext>(_ctx, getState());
-  enterRule(_localctx, 70, LGIRGrammarParser::RuleLocalReference);
+  enterRule(_localctx, 72, LGIRGrammarParser::RuleLocalReference);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -3096,9 +3464,9 @@ LGIRGrammarParser::LocalReferenceContext* LGIRGrammarParser::localReference() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(313);
+    setState(322);
     match(LGIRGrammarParser::LOCALREF);
-    setState(314);
+    setState(323);
     match(LGIRGrammarParser::IDENTIFIER);
    
   }
@@ -3142,9 +3510,17 @@ void LGIRGrammarParser::RegisterContext::exitRule(tree::ParseTreeListener *liste
     parserListener->exitRegister(this);
 }
 
+
+std::any LGIRGrammarParser::RegisterContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitRegister(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::RegisterContext* LGIRGrammarParser::register_() {
   RegisterContext *_localctx = _tracker.createInstance<RegisterContext>(_ctx, getState());
-  enterRule(_localctx, 72, LGIRGrammarParser::RuleRegister);
+  enterRule(_localctx, 74, LGIRGrammarParser::RuleRegister);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -3155,9 +3531,9 @@ LGIRGrammarParser::RegisterContext* LGIRGrammarParser::register_() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(316);
+    setState(325);
     type();
-    setState(317);
+    setState(326);
     registerName();
    
   }
@@ -3197,9 +3573,17 @@ void LGIRGrammarParser::RegisterNameContext::exitRule(tree::ParseTreeListener *l
     parserListener->exitRegisterName(this);
 }
 
+
+std::any LGIRGrammarParser::RegisterNameContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitRegisterName(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::RegisterNameContext* LGIRGrammarParser::registerName() {
   RegisterNameContext *_localctx = _tracker.createInstance<RegisterNameContext>(_ctx, getState());
-  enterRule(_localctx, 74, LGIRGrammarParser::RuleRegisterName);
+  enterRule(_localctx, 76, LGIRGrammarParser::RuleRegisterName);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -3210,9 +3594,9 @@ LGIRGrammarParser::RegisterNameContext* LGIRGrammarParser::registerName() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(319);
+    setState(328);
     match(LGIRGrammarParser::T__10);
-    setState(320);
+    setState(329);
     match(LGIRGrammarParser::IDENTIFIER);
    
   }
@@ -3256,9 +3640,17 @@ void LGIRGrammarParser::LabelContext::exitRule(tree::ParseTreeListener *listener
     parserListener->exitLabel(this);
 }
 
+
+std::any LGIRGrammarParser::LabelContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitLabel(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::LabelContext* LGIRGrammarParser::label() {
   LabelContext *_localctx = _tracker.createInstance<LabelContext>(_ctx, getState());
-  enterRule(_localctx, 76, LGIRGrammarParser::RuleLabel);
+  enterRule(_localctx, 78, LGIRGrammarParser::RuleLabel);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -3269,9 +3661,9 @@ LGIRGrammarParser::LabelContext* LGIRGrammarParser::label() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(322);
+    setState(331);
     match(LGIRGrammarParser::LABEL);
-    setState(323);
+    setState(332);
     match(LGIRGrammarParser::IDENTIFIER);
    
   }
@@ -3307,9 +3699,17 @@ void LGIRGrammarParser::ConditionContext::exitRule(tree::ParseTreeListener *list
     parserListener->exitCondition(this);
 }
 
+
+std::any LGIRGrammarParser::ConditionContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitCondition(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::ConditionContext* LGIRGrammarParser::condition() {
   ConditionContext *_localctx = _tracker.createInstance<ConditionContext>(_ctx, getState());
-  enterRule(_localctx, 78, LGIRGrammarParser::RuleCondition);
+  enterRule(_localctx, 80, LGIRGrammarParser::RuleCondition);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -3321,7 +3721,7 @@ LGIRGrammarParser::ConditionContext* LGIRGrammarParser::condition() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(325);
+    setState(334);
     _la = _input->LA(1);
     if (!((((_la & ~ 0x3fULL) == 0) &&
       ((1ULL << _la) & 1044480) != 0))) {
@@ -3381,9 +3781,17 @@ void LGIRGrammarParser::UnaryOperatorContext::exitRule(tree::ParseTreeListener *
     parserListener->exitUnaryOperator(this);
 }
 
+
+std::any LGIRGrammarParser::UnaryOperatorContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitUnaryOperator(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::UnaryOperatorContext* LGIRGrammarParser::unaryOperator() {
   UnaryOperatorContext *_localctx = _tracker.createInstance<UnaryOperatorContext>(_ctx, getState());
-  enterRule(_localctx, 80, LGIRGrammarParser::RuleUnaryOperator);
+  enterRule(_localctx, 82, LGIRGrammarParser::RuleUnaryOperator);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -3395,7 +3803,7 @@ LGIRGrammarParser::UnaryOperatorContext* LGIRGrammarParser::unaryOperator() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(327);
+    setState(336);
     _la = _input->LA(1);
     if (!((((_la & ~ 0x3fULL) == 0) &&
       ((1ULL << _la) & 2111062325329920) != 0))) {
@@ -3483,9 +3891,17 @@ void LGIRGrammarParser::BinaryOperatorContext::exitRule(tree::ParseTreeListener 
     parserListener->exitBinaryOperator(this);
 }
 
+
+std::any LGIRGrammarParser::BinaryOperatorContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitBinaryOperator(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 LGIRGrammarParser::BinaryOperatorContext* LGIRGrammarParser::binaryOperator() {
   BinaryOperatorContext *_localctx = _tracker.createInstance<BinaryOperatorContext>(_ctx, getState());
-  enterRule(_localctx, 82, LGIRGrammarParser::RuleBinaryOperator);
+  enterRule(_localctx, 84, LGIRGrammarParser::RuleBinaryOperator);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -3497,10 +3913,116 @@ LGIRGrammarParser::BinaryOperatorContext* LGIRGrammarParser::binaryOperator() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(329);
+    setState(338);
     _la = _input->LA(1);
     if (!((((_la & ~ 0x3fULL) == 0) &&
       ((1ULL << _la) & 4609434218613702656) != 0))) {
+    _errHandler->recoverInline(this);
+    }
+    else {
+      _errHandler->reportMatch(this);
+      consume();
+    }
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- TypeCastKindContext ------------------------------------------------------------------
+
+LGIRGrammarParser::TypeCastKindContext::TypeCastKindContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+tree::TerminalNode* LGIRGrammarParser::TypeCastKindContext::ZEXT() {
+  return getToken(LGIRGrammarParser::ZEXT, 0);
+}
+
+tree::TerminalNode* LGIRGrammarParser::TypeCastKindContext::SEXT() {
+  return getToken(LGIRGrammarParser::SEXT, 0);
+}
+
+tree::TerminalNode* LGIRGrammarParser::TypeCastKindContext::TRUNC() {
+  return getToken(LGIRGrammarParser::TRUNC, 0);
+}
+
+tree::TerminalNode* LGIRGrammarParser::TypeCastKindContext::ITOF() {
+  return getToken(LGIRGrammarParser::ITOF, 0);
+}
+
+tree::TerminalNode* LGIRGrammarParser::TypeCastKindContext::FTOI() {
+  return getToken(LGIRGrammarParser::FTOI, 0);
+}
+
+tree::TerminalNode* LGIRGrammarParser::TypeCastKindContext::ITOP() {
+  return getToken(LGIRGrammarParser::ITOP, 0);
+}
+
+tree::TerminalNode* LGIRGrammarParser::TypeCastKindContext::PTOI() {
+  return getToken(LGIRGrammarParser::PTOI, 0);
+}
+
+tree::TerminalNode* LGIRGrammarParser::TypeCastKindContext::PTOP() {
+  return getToken(LGIRGrammarParser::PTOP, 0);
+}
+
+tree::TerminalNode* LGIRGrammarParser::TypeCastKindContext::FEXT() {
+  return getToken(LGIRGrammarParser::FEXT, 0);
+}
+
+tree::TerminalNode* LGIRGrammarParser::TypeCastKindContext::FTRUNC() {
+  return getToken(LGIRGrammarParser::FTRUNC, 0);
+}
+
+
+size_t LGIRGrammarParser::TypeCastKindContext::getRuleIndex() const {
+  return LGIRGrammarParser::RuleTypeCastKind;
+}
+
+void LGIRGrammarParser::TypeCastKindContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<LGIRGrammarListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterTypeCastKind(this);
+}
+
+void LGIRGrammarParser::TypeCastKindContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<LGIRGrammarListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitTypeCastKind(this);
+}
+
+
+std::any LGIRGrammarParser::TypeCastKindContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<LGIRGrammarVisitor*>(visitor))
+    return parserVisitor->visitTypeCastKind(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+LGIRGrammarParser::TypeCastKindContext* LGIRGrammarParser::typeCastKind() {
+  TypeCastKindContext *_localctx = _tracker.createInstance<TypeCastKindContext>(_ctx, getState());
+  enterRule(_localctx, 86, LGIRGrammarParser::RuleTypeCastKind);
+  size_t _la = 0;
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    enterOuterAlt(_localctx, 1);
+    setState(340);
+    _la = _input->LA(1);
+    if (!(((((_la - 62) & ~ 0x3fULL) == 0) &&
+      ((1ULL << (_la - 62)) & 1023) != 0))) {
     _errHandler->recoverInline(this);
     }
     else {

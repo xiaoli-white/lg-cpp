@@ -16,9 +16,7 @@
 namespace lg::ir
 {
     class IRModule;
-    class IRBuilder;
     class IRVisitor;
-    class IRDumper;
 
     namespace base
     {

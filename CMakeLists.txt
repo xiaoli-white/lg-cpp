@@ -21,6 +21,8 @@ add_library(lg_cpp_binding SHARED
         include/lg-cpp-binding.h
         include/builder.h
         src/builder.cpp
+        include/dumper.h
+        src/dumper.cpp
 )
 include_directories(${ANTLR4_INCLUDE_DIR} include/)
 

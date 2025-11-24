@@ -10,6 +10,8 @@
 
 namespace lg::ir
 {
+    class IRBuilder;
+
     class IRBuilder
     {
     private:

@@ -6,6 +6,7 @@
 #ifndef LG_CPP_BINDING_LG_CPP_BINDING_H
 #define LG_CPP_BINDING_LG_CPP_BINDING_H
 #include <ir.h>
-
+#include <dumper.h>
+#include <builder.h>
 
 #endif //LG_CPP_BINDING_LG_CPP_BINDING_H

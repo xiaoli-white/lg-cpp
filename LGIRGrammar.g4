@@ -6,7 +6,10 @@ globalVariable: GLOBAL IDENTIFIER '=' constant;
 structure: STRUCTURE IDENTIFIER '{' fields '}';
 fields: field (',' field)* |;
 field: type IDENTIFIER;
-function: FUNCTION IDENTIFIER '(' fields ')' '{'fields '}' '{' (statement)* '}';
+function: FUNCTION type IDENTIFIER '(' localVariables ')' '{' localVariables '}' '{' (basicBlock)* '}';
+localVariables: localVariable (',' localVariable)* |;
+localVariable: type IDENTIFIER;
+basicBlock: IDENTIFIER ':' (statement)*;
 statement: NOP | stack_alloc | load | store | asm | goto | invoke | return | setRegister | getElementPointer | cmp | conditionalJump | unaryOperates | binaryOperates;
 stack_alloc: registerName '=' STACK_ALLOC value;
 load: registerName '=' LOAD value;
@@ -25,7 +28,7 @@ typeCast: registerName '=' typeCastKind value;
 
 type: baseType '*'*;
 baseType: integerType | decimalType | arrayType | voidType | structureType;
-integerType: I1 | U1 | I8 | U8 | I16 | U16 | I32 | U32 | I64 | U64;
+integerType: I1 | I8 | U8 | I16 | U16 | I32 | U32 | I64 | U64;
 decimalType: FLOAT | DOUBLE;
 arrayType: '[' INT_NUMBER 'x' type ']';
 voidType: VOID;
@@ -51,7 +54,6 @@ binaryOperator: ADD | SUB | MUL | DIV | MOD | AND | OR | XOR | SHL | SHR | USHR;
 typeCastKind: ZEXT | SEXT | TRUNC | ITOF | FTOI | ITOP | PTOI | PTOP | FEXT | FTRUNC;
 
 I1: 'i1';
-U1: 'u1';
 I8: 'i8';
 U8: 'u8';
 I16: 'i16';

@@ -8,6 +8,7 @@ find_path(ANTLR4_INCLUDE_DIR antlr4-runtime.h
 
 find_package(antlr4-runtime REQUIRED)
 
+include_directories(${ANTLR4_INCLUDE_DIR} include/)
 
 add_library(lg_cpp_binding SHARED
         src/lexer/LGIRGrammarParser.cpp
@@ -23,9 +24,31 @@ add_library(lg_cpp_binding SHARED
         src/builder.cpp
         include/dumper.h
         src/dumper.cpp
-        src/parser.cpp
-        include/parser.h
+        src/IRParser.cpp
+        include/IRParser.h
+        src/lexer/LGIRGrammarBaseVisitor.cpp
+        src/lexer/LGIRGrammarVisitor.cpp
 )
-include_directories(${ANTLR4_INCLUDE_DIR} include/)
+add_executable(lg_cpp_binding_test
+        src/lexer/LGIRGrammarParser.cpp
+        src/lexer/LGIRGrammarListener.cpp
+        src/lexer/LGIRGrammarLexer.cpp
+        src/lexer/LGIRGrammarBaseListener.cpp
+        include/lexer/LGIRGrammarLexer.h
+        include/lexer/LGIRGrammarBaseListener.h
+        src/ir.cpp
+        include/ir.h
+        include/lg-cpp-binding.h
+        include/builder.h
+        src/builder.cpp
+        include/dumper.h
+        src/dumper.cpp
+        src/IRParser.cpp
+        include/IRParser.h
+        src/lexer/LGIRGrammarBaseVisitor.cpp
+        src/lexer/LGIRGrammarVisitor.cpp
+        src/test.cpp
+)
 
 target_link_libraries(lg_cpp_binding antlr4-runtime)
+target_link_libraries(lg_cpp_binding_test antlr4-runtime)

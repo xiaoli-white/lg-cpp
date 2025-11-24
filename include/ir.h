@@ -121,6 +121,8 @@ namespace lg::ir
             std::map<IRBasicBlock*, std::vector<IRBasicBlock*>> predecessors;
             std::map<IRBasicBlock*, std::vector<IRBasicBlock*>> successors;
             std::string toString();
+
+            void addBasicBlock(IRBasicBlock* basicBlock);
         };
 
         class IRBasicBlock final
@@ -230,6 +232,7 @@ namespace lg::ir
         {
         private:
             IRArrayType(IRType* base, uint64_t size);
+
         public:
             IRType* base;
             uint64_t size;
@@ -404,6 +407,8 @@ namespace lg::ir
                        base::IRControlFlowGraph* cfg);
             std::any accept(IRVisitor* visitor, std::any additional) override;
             std::string toString() override;
+
+            void addBasicBlock(base::IRBasicBlock* basicBlock) const;
         };
 
         class IRLocalVariable final : public base::IRNode
@@ -716,6 +721,10 @@ namespace lg::ir
         ~IRModule() override = default;
         std::any accept(IRVisitor* visitor, std::any additional) override;
         std::string toString() override;
+
+        void putGlobalVariable(base::IRGlobalVariable* globalVariable);
+        void putStructure(structure::IRStructure* structure);
+        void putFunction(function::IRFunction* function);
     };
 }
 

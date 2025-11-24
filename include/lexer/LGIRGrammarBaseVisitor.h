@@ -5,7 +5,7 @@
 
 
 #include "antlr4-runtime.h"
-#include "lexer/LGIRGrammarVisitor.h"
+#include "LGIRGrammarVisitor.h"
 
 
 /**
@@ -14,7 +14,6 @@
  */
 class  LGIRGrammarBaseVisitor : public LGIRGrammarVisitor {
 public:
-  virtual ~LGIRGrammarBaseVisitor() = default;
 
   virtual std::any visitProgram(LGIRGrammarParser::ProgramContext *ctx) override {
     return visitChildren(ctx);
@@ -37,6 +36,18 @@ public:
   }
 
   virtual std::any visitFunction(LGIRGrammarParser::FunctionContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitLocalVariables(LGIRGrammarParser::LocalVariablesContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitLocalVariable(LGIRGrammarParser::LocalVariableContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitBasicBlock(LGIRGrammarParser::BasicBlockContext *ctx) override {
     return visitChildren(ctx);
   }
 

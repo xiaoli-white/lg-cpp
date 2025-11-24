@@ -28,6 +28,12 @@ namespace lg::ir
             return "";
         }
 
+        void IRControlFlowGraph::addBasicBlock(IRBasicBlock* basicBlock)
+        {
+            basicBlocks[basicBlock->name] = basicBlock;
+            function->cfg = this;
+        }
+
         IRBasicBlock::IRBasicBlock(std::string name) : name(std::move(name))
         {
         }
@@ -473,6 +479,12 @@ namespace lg::ir
             return "";
         }
 
+        void IRFunction::addBasicBlock(base::IRBasicBlock* basicBlock) const
+        {
+            cfg->addBasicBlock(basicBlock);
+        }
+
+
         IRLocalVariable::IRLocalVariable(type::IRType* type, std::string name) : type(type), name(std::move(name))
         {
         }
@@ -484,7 +496,7 @@ namespace lg::ir
 
         std::string IRLocalVariable::toString()
         {
-            return name + " " + type->toString();
+            return type->toString() + " " + name;
         }
     }
 
@@ -1196,5 +1208,20 @@ namespace lg::ir
     std::string IRModule::toString()
     {
         return "";
+    }
+
+    void IRModule::putGlobalVariable(base::IRGlobalVariable* globalVariable)
+    {
+        globals[globalVariable->name] = globalVariable;
+    }
+
+    void IRModule::putStructure(structure::IRStructure* structure)
+    {
+        structures[structure->name] = structure;
+    }
+
+    void IRModule::putFunction(function::IRFunction* function)
+    {
+        functions[function->name] = function;
     }
 }

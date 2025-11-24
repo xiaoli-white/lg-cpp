@@ -5,7 +5,7 @@
 
 
 #include "antlr4-runtime.h"
-#include "lexer/LGIRGrammarParser.h"
+#include "LGIRGrammarParser.h"
 
 
 /**
@@ -31,6 +31,15 @@ public:
 
   virtual void enterFunction(LGIRGrammarParser::FunctionContext *ctx) = 0;
   virtual void exitFunction(LGIRGrammarParser::FunctionContext *ctx) = 0;
+
+  virtual void enterLocalVariables(LGIRGrammarParser::LocalVariablesContext *ctx) = 0;
+  virtual void exitLocalVariables(LGIRGrammarParser::LocalVariablesContext *ctx) = 0;
+
+  virtual void enterLocalVariable(LGIRGrammarParser::LocalVariableContext *ctx) = 0;
+  virtual void exitLocalVariable(LGIRGrammarParser::LocalVariableContext *ctx) = 0;
+
+  virtual void enterBasicBlock(LGIRGrammarParser::BasicBlockContext *ctx) = 0;
+  virtual void exitBasicBlock(LGIRGrammarParser::BasicBlockContext *ctx) = 0;
 
   virtual void enterStatement(LGIRGrammarParser::StatementContext *ctx) = 0;
   virtual void exitStatement(LGIRGrammarParser::StatementContext *ctx) = 0;

@@ -39,7 +39,7 @@ namespace lg::ir
         for (int i = 0; i < irFunction->args.size(); ++i)
         {
             out << irFunction->args[i]->toString();
-            if (i < irFunction->args.size() - 1) out << ",";
+            if (i < irFunction->args.size() - 1) out << ", ";
         }
         out << ") {" << std::endl;
         for (int i = 0; i < irFunction->locals.size(); ++i)

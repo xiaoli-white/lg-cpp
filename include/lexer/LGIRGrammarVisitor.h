@@ -31,6 +31,12 @@ public:
 
     virtual std::any visitFunction(LGIRGrammarParser::FunctionContext *context) = 0;
 
+    virtual std::any visitLocalVariables(LGIRGrammarParser::LocalVariablesContext *context) = 0;
+
+    virtual std::any visitLocalVariable(LGIRGrammarParser::LocalVariableContext *context) = 0;
+
+    virtual std::any visitBasicBlock(LGIRGrammarParser::BasicBlockContext *context) = 0;
+
     virtual std::any visitStatement(LGIRGrammarParser::StatementContext *context) = 0;
 
     virtual std::any visitStack_alloc(LGIRGrammarParser::Stack_allocContext *context) = 0;

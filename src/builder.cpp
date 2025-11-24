@@ -13,129 +13,129 @@ namespace lg::ir
         this->insertPoint = insertPoint;
     }
 
-    void IRBuilder::createReturn()
+    void IRBuilder::createReturn() const
     {
         insertPoint->addInstruction(new instruction::IRReturn());
     }
 
-    void IRBuilder::createReturn(value::IRValue* value)
+    void IRBuilder::createReturn(value::IRValue* value) const
     {
         insertPoint->addInstruction(new instruction::IRReturn(value));
     }
 
-    void IRBuilder::createGoto(base::IRBasicBlock* target)
+    void IRBuilder::createGoto(base::IRBasicBlock* target) const
     {
         insertPoint->addInstruction(new instruction::IRGoto(target));
     }
 
-    void IRBuilder::createNop()
+    void IRBuilder::createNop() const
     {
         insertPoint->addInstruction(new instruction::IRNop());
     }
 
-    value::IRRegister* IRBuilder::createLoad(value::IRValue* ptr)
+    value::IRRegister* IRBuilder::createLoad(value::IRValue* ptr) const
     {
         const auto reg = new value::IRRegister(allocateRegisterName());
         insertPoint->addInstruction(new instruction::IRLoad(ptr, reg));
         return reg;
     }
 
-    void IRBuilder::createStore(value::IRValue* ptr, value::IRValue* value)
+    void IRBuilder::createStore(value::IRValue* ptr, value::IRValue* value) const
     {
         insertPoint->addInstruction(new instruction::IRStore(ptr, value));
     }
 
-    void IRBuilder::createJumpIfTrue(value::IRValue* operand, base::IRBasicBlock* target)
+    void IRBuilder::createJumpIfTrue(value::IRValue* operand, base::IRBasicBlock* target) const
     {
         insertPoint->addInstruction(new instruction::IRConditionalJump(base::IRCondition::IF_TRUE, operand, target));
     }
 
-    void IRBuilder::createJumpIfFalse(value::IRValue* operand, base::IRBasicBlock* target)
+    void IRBuilder::createJumpIfFalse(value::IRValue* operand, base::IRBasicBlock* target) const
     {
         insertPoint->addInstruction(new instruction::IRConditionalJump(base::IRCondition::IF_FALSE, operand, target));
     }
 
-    void IRBuilder::createJumpIfEqual(value::IRValue* operand1, value::IRValue* operand2, base::IRBasicBlock* target)
+    void IRBuilder::createJumpIfEqual(value::IRValue* operand1, value::IRValue* operand2, base::IRBasicBlock* target) const
     {
         insertPoint->addInstruction(
             new instruction::IRConditionalJump(base::IRCondition::E, operand1, operand2, target));
     }
 
-    void IRBuilder::createJumpIfNotEqual(value::IRValue* operand1, value::IRValue* operand2, base::IRBasicBlock* target)
+    void IRBuilder::createJumpIfNotEqual(value::IRValue* operand1, value::IRValue* operand2, base::IRBasicBlock* target) const
     {
         insertPoint->addInstruction(
             new instruction::IRConditionalJump(base::IRCondition::NE, operand1, operand2, target));
     }
 
-    void IRBuilder::createJumpIfLess(value::IRValue* operand1, value::IRValue* operand2, base::IRBasicBlock* target)
+    void IRBuilder::createJumpIfLess(value::IRValue* operand1, value::IRValue* operand2, base::IRBasicBlock* target) const
     {
         insertPoint->addInstruction(
             new instruction::IRConditionalJump(base::IRCondition::L, operand1, operand2, target));
     }
 
     void IRBuilder::createJumpIfLessEqual(value::IRValue* operand1, value::IRValue* operand2,
-                                          base::IRBasicBlock* target)
+                                          base::IRBasicBlock* target) const
     {
         insertPoint->addInstruction(
             new instruction::IRConditionalJump(base::IRCondition::LE, operand1, operand2, target));
     }
 
-    void IRBuilder::createJumpIfGreater(value::IRValue* operand1, value::IRValue* operand2, base::IRBasicBlock* target)
+    void IRBuilder::createJumpIfGreater(value::IRValue* operand1, value::IRValue* operand2, base::IRBasicBlock* target) const
     {
         insertPoint->addInstruction(
             new instruction::IRConditionalJump(base::IRCondition::G, operand1, operand2, target));
     }
 
     void IRBuilder::createJumpIfGreaterEqual(value::IRValue* operand1, value::IRValue* operand2,
-                                             base::IRBasicBlock* target)
+                                             base::IRBasicBlock* target) const
     {
         insertPoint->addInstruction(
             new instruction::IRConditionalJump(base::IRCondition::GE, operand1, operand2, target));
     }
 
-    value::IRRegister* IRBuilder::createCmpEqual(value::IRValue* operand1, value::IRValue* operand2)
+    value::IRRegister* IRBuilder::createCmpEqual(value::IRValue* operand1, value::IRValue* operand2) const
     {
         const auto reg = new value::IRRegister(allocateRegisterName());
         insertPoint->addInstruction(new instruction::IRCompare(base::IRCondition::E, operand1, operand2, reg));
         return reg;
     }
 
-    value::IRRegister* IRBuilder::createCmpNotEqual(value::IRValue* operand1, value::IRValue* operand2)
+    value::IRRegister* IRBuilder::createCmpNotEqual(value::IRValue* operand1, value::IRValue* operand2) const
     {
         const auto reg = new value::IRRegister(allocateRegisterName());
         insertPoint->addInstruction(new instruction::IRCompare(base::IRCondition::NE, operand1, operand2, reg));
         return reg;
     }
 
-    value::IRRegister* IRBuilder::createCmpLess(value::IRValue* operand1, value::IRValue* operand2)
+    value::IRRegister* IRBuilder::createCmpLess(value::IRValue* operand1, value::IRValue* operand2) const
     {
         const auto reg = new value::IRRegister(allocateRegisterName());
         insertPoint->addInstruction(new instruction::IRCompare(base::IRCondition::L, operand1, operand2, reg));
         return reg;
     }
 
-    value::IRRegister* IRBuilder::createCmpLessEqual(value::IRValue* operand1, value::IRValue* operand2)
+    value::IRRegister* IRBuilder::createCmpLessEqual(value::IRValue* operand1, value::IRValue* operand2) const
     {
         const auto reg = new value::IRRegister(allocateRegisterName());
         insertPoint->addInstruction(new instruction::IRCompare(base::IRCondition::LE, operand1, operand2, reg));
         return reg;
     }
 
-    value::IRRegister* IRBuilder::createCmpGreater(value::IRValue* operand1, value::IRValue* operand2)
+    value::IRRegister* IRBuilder::createCmpGreater(value::IRValue* operand1, value::IRValue* operand2) const
     {
         const auto reg = new value::IRRegister(allocateRegisterName());
         insertPoint->addInstruction(new instruction::IRCompare(base::IRCondition::G, operand1, operand2, reg));
         return reg;
     }
 
-    value::IRRegister* IRBuilder::createCmpGreaterEqual(value::IRValue* operand1, value::IRValue* operand2)
+    value::IRRegister* IRBuilder::createCmpGreaterEqual(value::IRValue* operand1, value::IRValue* operand2) const
     {
         const auto reg = new value::IRRegister(allocateRegisterName());
         insertPoint->addInstruction(new instruction::IRCompare(base::IRCondition::GE, operand1, operand2, reg));
         return reg;
     }
 
-    value::IRRegister* IRBuilder::createAdd(value::IRValue* operand1, value::IRValue* operand2)
+    value::IRRegister* IRBuilder::createAdd(value::IRValue* operand1, value::IRValue* operand2) const
     {
         const auto reg = new value::IRRegister(allocateRegisterName());
         insertPoint->addInstruction(
@@ -143,7 +143,7 @@ namespace lg::ir
         return reg;
     }
 
-    value::IRRegister* IRBuilder::createSub(value::IRValue* operand1, value::IRValue* operand2)
+    value::IRRegister* IRBuilder::createSub(value::IRValue* operand1, value::IRValue* operand2) const
     {
         const auto reg = new value::IRRegister(allocateRegisterName());
         insertPoint->addInstruction(
@@ -151,7 +151,7 @@ namespace lg::ir
         return reg;
     }
 
-    value::IRRegister* IRBuilder::createMul(value::IRValue* operand1, value::IRValue* operand2)
+    value::IRRegister* IRBuilder::createMul(value::IRValue* operand1, value::IRValue* operand2) const
     {
         const auto reg = new value::IRRegister(allocateRegisterName());
         insertPoint->addInstruction(
@@ -159,7 +159,7 @@ namespace lg::ir
         return reg;
     }
 
-    value::IRRegister* IRBuilder::createDiv(value::IRValue* operand1, value::IRValue* operand2)
+    value::IRRegister* IRBuilder::createDiv(value::IRValue* operand1, value::IRValue* operand2) const
     {
         const auto reg = new value::IRRegister(allocateRegisterName());
         insertPoint->addInstruction(
@@ -167,7 +167,7 @@ namespace lg::ir
         return reg;
     }
 
-    value::IRRegister* IRBuilder::createMod(value::IRValue* operand1, value::IRValue* operand2)
+    value::IRRegister* IRBuilder::createMod(value::IRValue* operand1, value::IRValue* operand2) const
     {
         const auto reg = new value::IRRegister(allocateRegisterName());
         insertPoint->addInstruction(
@@ -175,7 +175,7 @@ namespace lg::ir
         return reg;
     }
 
-    value::IRRegister* IRBuilder::createAnd(value::IRValue* operand1, value::IRValue* operand2)
+    value::IRRegister* IRBuilder::createAnd(value::IRValue* operand1, value::IRValue* operand2) const
     {
         const auto reg = new value::IRRegister(allocateRegisterName());
         insertPoint->addInstruction(
@@ -183,7 +183,7 @@ namespace lg::ir
         return reg;
     }
 
-    value::IRRegister* IRBuilder::createOr(value::IRValue* operand1, value::IRValue* operand2)
+    value::IRRegister* IRBuilder::createOr(value::IRValue* operand1, value::IRValue* operand2) const
     {
         const auto reg = new value::IRRegister(allocateRegisterName());
         insertPoint->addInstruction(
@@ -191,7 +191,7 @@ namespace lg::ir
         return reg;
     }
 
-    value::IRRegister* IRBuilder::createXor(value::IRValue* operand1, value::IRValue* operand2)
+    value::IRRegister* IRBuilder::createXor(value::IRValue* operand1, value::IRValue* operand2) const
     {
         const auto reg = new value::IRRegister(allocateRegisterName());
         insertPoint->addInstruction(
@@ -199,7 +199,7 @@ namespace lg::ir
         return reg;
     }
 
-    value::IRRegister* IRBuilder::createShl(value::IRValue* operand1, value::IRValue* operand2)
+    value::IRRegister* IRBuilder::createShl(value::IRValue* operand1, value::IRValue* operand2) const
     {
         const auto reg = new value::IRRegister(allocateRegisterName());
         insertPoint->addInstruction(
@@ -207,7 +207,7 @@ namespace lg::ir
         return reg;
     }
 
-    value::IRRegister* IRBuilder::createShr(value::IRValue* operand1, value::IRValue* operand2)
+    value::IRRegister* IRBuilder::createShr(value::IRValue* operand1, value::IRValue* operand2) const
     {
         const auto reg = new value::IRRegister(allocateRegisterName());
         insertPoint->addInstruction(
@@ -215,7 +215,7 @@ namespace lg::ir
         return reg;
     }
 
-    value::IRRegister* IRBuilder::createUShr(value::IRValue* operand1, value::IRValue* operand2)
+    value::IRRegister* IRBuilder::createUShr(value::IRValue* operand1, value::IRValue* operand2) const
     {
         const auto reg = new value::IRRegister(allocateRegisterName());
         insertPoint->addInstruction(
@@ -223,7 +223,7 @@ namespace lg::ir
         return reg;
     }
 
-    value::IRRegister* IRBuilder::createInc(value::IRValue* operand)
+    value::IRRegister* IRBuilder::createInc(value::IRValue* operand) const
     {
         const auto reg = new value::IRRegister(allocateRegisterName());
         insertPoint->addInstruction(
@@ -231,7 +231,7 @@ namespace lg::ir
         return reg;
     }
 
-    value::IRRegister* IRBuilder::createDec(value::IRValue* operand)
+    value::IRRegister* IRBuilder::createDec(value::IRValue* operand) const
     {
         const auto reg = new value::IRRegister(allocateRegisterName());
         insertPoint->addInstruction(
@@ -239,7 +239,7 @@ namespace lg::ir
         return reg;
     }
 
-    value::IRRegister* IRBuilder::createNot(value::IRValue* operand)
+    value::IRRegister* IRBuilder::createNot(value::IRValue* operand) const
     {
         const auto reg = new value::IRRegister(allocateRegisterName());
         insertPoint->addInstruction(
@@ -247,7 +247,7 @@ namespace lg::ir
         return reg;
     }
 
-    value::IRRegister* IRBuilder::createNeg(value::IRValue* operand)
+    value::IRRegister* IRBuilder::createNeg(value::IRValue* operand) const
     {
         const auto reg = new value::IRRegister(allocateRegisterName());
         insertPoint->addInstruction(
@@ -255,21 +255,21 @@ namespace lg::ir
         return reg;
     }
 
-    value::IRRegister* IRBuilder::createStackAlloc(value::IRValue* size)
+    value::IRRegister* IRBuilder::createStackAlloc(value::IRValue* size) const
     {
         const auto reg = new value::IRRegister(allocateRegisterName());
         insertPoint->addInstruction(new instruction::IRStackAllocate(size, reg));
         return reg;
     }
 
-    value::IRRegister* IRBuilder::createSetRegister(value::IRValue* value)
+    value::IRRegister* IRBuilder::createSetRegister(value::IRValue* value) const
     {
         const auto reg = new value::IRRegister(allocateRegisterName());
         insertPoint->addInstruction(new instruction::IRSetRegister(value, reg));
         return reg;
     }
 
-    value::IRRegister* IRBuilder::createZeroExtend(value::IRValue* source, type::IRType* targetType)
+    value::IRRegister* IRBuilder::createZeroExtend(value::IRValue* source, type::IRType* targetType) const
     {
         const auto reg = new value::IRRegister(allocateRegisterName());
         insertPoint->addInstruction(
@@ -277,7 +277,7 @@ namespace lg::ir
         return reg;
     }
 
-    value::IRRegister* IRBuilder::createSignExtend(value::IRValue* source, type::IRType* targetType)
+    value::IRRegister* IRBuilder::createSignExtend(value::IRValue* source, type::IRType* targetType) const
     {
         const auto reg = new value::IRRegister(allocateRegisterName());
         insertPoint->addInstruction(
@@ -285,7 +285,7 @@ namespace lg::ir
         return reg;
     }
 
-    value::IRRegister* IRBuilder::createTrunc(value::IRValue* source, type::IRType* targetType)
+    value::IRRegister* IRBuilder::createTrunc(value::IRValue* source, type::IRType* targetType) const
     {
         const auto reg = new value::IRRegister(allocateRegisterName());
         insertPoint->addInstruction(
@@ -293,7 +293,7 @@ namespace lg::ir
         return reg;
     }
 
-    value::IRRegister* IRBuilder::createIntToFloat(value::IRValue* source, type::IRType* targetType)
+    value::IRRegister* IRBuilder::createIntToFloat(value::IRValue* source, type::IRType* targetType) const
     {
         const auto reg = new value::IRRegister(allocateRegisterName());
         insertPoint->addInstruction(
@@ -301,7 +301,7 @@ namespace lg::ir
         return reg;
     }
 
-    value::IRRegister* IRBuilder::createFloatToInt(value::IRValue* source, type::IRType* targetType)
+    value::IRRegister* IRBuilder::createFloatToInt(value::IRValue* source, type::IRType* targetType) const
     {
         const auto reg = new value::IRRegister(allocateRegisterName());
         insertPoint->addInstruction(
@@ -309,7 +309,7 @@ namespace lg::ir
         return reg;
     }
 
-    value::IRRegister* IRBuilder::createIntToPointer(value::IRValue* source, type::IRPointerType* targetType)
+    value::IRRegister* IRBuilder::createIntToPointer(value::IRValue* source, type::IRPointerType* targetType) const
     {
         const auto reg = new value::IRRegister(allocateRegisterName());
         insertPoint->addInstruction(
@@ -317,7 +317,7 @@ namespace lg::ir
         return reg;
     }
 
-    value::IRRegister* IRBuilder::createPointerToInt(value::IRValue* source, type::IRType* targetType)
+    value::IRRegister* IRBuilder::createPointerToInt(value::IRValue* source, type::IRType* targetType) const
     {
         const auto reg = new value::IRRegister(allocateRegisterName());
         insertPoint->addInstruction(
@@ -325,7 +325,7 @@ namespace lg::ir
         return reg;
     }
 
-    value::IRRegister* IRBuilder::createPointerToPointer(value::IRValue* source, type::IRPointerType* targetType)
+    value::IRRegister* IRBuilder::createPointerToPointer(value::IRValue* source, type::IRPointerType* targetType) const
     {
         const auto reg = new value::IRRegister(allocateRegisterName());
         insertPoint->addInstruction(
@@ -333,7 +333,7 @@ namespace lg::ir
         return reg;
     }
 
-    value::IRRegister* IRBuilder::createFloatExtend(value::IRValue* source, type::IRType* targetType)
+    value::IRRegister* IRBuilder::createFloatExtend(value::IRValue* source, type::IRType* targetType) const
     {
         const auto reg = new value::IRRegister(allocateRegisterName());
         insertPoint->addInstruction(
@@ -341,7 +341,7 @@ namespace lg::ir
         return reg;
     }
 
-    value::IRRegister* IRBuilder::createFloatTrunc(value::IRValue* source, type::IRType* targetType)
+    value::IRRegister* IRBuilder::createFloatTrunc(value::IRValue* source, type::IRType* targetType) const
     {
         const auto reg = new value::IRRegister(allocateRegisterName());
         insertPoint->addInstruction(
@@ -349,13 +349,13 @@ namespace lg::ir
         return reg;
     }
 
-    value::IRRegister* IRBuilder::createInvoke(function::IRFunction* function, std::vector<value::IRValue*> args)
+    value::IRRegister* IRBuilder::createInvoke(function::IRFunction* function, std::vector<value::IRValue*> args) const
     {
         return createInvoke(function->returnType, new value::IRFunctionReference(function), std::move(args));
     }
 
     value::IRRegister* IRBuilder::createInvoke(type::IRType* returnType, value::IRValue* func,
-                                               std::vector<value::IRValue*> args)
+                                               std::vector<value::IRValue*> args) const
     {
         const auto reg = ((dynamic_cast<type::IRVoidType*>(returnType) == nullptr)
                               ? new value::IRRegister(allocateRegisterName())
@@ -363,13 +363,13 @@ namespace lg::ir
         insertPoint->addInstruction(new instruction::IRInvoke(returnType, func, std::move(args), reg));
         return reg;
     }
-    value::IRRegister* IRBuilder::createGetElementPointer(value::IRValue* ptr, std::vector<value::constant::IRIntegerConstant*> indices)
+    value::IRRegister* IRBuilder::createGetElementPointer(value::IRValue* ptr, std::vector<value::constant::IRIntegerConstant*> indices) const
     {
         const auto reg = new value::IRRegister(allocateRegisterName());
         insertPoint->addInstruction(new instruction::IRGetElementPointer(ptr, std::move(indices), reg));
         return reg;
     }
-    void IRBuilder::createAsm(std::string assembly, std::string constraints, std::vector<value::IRValue*> args)
+    void IRBuilder::createAsm(std::string assembly, std::string constraints, std::vector<value::IRValue*> args) const
     {
         insertPoint->addInstruction(new instruction::IRAssembly(std::move(assembly), std::move(constraints), std::move(args)));
     }

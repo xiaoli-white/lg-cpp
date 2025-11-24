@@ -21,6 +21,7 @@ cmp: registerName '=' CMP condition ',' value ',' value;
 conditionalJump: CONDITIONAL_JUMP condition ',' value ',' value ',' label;
 unaryOperates: registerName '=' unaryOperator value;
 binaryOperates: registerName '=' binaryOperator value ',' value;
+typeCast: registerName '=' typeCastKind value;
 
 type: baseType '*'*;
 baseType: integerType | decimalType | arrayType | voidType | structureType;
@@ -47,6 +48,7 @@ condition: 'if_true' | 'if_false' | 'e' | 'ne' | 'ne' | 'l' | 'le' | 'g' | 'ge';
 
 unaryOperator: INC | DEC | NOT | NEG;
 binaryOperator: ADD | SUB | MUL | DIV | MOD | AND | OR | XOR | SHL | SHR | USHR;
+typeCastKind: ZEXT | SEXT | TRUNC | ITOF | FTOI | ITOP | PTOI | PTOP | FEXT | FTRUNC;
 
 I1: 'i1';
 U1: 'u1';
@@ -92,6 +94,7 @@ XOR: 'xor';
 SHL: 'shl';
 SHR: 'shr';
 USHR: 'ushr';
+
 ZEXT: 'zext';
 SEXT: 'sext';
 TRUNC: 'trunc';
@@ -99,6 +102,7 @@ ITOF: 'itof';
 FTOI: 'ftoi';
 ITOP: 'itop';
 PTOI: 'ptoi';
+PTOP: 'ptop';
 FEXT: 'fext';
 FTRUNC: 'ftrunc';
 

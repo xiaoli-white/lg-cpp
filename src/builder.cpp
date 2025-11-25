@@ -13,6 +13,11 @@ namespace lg::ir
         this->insertPoint = insertPoint;
     }
 
+    base::IRBasicBlock* IRBuilder::getInsertPoint() const
+    {
+        return insertPoint;
+    }
+
     void IRBuilder::createReturn() const
     {
         insertPoint->addInstruction(new instruction::IRReturn());

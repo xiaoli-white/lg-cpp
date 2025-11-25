@@ -44,7 +44,7 @@ globalReference: GLOBALREF IDENTIFIER;
 localReference: LOCALREF IDENTIFIER;
 
 register: type registerName;
-registerName: '%' IDENTIFIER;
+registerName: '%' (IDENTIFIER | INT_NUMBER);
 
 label: LABEL IDENTIFIER;
 condition: 'if_true' | 'if_false' | 'e' | 'ne' | 'ne' | 'l' | 'le' | 'g' | 'ge';

@@ -89,9 +89,28 @@ namespace lg::ir::parser
                           values);
         return nullptr;
     }
+
     std::any IRParser::visitBinaryOperates(LGIRGrammarParser::BinaryOperatesContext* context)
     {
+        visit(context->value(0));
+        auto* operand1 = std::any_cast<value::IRValue*>(stack.top());
+        stack.pop();
+        visit(context->value(1));
+        auto* operand2 = std::any_cast<value::IRValue*>(stack.top());
+        stack.pop();
+        builder.getInsertPoint()->addInstruction(new instruction::IRBinaryOperates(
+            parseBinaryOperator(context->binaryOperator()), operand1, operand2,
+            makeTargetRegister(context->registerName())));
+        return nullptr;
+    }
 
+    std::any IRParser::visitUnaryOperates(LGIRGrammarParser::UnaryOperatesContext* context)
+    {
+        visit(context->value());
+        auto* operand = std::any_cast<value::IRValue*>(stack.top());
+        stack.pop();
+        builder.getInsertPoint()->addInstruction(new instruction::IRUnaryOperates(
+            parseUnaryOperator(context->unaryOperator()), operand, makeTargetRegister(context->registerName())));
         return nullptr;
     }
 
@@ -130,9 +149,20 @@ namespace lg::ir::parser
             values.push_back(std::any_cast<value::IRValue*>(stack.top()));
             stack.pop();
         }
-        stack.push(values);
+        stack.emplace(values);
         return nullptr;
     }
+
+    std::any IRParser::visitRegister(LGIRGrammarParser::RegisterContext* context)
+    {
+        auto* reg = makeTargetRegister(context->registerName());
+        visit(context->type());
+        reg->type = std::any_cast<type::IRType*>(stack.top());
+        stack.pop();
+        stack.emplace(std::make_any<value::IRValue*>(reg));
+        return nullptr;
+    }
+
 
     std::any IRParser::visitIntegerConstant(LGIRGrammarParser::IntegerConstantContext* context)
     {
@@ -194,8 +224,42 @@ namespace lg::ir::parser
     std::any IRParser::visitLabel(LGIRGrammarParser::LabelContext* context)
     {
         std::cout << context->IDENTIFIER()->getText() << std::endl;
-        stack.push(currentFunction->getBasicBlock(context->IDENTIFIER()->getText()));
+        stack.emplace(currentFunction->getBasicBlock(context->IDENTIFIER()->getText()));
         return nullptr;
+    }
+
+    instruction::IRBinaryOperates::Operator IRParser::parseBinaryOperator(
+        LGIRGrammarParser::BinaryOperatorContext* context)
+    {
+        if (context->ADD()) return instruction::IRBinaryOperates::Operator::ADD;
+        if (context->SUB()) return instruction::IRBinaryOperates::Operator::SUB;
+        if (context->MUL()) return instruction::IRBinaryOperates::Operator::MUL;
+        if (context->DIV()) return instruction::IRBinaryOperates::Operator::DIV;
+        if (context->MOD()) return instruction::IRBinaryOperates::Operator::MOD;
+        if (context->AND()) return instruction::IRBinaryOperates::Operator::AND;
+        if (context->OR()) return instruction::IRBinaryOperates::Operator::OR;
+        if (context->XOR()) return instruction::IRBinaryOperates::Operator::XOR;
+        if (context->SHL()) return instruction::IRBinaryOperates::Operator::SHL;
+        if (context->SHR()) return instruction::IRBinaryOperates::Operator::SHR;
+        if (context->USHR()) return instruction::IRBinaryOperates::Operator::USHR;
+        throw std::runtime_error("Invalid binary operator");
+    }
+
+    instruction::IRUnaryOperates::Operator IRParser::parseUnaryOperator(
+        LGIRGrammarParser::UnaryOperatorContext* context)
+    {
+        if (context->INC()) return instruction::IRUnaryOperates::Operator::INC;
+        if (context->DEC()) return instruction::IRUnaryOperates::Operator::DEC;
+        if (context->NOT()) return instruction::IRUnaryOperates::Operator::NOT;
+        if (context->NEG()) return instruction::IRUnaryOperates::Operator::NEG;
+        throw std::runtime_error("Invalid unary operator");
+    }
+
+    value::IRRegister* IRParser::makeTargetRegister(LGIRGrammarParser::RegisterNameContext* context)
+    {
+        if (context->IDENTIFIER())return new value::IRRegister(context->IDENTIFIER()->getText());
+        if (context->INT_NUMBER()) return new value::IRRegister(context->INT_NUMBER()->getText());
+        throw std::runtime_error("Invalid register name");
     }
 
 

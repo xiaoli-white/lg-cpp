@@ -20,6 +20,7 @@ namespace lg::ir
     public:
         IRBuilder() = default;
         void setInsertPoint(base::IRBasicBlock* insertPoint);
+        [[nodiscard]] base::IRBasicBlock* getInsertPoint() const;
         void createReturn() const;
         void createReturn(value::IRValue* value) const;
         void createGoto(base::IRBasicBlock* target) const;

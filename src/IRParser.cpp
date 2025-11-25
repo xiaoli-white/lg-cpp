@@ -42,6 +42,7 @@ namespace lg::ir::parser
             currentFunction->addBasicBlock(block);
         }
         for (auto* basicBlock : context->basicBlock())visit(basicBlock);
+        name2Register.clear();
         return nullptr;
     }
 
@@ -98,9 +99,11 @@ namespace lg::ir::parser
         visit(context->value(1));
         auto* operand2 = std::any_cast<value::IRValue*>(stack.top());
         stack.pop();
+        const auto regName = getTargetRegisterName(context->registerName());
+        auto* reg = new value::IRRegister(regName);
         builder.getInsertPoint()->addInstruction(new instruction::IRBinaryOperates(
-            parseBinaryOperator(context->binaryOperator()), operand1, operand2,
-            makeTargetRegister(context->registerName())));
+            parseBinaryOperator(context->binaryOperator()), operand1, operand2, reg));
+        name2Register[regName] = reg;
         return nullptr;
     }
 
@@ -109,8 +112,11 @@ namespace lg::ir::parser
         visit(context->value());
         auto* operand = std::any_cast<value::IRValue*>(stack.top());
         stack.pop();
+        const auto regName = getTargetRegisterName(context->registerName());
+        auto* reg = new value::IRRegister(regName);
         builder.getInsertPoint()->addInstruction(new instruction::IRUnaryOperates(
-            parseUnaryOperator(context->unaryOperator()), operand, makeTargetRegister(context->registerName())));
+            parseUnaryOperator(context->unaryOperator()), operand, reg));
+        name2Register[regName] = reg;
         return nullptr;
     }
 
@@ -155,7 +161,7 @@ namespace lg::ir::parser
 
     std::any IRParser::visitRegister(LGIRGrammarParser::RegisterContext* context)
     {
-        auto* reg = makeTargetRegister(context->registerName());
+        auto* reg = name2Register[getTargetRegisterName(context->registerName())];
         visit(context->type());
         reg->type = std::any_cast<type::IRType*>(stack.top());
         stack.pop();
@@ -255,10 +261,10 @@ namespace lg::ir::parser
         throw std::runtime_error("Invalid unary operator");
     }
 
-    value::IRRegister* IRParser::makeTargetRegister(LGIRGrammarParser::RegisterNameContext* context)
+    std::string IRParser::getTargetRegisterName(LGIRGrammarParser::RegisterNameContext* context)
     {
-        if (context->IDENTIFIER())return new value::IRRegister(context->IDENTIFIER()->getText());
-        if (context->INT_NUMBER()) return new value::IRRegister(context->INT_NUMBER()->getText());
+        if (context->IDENTIFIER()) return context->IDENTIFIER()->getText();
+        if (context->INT_NUMBER()) return context->INT_NUMBER()->getText();
         throw std::runtime_error("Invalid register name");
     }
 

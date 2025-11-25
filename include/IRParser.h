@@ -25,6 +25,7 @@ namespace lg::ir::parser
         function::IRFunction* currentFunction = nullptr;
         std::stack<std::any> stack;
         IRBuilder builder;
+        std::unordered_map<std::string, value::IRRegister*> name2Register;
 
     public:
         explicit IRParser(IRModule* module);
@@ -49,7 +50,7 @@ namespace lg::ir::parser
             LGIRGrammarParser::BinaryOperatorContext* context);
         static instruction::IRUnaryOperates::Operator parseUnaryOperator(
             LGIRGrammarParser::UnaryOperatorContext* context);
-        static value::IRRegister* makeTargetRegister(LGIRGrammarParser::RegisterNameContext* context);
+        static std::string getTargetRegisterName(LGIRGrammarParser::RegisterNameContext* context);
     };
 
     IRModule* parse(const std::string& code);

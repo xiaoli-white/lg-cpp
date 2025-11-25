@@ -57,7 +57,7 @@ namespace lg::ir
                 out << pre << "\t\t" << instruction->toString() << std::endl;
             }
         }
-        out << pre << "}";
+        out << pre << "}" << std::endl;
         return nullptr;
     }
 

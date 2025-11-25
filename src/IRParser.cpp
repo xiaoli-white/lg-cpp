@@ -12,32 +12,42 @@ namespace lg::ir::parser
     {
     }
 
+    std::any IRParser::visitProgram(LGIRGrammarParser::ProgramContext* context)
+    {
+        for (auto& func : context->function())
+        {
+            visit(func->type());
+            auto* returnType = std::any_cast<type::IRType*>(stack.top());
+            stack.pop();
+            visit(func->localVariables(0));
+            const auto args = std::any_cast<std::vector<function::IRLocalVariable*>>(stack.top());
+            stack.pop();
+            visit(func->localVariables(1));
+            const auto locals = std::any_cast<std::vector<function::IRLocalVariable*>>(stack.top());
+            stack.pop();
+            auto* function = new function::IRFunction({}, returnType, func->IDENTIFIER()->getText(), args, locals,
+                                                      new base::IRControlFlowGraph());
+            module->putFunction(function);
+        }
+        for (auto& func : context->function())visit(func);
+        return nullptr;
+    }
+
     std::any IRParser::visitFunction(LGIRGrammarParser::FunctionContext* context)
     {
-        visit(context->type());
-        auto* returnType = std::any_cast<type::IRType*>(stack.top());
-        stack.pop();
-        visit(context->localVariables(0));
-        const auto args = std::any_cast<std::vector<function::IRLocalVariable*>>(stack.top());
-        stack.pop();
-        visit(context->localVariables(1));
-        const auto locals = std::any_cast<std::vector<function::IRLocalVariable*>>(stack.top());
-        stack.pop();
-        auto* function = new function::IRFunction({}, returnType, context->IDENTIFIER()->getText(), args, locals,
-                                                  new base::IRControlFlowGraph());
-        module->putFunction(function);
-        currentFunction = function;
+        currentFunction = module->getFunction(context->IDENTIFIER()->getText());
         for (auto* basicBlock : context->basicBlock())
         {
-            visit(basicBlock);
+            auto* block = new base::IRBasicBlock(basicBlock->IDENTIFIER()->getText());
+            currentFunction->addBasicBlock(block);
         }
+        for (auto* basicBlock : context->basicBlock())visit(basicBlock);
         return nullptr;
     }
 
     std::any IRParser::visitBasicBlock(LGIRGrammarParser::BasicBlockContext* context)
     {
-        auto* block = new base::IRBasicBlock(context->IDENTIFIER()->getText());
-        currentFunction->addBasicBlock(block);
+        auto* block = currentFunction->getBasicBlock(context->IDENTIFIER()->getText());
         builder.setInsertPoint(block);
         for (auto* statement : context->statement())
         {
@@ -67,6 +77,33 @@ namespace lg::ir::parser
         stack.emplace(new function::IRLocalVariable(type, context->IDENTIFIER()->getText()));
         return nullptr;
     }
+
+    std::any IRParser::visitAsm(LGIRGrammarParser::AsmContext* context)
+    {
+        visit(context->values());
+        const auto values = std::any_cast<std::vector<value::IRValue*>>(stack.top());
+        stack.pop();
+        const auto assembly = context->STRING_LITERAL(0)->getText();
+        const auto constraints = context->STRING_LITERAL(1)->getText();
+        builder.createAsm(assembly.substr(1, assembly.length() - 2), constraints.substr(1, constraints.length() - 2),
+                          values);
+        return nullptr;
+    }
+    std::any IRParser::visitBinaryOperates(LGIRGrammarParser::BinaryOperatesContext* context)
+    {
+
+        return nullptr;
+    }
+
+
+    std::any IRParser::visitGoto(LGIRGrammarParser::GotoContext* context)
+    {
+        visit(context->label());
+        builder.createGoto(std::any_cast<base::IRBasicBlock*>(stack.top()));
+        stack.pop();
+        return nullptr;
+    }
+
     std::any IRParser::visitReturn(LGIRGrammarParser::ReturnContext* context)
     {
         value::IRValue* value;
@@ -83,12 +120,28 @@ namespace lg::ir::parser
         builder.createReturn(value);
         return nullptr;
     }
+
+    std::any IRParser::visitValues(LGIRGrammarParser::ValuesContext* context)
+    {
+        std::vector<value::IRValue*> values;
+        for (auto value : context->value())
+        {
+            visit(value);
+            values.push_back(std::any_cast<value::IRValue*>(stack.top()));
+            stack.pop();
+        }
+        stack.push(values);
+        return nullptr;
+    }
+
     std::any IRParser::visitIntegerConstant(LGIRGrammarParser::IntegerConstantContext* context)
     {
         visit(context->integerType());
         auto* type = dynamic_cast<type::IRIntegerType*>(std::any_cast<type::IRType*>(stack.top()));
         stack.pop();
-        stack.emplace(static_cast<value::IRValue*>(new value::constant::IRIntegerConstant(type, std::stoll(context->INT_NUMBER()->getText()))));
+        stack.emplace(
+            static_cast<value::IRValue*>(new value::constant::IRIntegerConstant(
+                type, std::stoll(context->INT_NUMBER()->getText()))));
         return nullptr;
     }
 
@@ -137,6 +190,14 @@ namespace lg::ir::parser
         }
         return nullptr;
     }
+
+    std::any IRParser::visitLabel(LGIRGrammarParser::LabelContext* context)
+    {
+        std::cout << context->IDENTIFIER()->getText() << std::endl;
+        stack.push(currentFunction->getBasicBlock(context->IDENTIFIER()->getText()));
+        return nullptr;
+    }
+
 
     IRModule* parse(const std::string& code)
     {

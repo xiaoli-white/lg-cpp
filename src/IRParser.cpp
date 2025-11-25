@@ -120,6 +120,32 @@ namespace lg::ir::parser
         return nullptr;
     }
 
+    std::any IRParser::visitGetElementPointer(LGIRGrammarParser::GetElementPointerContext* context)
+    {
+        visit(context->value(0));
+        auto* ptr = std::any_cast<value::IRValue*>(stack.top());
+        stack.pop();
+        std::vector<value::constant::IRIntegerConstant*> indices;
+        for (int i = 1; i < context->value().size(); i++)
+        {
+            visit(context->value(i));
+            auto* index = std::any_cast<value::IRValue*>(stack.top());
+            stack.pop();
+            if (auto* constant = dynamic_cast<value::constant::IRIntegerConstant*>(index))
+            {
+                indices.push_back(constant);
+            }
+            else
+            {
+                throw std::runtime_error("index must be integer constant");
+            }
+        }
+        const auto regName = getTargetRegisterName(context->registerName());
+        auto* reg = builder.createGetElementPointer(ptr, indices, regName);
+        name2Register[regName] = reg;
+        return nullptr;
+    }
+
 
     std::any IRParser::visitGoto(LGIRGrammarParser::GotoContext* context)
     {

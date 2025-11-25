@@ -25,6 +25,7 @@ add_library(lg_cpp_binding SHARED
         include/IRParser.h
         src/lexer/LGIRGrammarBaseVisitor.cpp
         src/lexer/LGIRGrammarVisitor.cpp
+        include/lexer/LGIRGrammarBaseVisitor.h
 )
 add_executable(lg_cpp_binding_test
         src/lexer/LGIRGrammarParser.cpp
@@ -45,6 +46,7 @@ add_executable(lg_cpp_binding_test
         src/lexer/LGIRGrammarBaseVisitor.cpp
         src/lexer/LGIRGrammarVisitor.cpp
         src/test.cpp
+        include/lexer/LGIRGrammarBaseVisitor.h
 )
 
 target_link_libraries(lg_cpp_binding antlr4-runtime)

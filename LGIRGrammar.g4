@@ -19,7 +19,7 @@ goto: GOTO label;
 invoke: (registerName '=')? INVOKE type value '(' values ')';
 return: RETURN value?;
 setRegister: registerName '=' value;
-getElementPointer: registerName '=' GETELEMENTPTR value (',' value);
+getElementPointer: registerName '=' GETELEMENTPTR value (',' value)+;
 cmp: registerName '=' CMP condition ',' value ',' value;
 conditionalJump: CONDITIONAL_JUMP condition ',' value ',' value ',' label;
 unaryOperates: registerName '=' unaryOperator value;

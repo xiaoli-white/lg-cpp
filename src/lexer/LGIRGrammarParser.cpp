@@ -89,7 +89,7 @@ void lgirgrammarParserInitialize() {
     }
   );
   static const int32_t serializedATNSegment[] = {
-  	4,1,80,372,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,
+  	4,1,80,375,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,
   	7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,2,14,7,
   	14,2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,2,19,7,19,2,20,7,20,2,21,7,
   	21,2,22,7,22,2,23,7,23,2,24,7,24,2,25,7,25,2,26,7,26,2,27,7,27,2,28,7,
@@ -105,106 +105,107 @@ void lgirgrammarParserInitialize() {
   	1,10,1,11,1,11,1,11,1,11,1,11,1,12,1,12,1,12,1,12,1,13,1,13,1,13,1,13,
   	1,13,1,13,1,13,1,13,1,14,1,14,1,14,1,15,1,15,1,15,3,15,214,8,15,1,15,
   	1,15,1,15,1,15,1,15,1,15,1,15,1,16,1,16,3,16,225,8,16,1,17,1,17,1,17,
-  	1,17,1,18,1,18,1,18,1,18,1,18,1,18,1,18,1,19,1,19,1,19,1,19,1,19,1,19,
-  	1,19,1,19,1,19,1,20,1,20,1,20,1,20,1,20,1,20,1,20,1,20,1,20,1,21,1,21,
-  	1,21,1,21,1,21,1,22,1,22,1,22,1,22,1,22,1,22,1,22,1,23,1,23,1,23,1,23,
-  	1,23,1,24,1,24,5,24,275,8,24,10,24,12,24,278,9,24,1,25,1,25,1,25,1,25,
-  	1,25,3,25,285,8,25,1,26,1,26,1,27,1,27,1,28,1,28,1,28,1,28,1,28,1,28,
-  	1,29,1,29,1,30,1,30,1,30,1,31,1,31,1,31,5,31,305,8,31,10,31,12,31,308,
-  	9,31,1,31,3,31,311,8,31,1,32,1,32,1,32,1,32,1,32,3,32,318,8,32,1,33,1,
-  	33,1,33,3,33,323,8,33,1,34,1,34,1,34,1,35,1,35,1,35,1,36,1,36,1,36,1,
-  	36,1,36,5,36,336,8,36,10,36,12,36,339,9,36,1,36,3,36,342,8,36,1,36,1,
-  	36,1,37,1,37,1,37,1,38,1,38,1,38,1,39,1,39,1,39,1,40,1,40,1,40,1,41,1,
-  	41,1,41,1,42,1,42,1,42,1,43,1,43,1,44,1,44,1,45,1,45,1,46,1,46,1,46,0,
-  	0,47,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,
-  	46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,
-  	92,0,7,1,0,21,29,1,0,30,31,2,0,76,76,80,80,1,0,13,20,1,0,47,50,1,0,51,
-  	61,1,0,62,71,363,0,99,1,0,0,0,2,104,1,0,0,0,4,109,1,0,0,0,6,124,1,0,0,
-  	0,8,126,1,0,0,0,10,129,1,0,0,0,12,156,1,0,0,0,14,158,1,0,0,0,16,161,1,
-  	0,0,0,18,183,1,0,0,0,20,185,1,0,0,0,22,190,1,0,0,0,24,195,1,0,0,0,26,
-  	199,1,0,0,0,28,207,1,0,0,0,30,213,1,0,0,0,32,222,1,0,0,0,34,226,1,0,0,
-  	0,36,230,1,0,0,0,38,237,1,0,0,0,40,246,1,0,0,0,42,255,1,0,0,0,44,260,
-  	1,0,0,0,46,267,1,0,0,0,48,272,1,0,0,0,50,284,1,0,0,0,52,286,1,0,0,0,54,
-  	288,1,0,0,0,56,290,1,0,0,0,58,296,1,0,0,0,60,298,1,0,0,0,62,310,1,0,0,
-  	0,64,317,1,0,0,0,66,322,1,0,0,0,68,324,1,0,0,0,70,327,1,0,0,0,72,330,
-  	1,0,0,0,74,345,1,0,0,0,76,348,1,0,0,0,78,351,1,0,0,0,80,354,1,0,0,0,82,
-  	357,1,0,0,0,84,360,1,0,0,0,86,363,1,0,0,0,88,365,1,0,0,0,90,367,1,0,0,
-  	0,92,369,1,0,0,0,94,98,3,2,1,0,95,98,3,4,2,0,96,98,3,10,5,0,97,94,1,0,
-  	0,0,97,95,1,0,0,0,97,96,1,0,0,0,98,101,1,0,0,0,99,97,1,0,0,0,99,100,1,
-  	0,0,0,100,102,1,0,0,0,101,99,1,0,0,0,102,103,5,0,0,1,103,1,1,0,0,0,104,
-  	105,5,33,0,0,105,106,5,80,0,0,106,107,5,1,0,0,107,108,3,66,33,0,108,3,
-  	1,0,0,0,109,110,5,34,0,0,110,111,5,80,0,0,111,112,5,2,0,0,112,113,3,6,
-  	3,0,113,114,5,3,0,0,114,5,1,0,0,0,115,120,3,8,4,0,116,117,5,4,0,0,117,
-  	119,3,8,4,0,118,116,1,0,0,0,119,122,1,0,0,0,120,118,1,0,0,0,120,121,1,
-  	0,0,0,121,125,1,0,0,0,122,120,1,0,0,0,123,125,1,0,0,0,124,115,1,0,0,0,
-  	124,123,1,0,0,0,125,7,1,0,0,0,126,127,3,48,24,0,127,128,5,80,0,0,128,
-  	9,1,0,0,0,129,130,5,35,0,0,130,131,3,48,24,0,131,132,5,80,0,0,132,133,
-  	5,5,0,0,133,134,3,12,6,0,134,135,5,6,0,0,135,136,5,2,0,0,136,137,3,12,
-  	6,0,137,138,5,3,0,0,138,142,5,2,0,0,139,141,3,16,8,0,140,139,1,0,0,0,
-  	141,144,1,0,0,0,142,140,1,0,0,0,142,143,1,0,0,0,143,145,1,0,0,0,144,142,
-  	1,0,0,0,145,146,5,3,0,0,146,11,1,0,0,0,147,152,3,14,7,0,148,149,5,4,0,
-  	0,149,151,3,14,7,0,150,148,1,0,0,0,151,154,1,0,0,0,152,150,1,0,0,0,152,
-  	153,1,0,0,0,153,157,1,0,0,0,154,152,1,0,0,0,155,157,1,0,0,0,156,147,1,
-  	0,0,0,156,155,1,0,0,0,157,13,1,0,0,0,158,159,3,48,24,0,159,160,5,80,0,
-  	0,160,15,1,0,0,0,161,162,5,80,0,0,162,166,5,7,0,0,163,165,3,18,9,0,164,
-  	163,1,0,0,0,165,168,1,0,0,0,166,164,1,0,0,0,166,167,1,0,0,0,167,17,1,
-  	0,0,0,168,166,1,0,0,0,169,184,5,36,0,0,170,184,3,20,10,0,171,184,3,22,
-  	11,0,172,184,3,24,12,0,173,184,3,26,13,0,174,184,3,28,14,0,175,184,3,
-  	30,15,0,176,184,3,32,16,0,177,184,3,34,17,0,178,184,3,36,18,0,179,184,
-  	3,38,19,0,180,184,3,40,20,0,181,184,3,42,21,0,182,184,3,44,22,0,183,169,
-  	1,0,0,0,183,170,1,0,0,0,183,171,1,0,0,0,183,172,1,0,0,0,183,173,1,0,0,
-  	0,183,174,1,0,0,0,183,175,1,0,0,0,183,176,1,0,0,0,183,177,1,0,0,0,183,
-  	178,1,0,0,0,183,179,1,0,0,0,183,180,1,0,0,0,183,181,1,0,0,0,183,182,1,
-  	0,0,0,184,19,1,0,0,0,185,186,3,82,41,0,186,187,5,1,0,0,187,188,5,37,0,
-  	0,188,189,3,64,32,0,189,21,1,0,0,0,190,191,3,82,41,0,191,192,5,1,0,0,
-  	192,193,5,38,0,0,193,194,3,64,32,0,194,23,1,0,0,0,195,196,5,39,0,0,196,
-  	197,3,64,32,0,197,198,3,64,32,0,198,25,1,0,0,0,199,200,5,40,0,0,200,201,
-  	5,79,0,0,201,202,5,4,0,0,202,203,5,79,0,0,203,204,5,5,0,0,204,205,3,62,
-  	31,0,205,206,5,6,0,0,206,27,1,0,0,0,207,208,5,41,0,0,208,209,3,84,42,
-  	0,209,29,1,0,0,0,210,211,3,82,41,0,211,212,5,1,0,0,212,214,1,0,0,0,213,
-  	210,1,0,0,0,213,214,1,0,0,0,214,215,1,0,0,0,215,216,5,42,0,0,216,217,
-  	3,48,24,0,217,218,3,64,32,0,218,219,5,5,0,0,219,220,3,62,31,0,220,221,
-  	5,6,0,0,221,31,1,0,0,0,222,224,5,43,0,0,223,225,3,64,32,0,224,223,1,0,
-  	0,0,224,225,1,0,0,0,225,33,1,0,0,0,226,227,3,82,41,0,227,228,5,1,0,0,
-  	228,229,3,64,32,0,229,35,1,0,0,0,230,231,3,82,41,0,231,232,5,1,0,0,232,
-  	233,5,44,0,0,233,234,3,64,32,0,234,235,5,4,0,0,235,236,3,64,32,0,236,
-  	37,1,0,0,0,237,238,3,82,41,0,238,239,5,1,0,0,239,240,5,45,0,0,240,241,
-  	3,86,43,0,241,242,5,4,0,0,242,243,3,64,32,0,243,244,5,4,0,0,244,245,3,
-  	64,32,0,245,39,1,0,0,0,246,247,5,46,0,0,247,248,3,86,43,0,248,249,5,4,
-  	0,0,249,250,3,64,32,0,250,251,5,4,0,0,251,252,3,64,32,0,252,253,5,4,0,
-  	0,253,254,3,84,42,0,254,41,1,0,0,0,255,256,3,82,41,0,256,257,5,1,0,0,
-  	257,258,3,88,44,0,258,259,3,64,32,0,259,43,1,0,0,0,260,261,3,82,41,0,
-  	261,262,5,1,0,0,262,263,3,90,45,0,263,264,3,64,32,0,264,265,5,4,0,0,265,
-  	266,3,64,32,0,266,45,1,0,0,0,267,268,3,82,41,0,268,269,5,1,0,0,269,270,
-  	3,92,46,0,270,271,3,64,32,0,271,47,1,0,0,0,272,276,3,50,25,0,273,275,
-  	5,8,0,0,274,273,1,0,0,0,275,278,1,0,0,0,276,274,1,0,0,0,276,277,1,0,0,
-  	0,277,49,1,0,0,0,278,276,1,0,0,0,279,285,3,52,26,0,280,285,3,54,27,0,
-  	281,285,3,56,28,0,282,285,3,58,29,0,283,285,3,60,30,0,284,279,1,0,0,0,
-  	284,280,1,0,0,0,284,281,1,0,0,0,284,282,1,0,0,0,284,283,1,0,0,0,285,51,
-  	1,0,0,0,286,287,7,0,0,0,287,53,1,0,0,0,288,289,7,1,0,0,289,55,1,0,0,0,
-  	290,291,5,9,0,0,291,292,5,76,0,0,292,293,5,10,0,0,293,294,3,48,24,0,294,
-  	295,5,11,0,0,295,57,1,0,0,0,296,297,5,32,0,0,297,59,1,0,0,0,298,299,5,
-  	34,0,0,299,300,5,80,0,0,300,61,1,0,0,0,301,306,3,64,32,0,302,303,5,4,
-  	0,0,303,305,3,64,32,0,304,302,1,0,0,0,305,308,1,0,0,0,306,304,1,0,0,0,
-  	306,307,1,0,0,0,307,311,1,0,0,0,308,306,1,0,0,0,309,311,1,0,0,0,310,301,
-  	1,0,0,0,310,309,1,0,0,0,311,63,1,0,0,0,312,318,3,80,40,0,313,318,3,66,
-  	33,0,314,318,3,74,37,0,315,318,3,76,38,0,316,318,3,78,39,0,317,312,1,
-  	0,0,0,317,313,1,0,0,0,317,314,1,0,0,0,317,315,1,0,0,0,317,316,1,0,0,0,
-  	318,65,1,0,0,0,319,323,3,68,34,0,320,323,3,70,35,0,321,323,3,72,36,0,
-  	322,319,1,0,0,0,322,320,1,0,0,0,322,321,1,0,0,0,323,67,1,0,0,0,324,325,
-  	3,52,26,0,325,326,5,76,0,0,326,69,1,0,0,0,327,328,3,54,27,0,328,329,5,
-  	77,0,0,329,71,1,0,0,0,330,331,3,56,28,0,331,341,5,9,0,0,332,337,3,66,
-  	33,0,333,334,5,4,0,0,334,336,3,66,33,0,335,333,1,0,0,0,336,339,1,0,0,
-  	0,337,335,1,0,0,0,337,338,1,0,0,0,338,342,1,0,0,0,339,337,1,0,0,0,340,
-  	342,3,66,33,0,341,332,1,0,0,0,341,340,1,0,0,0,342,343,1,0,0,0,343,344,
-  	5,11,0,0,344,73,1,0,0,0,345,346,5,72,0,0,346,347,5,80,0,0,347,75,1,0,
-  	0,0,348,349,5,73,0,0,349,350,5,80,0,0,350,77,1,0,0,0,351,352,5,74,0,0,
-  	352,353,5,80,0,0,353,79,1,0,0,0,354,355,3,48,24,0,355,356,3,82,41,0,356,
-  	81,1,0,0,0,357,358,5,12,0,0,358,359,7,2,0,0,359,83,1,0,0,0,360,361,5,
-  	75,0,0,361,362,5,80,0,0,362,85,1,0,0,0,363,364,7,3,0,0,364,87,1,0,0,0,
-  	365,366,7,4,0,0,366,89,1,0,0,0,367,368,7,5,0,0,368,91,1,0,0,0,369,370,
-  	7,6,0,0,370,93,1,0,0,0,19,97,99,120,124,142,152,156,166,183,213,224,276,
-  	284,306,310,317,322,337,341
+  	1,17,1,18,1,18,1,18,1,18,1,18,1,18,4,18,237,8,18,11,18,12,18,238,1,19,
+  	1,19,1,19,1,19,1,19,1,19,1,19,1,19,1,19,1,20,1,20,1,20,1,20,1,20,1,20,
+  	1,20,1,20,1,20,1,21,1,21,1,21,1,21,1,21,1,22,1,22,1,22,1,22,1,22,1,22,
+  	1,22,1,23,1,23,1,23,1,23,1,23,1,24,1,24,5,24,278,8,24,10,24,12,24,281,
+  	9,24,1,25,1,25,1,25,1,25,1,25,3,25,288,8,25,1,26,1,26,1,27,1,27,1,28,
+  	1,28,1,28,1,28,1,28,1,28,1,29,1,29,1,30,1,30,1,30,1,31,1,31,1,31,5,31,
+  	308,8,31,10,31,12,31,311,9,31,1,31,3,31,314,8,31,1,32,1,32,1,32,1,32,
+  	1,32,3,32,321,8,32,1,33,1,33,1,33,3,33,326,8,33,1,34,1,34,1,34,1,35,1,
+  	35,1,35,1,36,1,36,1,36,1,36,1,36,5,36,339,8,36,10,36,12,36,342,9,36,1,
+  	36,3,36,345,8,36,1,36,1,36,1,37,1,37,1,37,1,38,1,38,1,38,1,39,1,39,1,
+  	39,1,40,1,40,1,40,1,41,1,41,1,41,1,42,1,42,1,42,1,43,1,43,1,44,1,44,1,
+  	45,1,45,1,46,1,46,1,46,0,0,47,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,
+  	30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,
+  	76,78,80,82,84,86,88,90,92,0,7,1,0,21,29,1,0,30,31,2,0,76,76,80,80,1,
+  	0,13,20,1,0,47,50,1,0,51,61,1,0,62,71,367,0,99,1,0,0,0,2,104,1,0,0,0,
+  	4,109,1,0,0,0,6,124,1,0,0,0,8,126,1,0,0,0,10,129,1,0,0,0,12,156,1,0,0,
+  	0,14,158,1,0,0,0,16,161,1,0,0,0,18,183,1,0,0,0,20,185,1,0,0,0,22,190,
+  	1,0,0,0,24,195,1,0,0,0,26,199,1,0,0,0,28,207,1,0,0,0,30,213,1,0,0,0,32,
+  	222,1,0,0,0,34,226,1,0,0,0,36,230,1,0,0,0,38,240,1,0,0,0,40,249,1,0,0,
+  	0,42,258,1,0,0,0,44,263,1,0,0,0,46,270,1,0,0,0,48,275,1,0,0,0,50,287,
+  	1,0,0,0,52,289,1,0,0,0,54,291,1,0,0,0,56,293,1,0,0,0,58,299,1,0,0,0,60,
+  	301,1,0,0,0,62,313,1,0,0,0,64,320,1,0,0,0,66,325,1,0,0,0,68,327,1,0,0,
+  	0,70,330,1,0,0,0,72,333,1,0,0,0,74,348,1,0,0,0,76,351,1,0,0,0,78,354,
+  	1,0,0,0,80,357,1,0,0,0,82,360,1,0,0,0,84,363,1,0,0,0,86,366,1,0,0,0,88,
+  	368,1,0,0,0,90,370,1,0,0,0,92,372,1,0,0,0,94,98,3,2,1,0,95,98,3,4,2,0,
+  	96,98,3,10,5,0,97,94,1,0,0,0,97,95,1,0,0,0,97,96,1,0,0,0,98,101,1,0,0,
+  	0,99,97,1,0,0,0,99,100,1,0,0,0,100,102,1,0,0,0,101,99,1,0,0,0,102,103,
+  	5,0,0,1,103,1,1,0,0,0,104,105,5,33,0,0,105,106,5,80,0,0,106,107,5,1,0,
+  	0,107,108,3,66,33,0,108,3,1,0,0,0,109,110,5,34,0,0,110,111,5,80,0,0,111,
+  	112,5,2,0,0,112,113,3,6,3,0,113,114,5,3,0,0,114,5,1,0,0,0,115,120,3,8,
+  	4,0,116,117,5,4,0,0,117,119,3,8,4,0,118,116,1,0,0,0,119,122,1,0,0,0,120,
+  	118,1,0,0,0,120,121,1,0,0,0,121,125,1,0,0,0,122,120,1,0,0,0,123,125,1,
+  	0,0,0,124,115,1,0,0,0,124,123,1,0,0,0,125,7,1,0,0,0,126,127,3,48,24,0,
+  	127,128,5,80,0,0,128,9,1,0,0,0,129,130,5,35,0,0,130,131,3,48,24,0,131,
+  	132,5,80,0,0,132,133,5,5,0,0,133,134,3,12,6,0,134,135,5,6,0,0,135,136,
+  	5,2,0,0,136,137,3,12,6,0,137,138,5,3,0,0,138,142,5,2,0,0,139,141,3,16,
+  	8,0,140,139,1,0,0,0,141,144,1,0,0,0,142,140,1,0,0,0,142,143,1,0,0,0,143,
+  	145,1,0,0,0,144,142,1,0,0,0,145,146,5,3,0,0,146,11,1,0,0,0,147,152,3,
+  	14,7,0,148,149,5,4,0,0,149,151,3,14,7,0,150,148,1,0,0,0,151,154,1,0,0,
+  	0,152,150,1,0,0,0,152,153,1,0,0,0,153,157,1,0,0,0,154,152,1,0,0,0,155,
+  	157,1,0,0,0,156,147,1,0,0,0,156,155,1,0,0,0,157,13,1,0,0,0,158,159,3,
+  	48,24,0,159,160,5,80,0,0,160,15,1,0,0,0,161,162,5,80,0,0,162,166,5,7,
+  	0,0,163,165,3,18,9,0,164,163,1,0,0,0,165,168,1,0,0,0,166,164,1,0,0,0,
+  	166,167,1,0,0,0,167,17,1,0,0,0,168,166,1,0,0,0,169,184,5,36,0,0,170,184,
+  	3,20,10,0,171,184,3,22,11,0,172,184,3,24,12,0,173,184,3,26,13,0,174,184,
+  	3,28,14,0,175,184,3,30,15,0,176,184,3,32,16,0,177,184,3,34,17,0,178,184,
+  	3,36,18,0,179,184,3,38,19,0,180,184,3,40,20,0,181,184,3,42,21,0,182,184,
+  	3,44,22,0,183,169,1,0,0,0,183,170,1,0,0,0,183,171,1,0,0,0,183,172,1,0,
+  	0,0,183,173,1,0,0,0,183,174,1,0,0,0,183,175,1,0,0,0,183,176,1,0,0,0,183,
+  	177,1,0,0,0,183,178,1,0,0,0,183,179,1,0,0,0,183,180,1,0,0,0,183,181,1,
+  	0,0,0,183,182,1,0,0,0,184,19,1,0,0,0,185,186,3,82,41,0,186,187,5,1,0,
+  	0,187,188,5,37,0,0,188,189,3,64,32,0,189,21,1,0,0,0,190,191,3,82,41,0,
+  	191,192,5,1,0,0,192,193,5,38,0,0,193,194,3,64,32,0,194,23,1,0,0,0,195,
+  	196,5,39,0,0,196,197,3,64,32,0,197,198,3,64,32,0,198,25,1,0,0,0,199,200,
+  	5,40,0,0,200,201,5,79,0,0,201,202,5,4,0,0,202,203,5,79,0,0,203,204,5,
+  	5,0,0,204,205,3,62,31,0,205,206,5,6,0,0,206,27,1,0,0,0,207,208,5,41,0,
+  	0,208,209,3,84,42,0,209,29,1,0,0,0,210,211,3,82,41,0,211,212,5,1,0,0,
+  	212,214,1,0,0,0,213,210,1,0,0,0,213,214,1,0,0,0,214,215,1,0,0,0,215,216,
+  	5,42,0,0,216,217,3,48,24,0,217,218,3,64,32,0,218,219,5,5,0,0,219,220,
+  	3,62,31,0,220,221,5,6,0,0,221,31,1,0,0,0,222,224,5,43,0,0,223,225,3,64,
+  	32,0,224,223,1,0,0,0,224,225,1,0,0,0,225,33,1,0,0,0,226,227,3,82,41,0,
+  	227,228,5,1,0,0,228,229,3,64,32,0,229,35,1,0,0,0,230,231,3,82,41,0,231,
+  	232,5,1,0,0,232,233,5,44,0,0,233,236,3,64,32,0,234,235,5,4,0,0,235,237,
+  	3,64,32,0,236,234,1,0,0,0,237,238,1,0,0,0,238,236,1,0,0,0,238,239,1,0,
+  	0,0,239,37,1,0,0,0,240,241,3,82,41,0,241,242,5,1,0,0,242,243,5,45,0,0,
+  	243,244,3,86,43,0,244,245,5,4,0,0,245,246,3,64,32,0,246,247,5,4,0,0,247,
+  	248,3,64,32,0,248,39,1,0,0,0,249,250,5,46,0,0,250,251,3,86,43,0,251,252,
+  	5,4,0,0,252,253,3,64,32,0,253,254,5,4,0,0,254,255,3,64,32,0,255,256,5,
+  	4,0,0,256,257,3,84,42,0,257,41,1,0,0,0,258,259,3,82,41,0,259,260,5,1,
+  	0,0,260,261,3,88,44,0,261,262,3,64,32,0,262,43,1,0,0,0,263,264,3,82,41,
+  	0,264,265,5,1,0,0,265,266,3,90,45,0,266,267,3,64,32,0,267,268,5,4,0,0,
+  	268,269,3,64,32,0,269,45,1,0,0,0,270,271,3,82,41,0,271,272,5,1,0,0,272,
+  	273,3,92,46,0,273,274,3,64,32,0,274,47,1,0,0,0,275,279,3,50,25,0,276,
+  	278,5,8,0,0,277,276,1,0,0,0,278,281,1,0,0,0,279,277,1,0,0,0,279,280,1,
+  	0,0,0,280,49,1,0,0,0,281,279,1,0,0,0,282,288,3,52,26,0,283,288,3,54,27,
+  	0,284,288,3,56,28,0,285,288,3,58,29,0,286,288,3,60,30,0,287,282,1,0,0,
+  	0,287,283,1,0,0,0,287,284,1,0,0,0,287,285,1,0,0,0,287,286,1,0,0,0,288,
+  	51,1,0,0,0,289,290,7,0,0,0,290,53,1,0,0,0,291,292,7,1,0,0,292,55,1,0,
+  	0,0,293,294,5,9,0,0,294,295,5,76,0,0,295,296,5,10,0,0,296,297,3,48,24,
+  	0,297,298,5,11,0,0,298,57,1,0,0,0,299,300,5,32,0,0,300,59,1,0,0,0,301,
+  	302,5,34,0,0,302,303,5,80,0,0,303,61,1,0,0,0,304,309,3,64,32,0,305,306,
+  	5,4,0,0,306,308,3,64,32,0,307,305,1,0,0,0,308,311,1,0,0,0,309,307,1,0,
+  	0,0,309,310,1,0,0,0,310,314,1,0,0,0,311,309,1,0,0,0,312,314,1,0,0,0,313,
+  	304,1,0,0,0,313,312,1,0,0,0,314,63,1,0,0,0,315,321,3,80,40,0,316,321,
+  	3,66,33,0,317,321,3,74,37,0,318,321,3,76,38,0,319,321,3,78,39,0,320,315,
+  	1,0,0,0,320,316,1,0,0,0,320,317,1,0,0,0,320,318,1,0,0,0,320,319,1,0,0,
+  	0,321,65,1,0,0,0,322,326,3,68,34,0,323,326,3,70,35,0,324,326,3,72,36,
+  	0,325,322,1,0,0,0,325,323,1,0,0,0,325,324,1,0,0,0,326,67,1,0,0,0,327,
+  	328,3,52,26,0,328,329,5,76,0,0,329,69,1,0,0,0,330,331,3,54,27,0,331,332,
+  	5,77,0,0,332,71,1,0,0,0,333,334,3,56,28,0,334,344,5,9,0,0,335,340,3,66,
+  	33,0,336,337,5,4,0,0,337,339,3,66,33,0,338,336,1,0,0,0,339,342,1,0,0,
+  	0,340,338,1,0,0,0,340,341,1,0,0,0,341,345,1,0,0,0,342,340,1,0,0,0,343,
+  	345,3,66,33,0,344,335,1,0,0,0,344,343,1,0,0,0,345,346,1,0,0,0,346,347,
+  	5,11,0,0,347,73,1,0,0,0,348,349,5,72,0,0,349,350,5,80,0,0,350,75,1,0,
+  	0,0,351,352,5,73,0,0,352,353,5,80,0,0,353,77,1,0,0,0,354,355,5,74,0,0,
+  	355,356,5,80,0,0,356,79,1,0,0,0,357,358,3,48,24,0,358,359,3,82,41,0,359,
+  	81,1,0,0,0,360,361,5,12,0,0,361,362,7,2,0,0,362,83,1,0,0,0,363,364,5,
+  	75,0,0,364,365,5,80,0,0,365,85,1,0,0,0,366,367,7,3,0,0,367,87,1,0,0,0,
+  	368,369,7,4,0,0,369,89,1,0,0,0,370,371,7,5,0,0,371,91,1,0,0,0,372,373,
+  	7,6,0,0,373,93,1,0,0,0,20,97,99,120,124,142,152,156,166,183,213,224,238,
+  	279,287,309,313,320,325,340,344
   };
   staticData->serializedATN = antlr4::atn::SerializedATNView(serializedATNSegment, sizeof(serializedATNSegment) / sizeof(serializedATNSegment[0]));
 
@@ -1954,6 +1955,7 @@ std::any LGIRGrammarParser::GetElementPointerContext::accept(tree::ParseTreeVisi
 LGIRGrammarParser::GetElementPointerContext* LGIRGrammarParser::getElementPointer() {
   GetElementPointerContext *_localctx = _tracker.createInstance<GetElementPointerContext>(_ctx, getState());
   enterRule(_localctx, 36, LGIRGrammarParser::RuleGetElementPointer);
+  size_t _la = 0;
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -1972,11 +1974,18 @@ LGIRGrammarParser::GetElementPointerContext* LGIRGrammarParser::getElementPointe
     match(LGIRGrammarParser::GETELEMENTPTR);
     setState(233);
     value();
-
-    setState(234);
-    match(LGIRGrammarParser::T__3);
-    setState(235);
-    value();
+    setState(236); 
+    _errHandler->sync(this);
+    _la = _input->LA(1);
+    do {
+      setState(234);
+      match(LGIRGrammarParser::T__3);
+      setState(235);
+      value();
+      setState(238); 
+      _errHandler->sync(this);
+      _la = _input->LA(1);
+    } while (_la == LGIRGrammarParser::T__3);
    
   }
   catch (RecognitionException &e) {
@@ -2052,21 +2061,21 @@ LGIRGrammarParser::CmpContext* LGIRGrammarParser::cmp() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(237);
-    registerName();
-    setState(238);
-    match(LGIRGrammarParser::T__0);
-    setState(239);
-    match(LGIRGrammarParser::CMP);
     setState(240);
-    condition();
+    registerName();
     setState(241);
-    match(LGIRGrammarParser::T__3);
+    match(LGIRGrammarParser::T__0);
     setState(242);
-    value();
+    match(LGIRGrammarParser::CMP);
     setState(243);
-    match(LGIRGrammarParser::T__3);
+    condition();
     setState(244);
+    match(LGIRGrammarParser::T__3);
+    setState(245);
+    value();
+    setState(246);
+    match(LGIRGrammarParser::T__3);
+    setState(247);
     value();
    
   }
@@ -2143,21 +2152,21 @@ LGIRGrammarParser::ConditionalJumpContext* LGIRGrammarParser::conditionalJump() 
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(246);
-    match(LGIRGrammarParser::CONDITIONAL_JUMP);
-    setState(247);
-    condition();
-    setState(248);
-    match(LGIRGrammarParser::T__3);
     setState(249);
-    value();
+    match(LGIRGrammarParser::CONDITIONAL_JUMP);
     setState(250);
-    match(LGIRGrammarParser::T__3);
+    condition();
     setState(251);
-    value();
-    setState(252);
     match(LGIRGrammarParser::T__3);
+    setState(252);
+    value();
     setState(253);
+    match(LGIRGrammarParser::T__3);
+    setState(254);
+    value();
+    setState(255);
+    match(LGIRGrammarParser::T__3);
+    setState(256);
     label();
    
   }
@@ -2226,13 +2235,13 @@ LGIRGrammarParser::UnaryOperatesContext* LGIRGrammarParser::unaryOperates() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(255);
-    registerName();
-    setState(256);
-    match(LGIRGrammarParser::T__0);
-    setState(257);
-    unaryOperator();
     setState(258);
+    registerName();
+    setState(259);
+    match(LGIRGrammarParser::T__0);
+    setState(260);
+    unaryOperator();
+    setState(261);
     value();
    
   }
@@ -2305,17 +2314,17 @@ LGIRGrammarParser::BinaryOperatesContext* LGIRGrammarParser::binaryOperates() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(260);
-    registerName();
-    setState(261);
-    match(LGIRGrammarParser::T__0);
-    setState(262);
-    binaryOperator();
     setState(263);
-    value();
+    registerName();
     setState(264);
-    match(LGIRGrammarParser::T__3);
+    match(LGIRGrammarParser::T__0);
     setState(265);
+    binaryOperator();
+    setState(266);
+    value();
+    setState(267);
+    match(LGIRGrammarParser::T__3);
+    setState(268);
     value();
    
   }
@@ -2384,13 +2393,13 @@ LGIRGrammarParser::TypeCastContext* LGIRGrammarParser::typeCast() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(267);
-    registerName();
-    setState(268);
-    match(LGIRGrammarParser::T__0);
-    setState(269);
-    typeCastKind();
     setState(270);
+    registerName();
+    setState(271);
+    match(LGIRGrammarParser::T__0);
+    setState(272);
+    typeCastKind();
+    setState(273);
     value();
    
   }
@@ -2452,15 +2461,15 @@ LGIRGrammarParser::TypeContext* LGIRGrammarParser::type() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(272);
+    setState(275);
     baseType();
-    setState(276);
+    setState(279);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while (_la == LGIRGrammarParser::T__7) {
-      setState(273);
+      setState(276);
       match(LGIRGrammarParser::T__7);
-      setState(278);
+      setState(281);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
@@ -2538,7 +2547,7 @@ LGIRGrammarParser::BaseTypeContext* LGIRGrammarParser::baseType() {
     exitRule();
   });
   try {
-    setState(284);
+    setState(287);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
       case LGIRGrammarParser::I1:
@@ -2551,7 +2560,7 @@ LGIRGrammarParser::BaseTypeContext* LGIRGrammarParser::baseType() {
       case LGIRGrammarParser::I64:
       case LGIRGrammarParser::U64: {
         enterOuterAlt(_localctx, 1);
-        setState(279);
+        setState(282);
         integerType();
         break;
       }
@@ -2559,28 +2568,28 @@ LGIRGrammarParser::BaseTypeContext* LGIRGrammarParser::baseType() {
       case LGIRGrammarParser::FLOAT:
       case LGIRGrammarParser::DOUBLE: {
         enterOuterAlt(_localctx, 2);
-        setState(280);
+        setState(283);
         decimalType();
         break;
       }
 
       case LGIRGrammarParser::T__8: {
         enterOuterAlt(_localctx, 3);
-        setState(281);
+        setState(284);
         arrayType();
         break;
       }
 
       case LGIRGrammarParser::VOID: {
         enterOuterAlt(_localctx, 4);
-        setState(282);
+        setState(285);
         voidType();
         break;
       }
 
       case LGIRGrammarParser::STRUCTURE: {
         enterOuterAlt(_localctx, 5);
-        setState(283);
+        setState(286);
         structureType();
         break;
       }
@@ -2680,7 +2689,7 @@ LGIRGrammarParser::IntegerTypeContext* LGIRGrammarParser::integerType() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(286);
+    setState(289);
     _la = _input->LA(1);
     if (!((((_la & ~ 0x3fULL) == 0) &&
       ((1ULL << _la) & 1071644672) != 0))) {
@@ -2754,7 +2763,7 @@ LGIRGrammarParser::DecimalTypeContext* LGIRGrammarParser::decimalType() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(288);
+    setState(291);
     _la = _input->LA(1);
     if (!(_la == LGIRGrammarParser::FLOAT
 
@@ -2828,15 +2837,15 @@ LGIRGrammarParser::ArrayTypeContext* LGIRGrammarParser::arrayType() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(290);
-    match(LGIRGrammarParser::T__8);
-    setState(291);
-    match(LGIRGrammarParser::INT_NUMBER);
-    setState(292);
-    match(LGIRGrammarParser::T__9);
     setState(293);
-    type();
+    match(LGIRGrammarParser::T__8);
     setState(294);
+    match(LGIRGrammarParser::INT_NUMBER);
+    setState(295);
+    match(LGIRGrammarParser::T__9);
+    setState(296);
+    type();
+    setState(297);
     match(LGIRGrammarParser::T__10);
    
   }
@@ -2897,7 +2906,7 @@ LGIRGrammarParser::VoidTypeContext* LGIRGrammarParser::voidType() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(296);
+    setState(299);
     match(LGIRGrammarParser::VOID);
    
   }
@@ -2962,9 +2971,9 @@ LGIRGrammarParser::StructureTypeContext* LGIRGrammarParser::structureType() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(298);
+    setState(301);
     match(LGIRGrammarParser::STRUCTURE);
-    setState(299);
+    setState(302);
     match(LGIRGrammarParser::IDENTIFIER);
    
   }
@@ -3029,7 +3038,7 @@ LGIRGrammarParser::ValuesContext* LGIRGrammarParser::values() {
     exitRule();
   });
   try {
-    setState(310);
+    setState(313);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
       case LGIRGrammarParser::T__8:
@@ -3050,17 +3059,17 @@ LGIRGrammarParser::ValuesContext* LGIRGrammarParser::values() {
       case LGIRGrammarParser::GLOBALREF:
       case LGIRGrammarParser::LOCALREF: {
         enterOuterAlt(_localctx, 1);
-        setState(301);
+        setState(304);
         value();
-        setState(306);
+        setState(309);
         _errHandler->sync(this);
         _la = _input->LA(1);
         while (_la == LGIRGrammarParser::T__3) {
-          setState(302);
+          setState(305);
           match(LGIRGrammarParser::T__3);
-          setState(303);
+          setState(306);
           value();
-          setState(308);
+          setState(311);
           _errHandler->sync(this);
           _la = _input->LA(1);
         }
@@ -3150,40 +3159,40 @@ LGIRGrammarParser::ValueContext* LGIRGrammarParser::value() {
     exitRule();
   });
   try {
-    setState(317);
+    setState(320);
     _errHandler->sync(this);
-    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 15, _ctx)) {
+    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 16, _ctx)) {
     case 1: {
       enterOuterAlt(_localctx, 1);
-      setState(312);
+      setState(315);
       register_();
       break;
     }
 
     case 2: {
       enterOuterAlt(_localctx, 2);
-      setState(313);
+      setState(316);
       constant();
       break;
     }
 
     case 3: {
       enterOuterAlt(_localctx, 3);
-      setState(314);
+      setState(317);
       functionReference();
       break;
     }
 
     case 4: {
       enterOuterAlt(_localctx, 4);
-      setState(315);
+      setState(318);
       globalReference();
       break;
     }
 
     case 5: {
       enterOuterAlt(_localctx, 5);
-      setState(316);
+      setState(319);
       localReference();
       break;
     }
@@ -3257,7 +3266,7 @@ LGIRGrammarParser::ConstantContext* LGIRGrammarParser::constant() {
     exitRule();
   });
   try {
-    setState(322);
+    setState(325);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
       case LGIRGrammarParser::I1:
@@ -3270,7 +3279,7 @@ LGIRGrammarParser::ConstantContext* LGIRGrammarParser::constant() {
       case LGIRGrammarParser::I64:
       case LGIRGrammarParser::U64: {
         enterOuterAlt(_localctx, 1);
-        setState(319);
+        setState(322);
         integerConstant();
         break;
       }
@@ -3278,14 +3287,14 @@ LGIRGrammarParser::ConstantContext* LGIRGrammarParser::constant() {
       case LGIRGrammarParser::FLOAT:
       case LGIRGrammarParser::DOUBLE: {
         enterOuterAlt(_localctx, 2);
-        setState(320);
+        setState(323);
         decimalConstant();
         break;
       }
 
       case LGIRGrammarParser::T__8: {
         enterOuterAlt(_localctx, 3);
-        setState(321);
+        setState(324);
         arrayConstant();
         break;
       }
@@ -3356,9 +3365,9 @@ LGIRGrammarParser::IntegerConstantContext* LGIRGrammarParser::integerConstant() 
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(324);
+    setState(327);
     integerType();
-    setState(325);
+    setState(328);
     match(LGIRGrammarParser::INT_NUMBER);
    
   }
@@ -3423,9 +3432,9 @@ LGIRGrammarParser::DecimalConstantContext* LGIRGrammarParser::decimalConstant() 
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(327);
+    setState(330);
     decimalType();
-    setState(328);
+    setState(331);
     match(LGIRGrammarParser::DECIMAL_NUMBER);
    
   }
@@ -3495,25 +3504,25 @@ LGIRGrammarParser::ArrayConstantContext* LGIRGrammarParser::arrayConstant() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(330);
+    setState(333);
     arrayType();
-    setState(331);
+    setState(334);
     match(LGIRGrammarParser::T__8);
-    setState(341);
+    setState(344);
     _errHandler->sync(this);
-    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 18, _ctx)) {
+    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 19, _ctx)) {
     case 1: {
-      setState(332);
+      setState(335);
       constant();
-      setState(337);
+      setState(340);
       _errHandler->sync(this);
       _la = _input->LA(1);
       while (_la == LGIRGrammarParser::T__3) {
-        setState(333);
+        setState(336);
         match(LGIRGrammarParser::T__3);
-        setState(334);
+        setState(337);
         constant();
-        setState(339);
+        setState(342);
         _errHandler->sync(this);
         _la = _input->LA(1);
       }
@@ -3521,7 +3530,7 @@ LGIRGrammarParser::ArrayConstantContext* LGIRGrammarParser::arrayConstant() {
     }
 
     case 2: {
-      setState(340);
+      setState(343);
       constant();
       break;
     }
@@ -3529,7 +3538,7 @@ LGIRGrammarParser::ArrayConstantContext* LGIRGrammarParser::arrayConstant() {
     default:
       break;
     }
-    setState(343);
+    setState(346);
     match(LGIRGrammarParser::T__10);
    
   }
@@ -3594,9 +3603,9 @@ LGIRGrammarParser::FunctionReferenceContext* LGIRGrammarParser::functionReferenc
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(345);
+    setState(348);
     match(LGIRGrammarParser::FUNCREF);
-    setState(346);
+    setState(349);
     match(LGIRGrammarParser::IDENTIFIER);
    
   }
@@ -3661,9 +3670,9 @@ LGIRGrammarParser::GlobalReferenceContext* LGIRGrammarParser::globalReference() 
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(348);
+    setState(351);
     match(LGIRGrammarParser::GLOBALREF);
-    setState(349);
+    setState(352);
     match(LGIRGrammarParser::IDENTIFIER);
    
   }
@@ -3728,9 +3737,9 @@ LGIRGrammarParser::LocalReferenceContext* LGIRGrammarParser::localReference() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(351);
+    setState(354);
     match(LGIRGrammarParser::LOCALREF);
-    setState(352);
+    setState(355);
     match(LGIRGrammarParser::IDENTIFIER);
    
   }
@@ -3795,9 +3804,9 @@ LGIRGrammarParser::RegisterContext* LGIRGrammarParser::register_() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(354);
+    setState(357);
     type();
-    setState(355);
+    setState(358);
     registerName();
    
   }
@@ -3863,9 +3872,9 @@ LGIRGrammarParser::RegisterNameContext* LGIRGrammarParser::registerName() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(357);
+    setState(360);
     match(LGIRGrammarParser::T__11);
-    setState(358);
+    setState(361);
     _la = _input->LA(1);
     if (!(_la == LGIRGrammarParser::INT_NUMBER
 
@@ -3939,9 +3948,9 @@ LGIRGrammarParser::LabelContext* LGIRGrammarParser::label() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(360);
+    setState(363);
     match(LGIRGrammarParser::LABEL);
-    setState(361);
+    setState(364);
     match(LGIRGrammarParser::IDENTIFIER);
    
   }
@@ -3999,7 +4008,7 @@ LGIRGrammarParser::ConditionContext* LGIRGrammarParser::condition() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(363);
+    setState(366);
     _la = _input->LA(1);
     if (!((((_la & ~ 0x3fULL) == 0) &&
       ((1ULL << _la) & 2088960) != 0))) {
@@ -4081,7 +4090,7 @@ LGIRGrammarParser::UnaryOperatorContext* LGIRGrammarParser::unaryOperator() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(365);
+    setState(368);
     _la = _input->LA(1);
     if (!((((_la & ~ 0x3fULL) == 0) &&
       ((1ULL << _la) & 2111062325329920) != 0))) {
@@ -4191,7 +4200,7 @@ LGIRGrammarParser::BinaryOperatorContext* LGIRGrammarParser::binaryOperator() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(367);
+    setState(370);
     _la = _input->LA(1);
     if (!((((_la & ~ 0x3fULL) == 0) &&
       ((1ULL << _la) & 4609434218613702656) != 0))) {
@@ -4297,7 +4306,7 @@ LGIRGrammarParser::TypeCastKindContext* LGIRGrammarParser::typeCastKind() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(369);
+    setState(372);
     _la = _input->LA(1);
     if (!(((((_la - 62) & ~ 0x3fULL) == 0) &&
       ((1ULL << (_la - 62)) & 1023) != 0))) {

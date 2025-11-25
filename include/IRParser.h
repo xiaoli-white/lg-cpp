@@ -37,6 +37,7 @@ namespace lg::ir::parser
         std::any visitAsm(LGIRGrammarParser::AsmContext* context) override;
         std::any visitBinaryOperates(LGIRGrammarParser::BinaryOperatesContext* context) override;
         std::any visitUnaryOperates(LGIRGrammarParser::UnaryOperatesContext* context) override;
+        std::any visitGetElementPointer(LGIRGrammarParser::GetElementPointerContext* context) override;
         std::any visitGoto(LGIRGrammarParser::GotoContext* context) override;
         std::any visitReturn(LGIRGrammarParser::ReturnContext* context) override;
         std::any visitValues(LGIRGrammarParser::ValuesContext* context) override;

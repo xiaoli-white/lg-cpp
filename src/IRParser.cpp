@@ -14,7 +14,8 @@ namespace lg::ir::parser
 
     std::any IRParser::visitProgram(LGIRGrammarParser::ProgramContext* context)
     {
-        for (auto& func : context->function())
+        for (const auto& globalVariable : context->globalVariable()) visit(globalVariable);
+        for (const auto& func : context->function())
         {
             visit(func->type());
             auto* returnType = std::any_cast<type::IRType*>(stack.top());
@@ -29,7 +30,17 @@ namespace lg::ir::parser
                                                       new base::IRControlFlowGraph());
             module->putFunction(function);
         }
-        for (auto& func : context->function())visit(func);
+        for (const auto& func : context->function()) visit(func);
+        return nullptr;
+    }
+
+    std::any IRParser::visitGlobalVariable(LGIRGrammarParser::GlobalVariableContext* context)
+    {
+        visit(context->constant());
+        auto* value = std::any_cast<value::IRValue*>(stack.top());
+        auto* constant = dynamic_cast<value::constant::IRConstant*>(value);
+        if (constant == nullptr) throw std::runtime_error("Initializer must be a constant");
+        module->putGlobalVariable(new base::IRGlobalVariable(context->IDENTIFIER()->getText(), constant));
         return nullptr;
     }
 

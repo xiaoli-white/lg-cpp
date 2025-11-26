@@ -7,8 +7,8 @@ namespace lg::ir
 {
     namespace base
     {
-        IRGlobalVariable::IRGlobalVariable(type::IRType* type, std::string name,
-                                           value::constant::IRConstant* initializer) : type(type),
+        IRGlobalVariable::IRGlobalVariable(std::string name,
+                                           value::constant::IRConstant* initializer) : type(initializer->getType()),
             name(std::move(name)), initializer(initializer)
         {
         }

@@ -236,12 +236,13 @@ namespace lg::ir::parser
         name2Register[regName] = reg;
         return nullptr;
     }
+
     std::any IRParser::visitStore(LGIRGrammarParser::StoreContext* context)
     {
-        visit (context->value(0));
+        visit(context->value(0));
         auto* ptr = std::any_cast<value::IRValue*>(stack.top());
         stack.pop();
-        visit (context->value(1));
+        visit(context->value(1));
         auto* value = std::any_cast<value::IRValue*>(stack.top());
         stack.pop();
         builder.createStore(ptr, value);
@@ -251,6 +252,44 @@ namespace lg::ir::parser
     std::any IRParser::visitNop(LGIRGrammarParser::NopContext* context)
     {
         builder.createNop();
+        return nullptr;
+    }
+
+    std::any IRParser::visitSetRegister(LGIRGrammarParser::SetRegisterContext* context)
+    {
+        visit(context->value());
+        auto* value = std::any_cast<value::IRValue*>(stack.top());
+        stack.pop();
+        const auto regName = getTargetRegisterName(context->registerName());
+        auto* reg = builder.createSetRegister(value, regName);
+        name2Register[regName] = reg;
+        return nullptr;
+    }
+
+    std::any IRParser::visitStackAlloc(LGIRGrammarParser::StackAllocContext* context)
+    {
+        visit(context->value());
+        auto* size = std::any_cast<value::IRValue*>(stack.top());
+        stack.pop();
+        const auto regName = getTargetRegisterName(context->registerName());
+        auto* reg = builder.createStackAlloc(size, regName);
+        name2Register[regName] = reg;
+        return nullptr;
+    }
+
+    std::any IRParser::visitTypeCast(LGIRGrammarParser::TypeCastContext* context)
+    {
+        visit(context->value());
+        auto* source = std::any_cast<value::IRValue*>(stack.top());
+        stack.pop();
+        visit(context->type());
+        auto* targetType = std::any_cast<type::IRType*>(stack.top());
+        stack.pop();
+        const auto regName = getTargetRegisterName(context->registerName());
+        auto* reg = new value::IRRegister(regName);
+        builder.getInsertPoint()->addInstruction(
+            new instruction::IRTypeCast(parseTypeCastKind(context->typeCastKind()), source, targetType, reg));
+        name2Register[regName] = reg;
         return nullptr;
     }
 
@@ -368,7 +407,7 @@ namespace lg::ir::parser
         if (context->SHL()) return instruction::IRBinaryOperates::Operator::SHL;
         if (context->SHR()) return instruction::IRBinaryOperates::Operator::SHR;
         if (context->USHR()) return instruction::IRBinaryOperates::Operator::USHR;
-        throw std::runtime_error("Invalid binary operator");
+        throw std::runtime_error("Invalid binary operator: " + context->getText());
     }
 
     instruction::IRUnaryOperates::Operator IRParser::parseUnaryOperator(
@@ -378,7 +417,7 @@ namespace lg::ir::parser
         if (context->DEC()) return instruction::IRUnaryOperates::Operator::DEC;
         if (context->NOT()) return instruction::IRUnaryOperates::Operator::NOT;
         if (context->NEG()) return instruction::IRUnaryOperates::Operator::NEG;
-        throw std::runtime_error("Invalid unary operator");
+        throw std::runtime_error("Invalid unary operator: " + context->getText());
     }
 
     base::IRCondition IRParser::parseCondition(LGIRGrammarParser::ConditionContext* context)
@@ -392,15 +431,29 @@ namespace lg::ir::parser
         if (text == "le") return base::IRCondition::LE;
         if (text == "g") return base::IRCondition::G;
         if (text == "ge") return base::IRCondition::GE;
-        throw std::runtime_error("Invalid condition");
+        throw std::runtime_error("Invalid condition: " + text);
     }
 
+    instruction::IRTypeCast::Kind IRParser::parseTypeCastKind(LGIRGrammarParser::TypeCastKindContext* context)
+    {
+        if (context->ZEXT()) return instruction::IRTypeCast::Kind::ZEXT;
+        if (context->SEXT()) return instruction::IRTypeCast::Kind::SEXT;
+        if (context->TRUNC()) return instruction::IRTypeCast::Kind::TRUNC;
+        if (context->ITOF()) return instruction::IRTypeCast::Kind::ITOF;
+        if (context->FTOI()) return instruction::IRTypeCast::Kind::FTOI;
+        if (context->ITOP()) return instruction::IRTypeCast::Kind::ITOP;
+        if (context->PTOI()) return instruction::IRTypeCast::Kind::PTOI;
+        if (context->PTOP()) return instruction::IRTypeCast::Kind::PTOP;
+        if (context->FEXT()) return instruction::IRTypeCast::Kind::FEXT;
+        if (context->FTRUNC()) return instruction::IRTypeCast::Kind::FTRUNC;
+        throw std::runtime_error("Invalid type cast kind: " + context->getText());
+    }
 
     std::string IRParser::getTargetRegisterName(LGIRGrammarParser::RegisterNameContext* context)
     {
         if (context->IDENTIFIER()) return context->IDENTIFIER()->getText();
         if (context->INT_NUMBER()) return context->INT_NUMBER()->getText();
-        throw std::runtime_error("Invalid register name");
+        throw std::runtime_error("Invalid register name: " + context->getText());
     }
 
 

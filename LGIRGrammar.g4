@@ -25,7 +25,7 @@ cmp: registerName '=' CMP condition ',' value ',' value;
 conditionalJump: CONDITIONAL_JUMP condition ',' value ',' value ',' label;
 unaryOperates: registerName '=' unaryOperator value;
 binaryOperates: registerName '=' binaryOperator value ',' value;
-typeCast: registerName '=' typeCastKind value;
+typeCast: registerName '=' typeCastKind value 'to' type;
 
 type: baseType '*'*;
 baseType: integerType | decimalType | arrayType | voidType | structureType | functionReferenceType;

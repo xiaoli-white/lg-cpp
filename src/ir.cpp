@@ -1335,6 +1335,16 @@ namespace lg::ir
         functions[function->name] = function;
     }
 
+    base::IRGlobalVariable* IRModule::getGlobalVariable(const std::string& name)
+    {
+        return globals[name];
+    }
+
+    structure::IRStructure* IRModule::getStructure(const std::string& name)
+    {
+        return structures[name];
+    }
+
     function::IRFunction* IRModule::getFunction(const std::string& name)
     {
         return functions[name];

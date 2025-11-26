@@ -756,6 +756,8 @@ namespace lg::ir
         void putGlobalVariable(base::IRGlobalVariable* globalVariable);
         void putStructure(structure::IRStructure* structure);
         void putFunction(function::IRFunction* function);
+        base::IRGlobalVariable* getGlobalVariable(const std::string& name);
+        structure::IRStructure* getStructure(const std::string& name);
         function::IRFunction* getFunction(const std::string& name);
     };
 }

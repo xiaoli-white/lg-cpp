@@ -56,7 +56,10 @@ namespace lg::ir::parser
         std::any visitValues(LGIRGrammarParser::ValuesContext* context) override;
         std::any visitRegister(LGIRGrammarParser::RegisterContext* context) override;
         std::any visitIntegerConstant(LGIRGrammarParser::IntegerConstantContext* context) override;
+        std::any visitTypes(LGIRGrammarParser::TypesContext* context) override;
+        std::any visitType(LGIRGrammarParser::TypeContext* context) override;
         std::any visitIntegerType(LGIRGrammarParser::IntegerTypeContext* context) override;
+        std::any visitDecimalType(LGIRGrammarParser::DecimalTypeContext* context) override;
         std::any visitVoidType(LGIRGrammarParser::VoidTypeContext* context) override;
         std::any visitLabel(LGIRGrammarParser::LabelContext* context) override;
 

@@ -15,17 +15,17 @@ public:
     T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, T__5 = 6, T__6 = 7, 
     T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, T__11 = 12, T__12 = 13, T__13 = 14, 
     T__14 = 15, T__15 = 16, T__16 = 17, T__17 = 18, T__18 = 19, T__19 = 20, 
-    T__20 = 21, T__21 = 22, I1 = 23, I8 = 24, U8 = 25, I16 = 26, U16 = 27, 
-    I32 = 28, U32 = 29, I64 = 30, U64 = 31, FLOAT = 32, DOUBLE = 33, VOID = 34, 
-    GLOBAL = 35, STRUCTURE = 36, FUNCTION = 37, NOP = 38, STACK_ALLOC = 39, 
-    LOAD = 40, STORE = 41, ASM = 42, GOTO = 43, INVOKE = 44, RETURN = 45, 
-    GETELEMENTPTR = 46, CMP = 47, CONDITIONAL_JUMP = 48, INC = 49, DEC = 50, 
-    NOT = 51, NEG = 52, ADD = 53, SUB = 54, MUL = 55, DIV = 56, MOD = 57, 
-    AND = 58, OR = 59, XOR = 60, SHL = 61, SHR = 62, USHR = 63, ZEXT = 64, 
-    SEXT = 65, TRUNC = 66, ITOF = 67, FTOI = 68, ITOP = 69, PTOI = 70, PTOP = 71, 
-    FEXT = 72, FTRUNC = 73, FUNCREF = 74, GLOBALREF = 75, LOCALREF = 76, 
-    LABEL = 77, ELLIPSIS = 78, INT_NUMBER = 79, DECIMAL_NUMBER = 80, WS = 81, 
-    STRING_LITERAL = 82, IDENTIFIER = 83
+    T__20 = 21, I1 = 22, I8 = 23, U8 = 24, I16 = 25, U16 = 26, I32 = 27, 
+    U32 = 28, I64 = 29, U64 = 30, FLOAT = 31, DOUBLE = 32, VOID = 33, GLOBAL = 34, 
+    STRUCTURE = 35, FUNCTION = 36, NOP = 37, STACK_ALLOC = 38, LOAD = 39, 
+    STORE = 40, ASM = 41, GOTO = 42, INVOKE = 43, RETURN = 44, GETELEMENTPTR = 45, 
+    CMP = 46, CONDITIONAL_JUMP = 47, INC = 48, DEC = 49, NOT = 50, NEG = 51, 
+    ADD = 52, SUB = 53, MUL = 54, DIV = 55, MOD = 56, AND = 57, OR = 58, 
+    XOR = 59, SHL = 60, SHR = 61, USHR = 62, ZEXT = 63, SEXT = 64, TRUNC = 65, 
+    ITOF = 66, FTOI = 67, ITOP = 68, PTOI = 69, PTOP = 70, FEXT = 71, FTRUNC = 72, 
+    FUNCREF = 73, GLOBALREF = 74, LOCALREF = 75, LABEL = 76, ELLIPSIS = 77, 
+    MULTIPLY = 78, INT_NUMBER = 79, DECIMAL_NUMBER = 80, WS = 81, STRING_LITERAL = 82, 
+    IDENTIFIER = 83
   };
 
   explicit LGIRGrammarLexer(antlr4::CharStream *input);

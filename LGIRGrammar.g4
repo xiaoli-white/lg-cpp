@@ -27,7 +27,7 @@ unaryOperates: registerName '=' unaryOperator value;
 binaryOperates: registerName '=' binaryOperator value ',' value;
 typeCast: registerName '=' typeCastKind value 'to' type;
 
-type: baseType '*'*;
+type: baseType MULTIPLY*;
 baseType: integerType | decimalType | arrayType | voidType | structureType | functionReferenceType;
 integerType: I1 | I8 | U8 | I16 | U16 | I32 | U32 | I64 | U64;
 decimalType: FLOAT | DOUBLE;
@@ -117,6 +117,7 @@ LOCALREF: 'localref';
 LABEL: 'label';
 
 ELLIPSIS: '...';
+MULTIPLY: '*';
 
 INT_NUMBER : [0-9]+;
 DECIMAL_NUMBER: [0-9]+ '.' [0-9]+;

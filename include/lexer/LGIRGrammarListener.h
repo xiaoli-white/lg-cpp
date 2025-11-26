@@ -5,7 +5,7 @@
 
 
 #include "antlr4-runtime.h"
-#include "lexer/LGIRGrammarParser.h"
+#include "LGIRGrammarParser.h"
 
 
 /**

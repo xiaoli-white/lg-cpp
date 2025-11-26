@@ -14,6 +14,9 @@ namespace lg::ir::parser
 
     std::any IRParser::visitProgram(LGIRGrammarParser::ProgramContext* context)
     {
+        for (const auto& structure : context->structure())
+            module->putStructure(new structure::IRStructure({}, structure->IDENTIFIER()->getText(), {}));
+        for (const auto& structure : context->structure()) visit(structure);
         for (const auto& globalVariable : context->globalVariable()) visit(globalVariable);
         for (const auto& func : context->function())
         {
@@ -49,7 +52,8 @@ namespace lg::ir::parser
         visit(context->fields());
         auto fields = std::any_cast<std::vector<structure::IRField*>>(stack.top());
         stack.pop();
-        module->putStructure(new structure::IRStructure({}, context->IDENTIFIER()->getText(), std::move(fields)));
+        structure::IRStructure* structure = module->getStructure(context->IDENTIFIER()->getText());
+        structure->fields = std::move(fields);
         return nullptr;
     }
 
@@ -375,6 +379,31 @@ namespace lg::ir::parser
         return nullptr;
     }
 
+    std::any IRParser::visitTypes(LGIRGrammarParser::TypesContext* context)
+    {
+        std::vector<type::IRType*> types;
+        for (const auto& type : context->type())
+        {
+            visit(type);
+            types.push_back(std::any_cast<type::IRType*>(stack.top()));
+            stack.pop();
+        }
+        stack.emplace(types);
+        return nullptr;
+    }
+
+    std::any IRParser::visitType(LGIRGrammarParser::TypeContext* context)
+    {
+        visit(context->baseType());
+        auto* type = std::any_cast<type::IRType*>(stack.top());
+        stack.pop();
+        for (size_t i = 0; i < context->MULTIPLY().size(); ++i)
+        {
+            type = type::IRPointerType::get(type);
+        }
+        stack.emplace(std::make_any<type::IRType*>(type));
+        return nullptr;
+    }
 
     std::any IRParser::visitIntegerType(LGIRGrammarParser::IntegerTypeContext* context)
     {
@@ -416,9 +445,24 @@ namespace lg::ir::parser
         }
         else
         {
-            throw std::runtime_error("Invalid integer type");
+            throw std::runtime_error("Invalid integer type: " + context->getText());
         }
         return nullptr;
+    }
+
+    std::any IRParser::visitDecimalType(LGIRGrammarParser::DecimalTypeContext* context)
+    {
+        if (context->FLOAT())
+        {
+            stack.emplace(std::make_any<type::IRType*>(type::IRFloatType::get()));
+            return nullptr;
+        }
+        if (context->DOUBLE())
+        {
+            stack.emplace(std::make_any<type::IRType*>(type::IRDoubleType::get()));
+            return nullptr;
+        }
+        throw std::runtime_error("Invalid decimal type: " + context->getText());
     }
 
     std::any IRParser::visitVoidType(LGIRGrammarParser::VoidTypeContext* context)

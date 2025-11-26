@@ -38,12 +38,22 @@ namespace lg::ir::parser
         std::any visitBinaryOperates(LGIRGrammarParser::BinaryOperatesContext* context) override;
         std::any visitUnaryOperates(LGIRGrammarParser::UnaryOperatesContext* context) override;
         std::any visitGetElementPointer(LGIRGrammarParser::GetElementPointerContext* context) override;
+        std::any visitCmp(LGIRGrammarParser::CmpContext* context) override;
+        std::any visitConditionalJump(LGIRGrammarParser::ConditionalJumpContext* context) override;
         std::any visitGoto(LGIRGrammarParser::GotoContext* context) override;
+        std::any visitInvoke(LGIRGrammarParser::InvokeContext* context) override;
         std::any visitReturn(LGIRGrammarParser::ReturnContext* context) override;
+        std::any visitLoad(LGIRGrammarParser::LoadContext* context) override;
+        std::any visitStore(LGIRGrammarParser::StoreContext* context) override;
+        std::any visitNop(LGIRGrammarParser::NopContext* context) override;
+        std::any visitSetRegister(LGIRGrammarParser::SetRegisterContext* context) override;
+        std::any visitStackAlloc(LGIRGrammarParser::StackAllocContext* context) override;
+        std::any visitTypeCast(LGIRGrammarParser::TypeCastContext* context) override;
         std::any visitValues(LGIRGrammarParser::ValuesContext* context) override;
         std::any visitRegister(LGIRGrammarParser::RegisterContext* context) override;
         std::any visitIntegerConstant(LGIRGrammarParser::IntegerConstantContext* context) override;
         std::any visitIntegerType(LGIRGrammarParser::IntegerTypeContext* context) override;
+        std::any visitVoidType(LGIRGrammarParser::VoidTypeContext* context) override;
         std::any visitLabel(LGIRGrammarParser::LabelContext* context) override;
 
     private:
@@ -51,6 +61,7 @@ namespace lg::ir::parser
             LGIRGrammarParser::BinaryOperatorContext* context);
         static instruction::IRUnaryOperates::Operator parseUnaryOperator(
             LGIRGrammarParser::UnaryOperatorContext* context);
+        static base::IRCondition parseCondition(LGIRGrammarParser::ConditionContext* context);
         static std::string getTargetRegisterName(LGIRGrammarParser::RegisterNameContext* context);
     };
 

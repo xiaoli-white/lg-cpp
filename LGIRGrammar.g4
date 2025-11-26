@@ -10,8 +10,9 @@ function: FUNCTION type IDENTIFIER '(' localVariables ')' '{' localVariables '}'
 localVariables: localVariable (',' localVariable)* |;
 localVariable: type IDENTIFIER;
 basicBlock: IDENTIFIER ':' (statement)*;
-statement: NOP | stack_alloc | load | store | asm | goto | invoke | return | setRegister | getElementPointer | cmp | conditionalJump | unaryOperates | binaryOperates;
-stack_alloc: registerName '=' STACK_ALLOC value;
+statement: nop | stackAlloc | load | store | asm | goto | invoke | return | setRegister | getElementPointer | cmp | conditionalJump | unaryOperates | binaryOperates | typeCast;
+nop: NOP;
+stackAlloc: registerName '=' STACK_ALLOC value;
 load: registerName '=' LOAD value;
 store: STORE value value;
 asm: ASM STRING_LITERAL ',' STRING_LITERAL '(' values ')';
@@ -27,12 +28,14 @@ binaryOperates: registerName '=' binaryOperator value ',' value;
 typeCast: registerName '=' typeCastKind value;
 
 type: baseType '*'*;
-baseType: integerType | decimalType | arrayType | voidType | structureType;
+baseType: integerType | decimalType | arrayType | voidType | structureType | functionReferenceType;
 integerType: I1 | I8 | U8 | I16 | U16 | I32 | U32 | I64 | U64;
 decimalType: FLOAT | DOUBLE;
 arrayType: '[' INT_NUMBER 'x' type ']';
 voidType: VOID;
 structureType: STRUCTURE IDENTIFIER;
+functionReferenceType: '(' types (',' ELLIPSIS)? ')' '->' type;
+types: type (',' type)* | ;
 values: value (',' value)* | ;
 value: register | constant | functionReference | globalReference | localReference;
 constant: integerConstant | decimalConstant | arrayConstant;
@@ -112,6 +115,8 @@ FUNCREF: 'funcref';
 GLOBALREF: 'globalref';
 LOCALREF: 'localref';
 LABEL: 'label';
+
+ELLIPSIS: '...';
 
 INT_NUMBER : [0-9]+;
 DECIMAL_NUMBER: [0-9]+ '.' [0-9]+;

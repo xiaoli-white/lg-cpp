@@ -297,6 +297,51 @@ namespace lg::ir
             static IRVoidType instance;
             return &instance;
         }
+
+        IRFunctionReferenceType::IRFunctionReferenceType(IRType* returnType, std::vector<IRType*> parameterTypes,
+                                                         bool isVarArg) : returnType(returnType),
+                                                                          parameterTypes(std::move(parameterTypes)),
+                                                                          isVarArg(isVarArg)
+        {
+        }
+
+        std::any IRFunctionReferenceType::accept(IRVisitor* visitor, std::any additional)
+        {
+            return visitor->visitFunctionReferenceType(this, std::move(additional));
+        }
+
+        std::string IRFunctionReferenceType::toString()
+        {
+            std::string s = "(";
+            for (size_t i = 0; i < parameterTypes.size(); i++)
+            {
+                s += parameterTypes[i]->toString();
+                if (isVarArg || (i != parameterTypes.size() - 1)) s += ", ";
+            }
+            if (isVarArg) s += "...";
+            s += ") -> " + returnType->toString();
+            return s;
+        }
+
+        bool IRFunctionReferenceType::operator==(const IRType& other)
+        {
+            if (auto* o = dynamic_cast<const IRFunctionReferenceType*>(&other))
+            {
+                if (o->isVarArg != isVarArg) return false;
+                if (o->parameterTypes.size() != parameterTypes.size()) return false;
+                for (size_t i = 0; i < parameterTypes.size(); i++)
+                    if (o->parameterTypes[i] != parameterTypes[i])
+                        return false;
+                return o->returnType == returnType;
+            }
+            return false;
+        }
+
+        IRFunctionReferenceType* IRFunctionReferenceType::get(IRType* returnType, std::vector<IRType*> parameterTypes,
+                                                              const bool isVarArg)
+        {
+            return new IRFunctionReferenceType(returnType, std::move(parameterTypes), isVarArg);
+        }
     }
 
     namespace value
@@ -1070,6 +1115,18 @@ namespace lg::ir
     {
         return nullptr;
     }
+
+    std::any IRVisitor::visitFunctionReferenceType(type::IRFunctionReferenceType* irFunctionReferenceType,
+                                                   std::any additional)
+    {
+        visit(irFunctionReferenceType->returnType, additional);
+        for (auto* parameterType : irFunctionReferenceType->parameterTypes)
+        {
+            visit(parameterType, additional);
+        }
+        return nullptr;
+    }
+
 
     std::any IRVisitor::visitRegister(value::IRRegister* irRegister, std::any additional)
     {

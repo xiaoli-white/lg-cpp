@@ -46,8 +46,11 @@ public:
   virtual void enterStatement(LGIRGrammarParser::StatementContext * /*ctx*/) override { }
   virtual void exitStatement(LGIRGrammarParser::StatementContext * /*ctx*/) override { }
 
-  virtual void enterStack_alloc(LGIRGrammarParser::Stack_allocContext * /*ctx*/) override { }
-  virtual void exitStack_alloc(LGIRGrammarParser::Stack_allocContext * /*ctx*/) override { }
+  virtual void enterNop(LGIRGrammarParser::NopContext * /*ctx*/) override { }
+  virtual void exitNop(LGIRGrammarParser::NopContext * /*ctx*/) override { }
+
+  virtual void enterStackAlloc(LGIRGrammarParser::StackAllocContext * /*ctx*/) override { }
+  virtual void exitStackAlloc(LGIRGrammarParser::StackAllocContext * /*ctx*/) override { }
 
   virtual void enterLoad(LGIRGrammarParser::LoadContext * /*ctx*/) override { }
   virtual void exitLoad(LGIRGrammarParser::LoadContext * /*ctx*/) override { }
@@ -108,6 +111,12 @@ public:
 
   virtual void enterStructureType(LGIRGrammarParser::StructureTypeContext * /*ctx*/) override { }
   virtual void exitStructureType(LGIRGrammarParser::StructureTypeContext * /*ctx*/) override { }
+
+  virtual void enterFunctionReferenceType(LGIRGrammarParser::FunctionReferenceTypeContext * /*ctx*/) override { }
+  virtual void exitFunctionReferenceType(LGIRGrammarParser::FunctionReferenceTypeContext * /*ctx*/) override { }
+
+  virtual void enterTypes(LGIRGrammarParser::TypesContext * /*ctx*/) override { }
+  virtual void exitTypes(LGIRGrammarParser::TypesContext * /*ctx*/) override { }
 
   virtual void enterValues(LGIRGrammarParser::ValuesContext * /*ctx*/) override { }
   virtual void exitValues(LGIRGrammarParser::ValuesContext * /*ctx*/) override { }

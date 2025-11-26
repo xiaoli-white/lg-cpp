@@ -146,6 +146,39 @@ namespace lg::ir::parser
         return nullptr;
     }
 
+    std::any IRParser::visitCmp(LGIRGrammarParser::CmpContext* context)
+    {
+        const base::IRCondition condition = parseCondition(context->condition());
+        visit(context->value(0));
+        auto* operand1 = std::any_cast<value::IRValue*>(stack.top());
+        stack.pop();
+        visit(context->value(1));
+        auto* operand2 = std::any_cast<value::IRValue*>(stack.top());
+        stack.pop();
+        const auto regName = getTargetRegisterName(context->registerName());
+        auto* reg = new value::IRRegister(regName);
+        builder.getInsertPoint()->addInstruction(new instruction::IRCompare(condition, operand1, operand2, reg));
+        name2Register[regName] = reg;
+        return nullptr;
+    }
+
+    std::any IRParser::visitConditionalJump(LGIRGrammarParser::ConditionalJumpContext* context)
+    {
+        const base::IRCondition condition = parseCondition(context->condition());
+        visit(context->value(0));
+        auto* operand1 = std::any_cast<value::IRValue*>(stack.top());
+        stack.pop();
+        visit(context->value(1));
+        auto* operand2 = std::any_cast<value::IRValue*>(stack.top());
+        stack.pop();
+        visit(context->label());
+        builder.getInsertPoint()->addInstruction(
+            new instruction::IRConditionalJump(condition, operand1, operand2,
+                                               std::any_cast<base::IRBasicBlock*>(stack.top())));
+        stack.pop();
+        return nullptr;
+    }
+
 
     std::any IRParser::visitGoto(LGIRGrammarParser::GotoContext* context)
     {
@@ -154,6 +187,27 @@ namespace lg::ir::parser
         stack.pop();
         return nullptr;
     }
+
+    std::any IRParser::visitInvoke(LGIRGrammarParser::InvokeContext* context)
+    {
+        visit(context->type());
+        auto* returnType = std::any_cast<type::IRType*>(stack.top());
+        stack.pop();
+        visit(context->value());
+        auto* func = std::any_cast<value::IRValue*>(stack.top());
+        stack.pop();
+        visit(context->values());
+        auto args = std::any_cast<std::vector<value::IRValue*>>(stack.top());
+        stack.pop();
+        std::string regName;
+        auto* registerName = context->registerName();
+        if (registerName) regName = getTargetRegisterName(registerName);
+        else regName = "";
+        auto* reg = builder.createInvoke(returnType, func, std::move(args), regName);
+        if (registerName) name2Register[regName] = reg;
+        return nullptr;
+    }
+
 
     std::any IRParser::visitReturn(LGIRGrammarParser::ReturnContext* context)
     {
@@ -171,6 +225,35 @@ namespace lg::ir::parser
         builder.createReturn(value);
         return nullptr;
     }
+
+    std::any IRParser::visitLoad(LGIRGrammarParser::LoadContext* context)
+    {
+        visit(context->value());
+        auto* ptr = std::any_cast<value::IRValue*>(stack.top());
+        stack.pop();
+        const auto regName = getTargetRegisterName(context->registerName());
+        auto* reg = builder.createLoad(ptr, regName);
+        name2Register[regName] = reg;
+        return nullptr;
+    }
+    std::any IRParser::visitStore(LGIRGrammarParser::StoreContext* context)
+    {
+        visit (context->value(0));
+        auto* ptr = std::any_cast<value::IRValue*>(stack.top());
+        stack.pop();
+        visit (context->value(1));
+        auto* value = std::any_cast<value::IRValue*>(stack.top());
+        stack.pop();
+        builder.createStore(ptr, value);
+        return nullptr;
+    }
+
+    std::any IRParser::visitNop(LGIRGrammarParser::NopContext* context)
+    {
+        builder.createNop();
+        return nullptr;
+    }
+
 
     std::any IRParser::visitValues(LGIRGrammarParser::ValuesContext* context)
     {
@@ -206,7 +289,7 @@ namespace lg::ir::parser
         auto* type = dynamic_cast<type::IRIntegerType*>(std::any_cast<type::IRType*>(stack.top()));
         stack.pop();
         stack.emplace(
-            static_cast<value::IRValue*>(new value::constant::IRIntegerConstant(
+            std::make_any<value::IRValue*>(new value::constant::IRIntegerConstant(
                 type, std::stoll(context->INT_NUMBER()->getText()))));
         return nullptr;
     }
@@ -216,39 +299,39 @@ namespace lg::ir::parser
     {
         if (context->I1())
         {
-            stack.emplace(static_cast<type::IRType*>(type::IRIntegerType::getBooleanType()));
+            stack.emplace(std::make_any<type::IRType*>(type::IRIntegerType::getBooleanType()));
         }
         else if (context->I8())
         {
-            stack.emplace(static_cast<type::IRType*>(type::IRIntegerType::getInt8Type()));
+            stack.emplace(std::make_any<type::IRType*>(type::IRIntegerType::getInt8Type()));
         }
         else if (context->I16())
         {
-            stack.emplace(static_cast<type::IRType*>(type::IRIntegerType::getInt16Type()));
+            stack.emplace(std::make_any<type::IRType*>(type::IRIntegerType::getInt16Type()));
         }
         else if (context->I32())
         {
-            stack.emplace(static_cast<type::IRType*>(type::IRIntegerType::getInt32Type()));
+            stack.emplace(std::make_any<type::IRType*>(type::IRIntegerType::getInt32Type()));
         }
         else if (context->I64())
         {
-            stack.emplace(static_cast<type::IRType*>(type::IRIntegerType::getInt64Type()));
+            stack.emplace(std::make_any<type::IRType*>(type::IRIntegerType::getInt64Type()));
         }
         else if (context->U8())
         {
-            stack.emplace(static_cast<type::IRType*>(type::IRIntegerType::getUnsignedInt8Type()));
+            stack.emplace(std::make_any<type::IRType*>(type::IRIntegerType::getUnsignedInt8Type()));
         }
         else if (context->U16())
         {
-            stack.emplace(static_cast<type::IRType*>(type::IRIntegerType::getUnsignedInt16Type()));
+            stack.emplace(std::make_any<type::IRType*>(type::IRIntegerType::getUnsignedInt16Type()));
         }
         else if (context->U32())
         {
-            stack.emplace(static_cast<type::IRType*>(type::IRIntegerType::getUnsignedInt32Type()));
+            stack.emplace(std::make_any<type::IRType*>(type::IRIntegerType::getUnsignedInt32Type()));
         }
         else if (context->U64())
         {
-            stack.emplace(static_cast<type::IRType*>(type::IRIntegerType::getUnsignedInt64Type()));
+            stack.emplace(std::make_any<type::IRType*>(type::IRIntegerType::getUnsignedInt64Type()));
         }
         else
         {
@@ -256,6 +339,13 @@ namespace lg::ir::parser
         }
         return nullptr;
     }
+
+    std::any IRParser::visitVoidType(LGIRGrammarParser::VoidTypeContext* context)
+    {
+        stack.emplace(std::make_any<type::IRType*>(type::IRVoidType::get()));
+        return nullptr;
+    }
+
 
     std::any IRParser::visitLabel(LGIRGrammarParser::LabelContext* context)
     {
@@ -290,6 +380,21 @@ namespace lg::ir::parser
         if (context->NEG()) return instruction::IRUnaryOperates::Operator::NEG;
         throw std::runtime_error("Invalid unary operator");
     }
+
+    base::IRCondition IRParser::parseCondition(LGIRGrammarParser::ConditionContext* context)
+    {
+        const std::string text = context->getText();
+        if (text == "if_true") return base::IRCondition::IF_TRUE;
+        if (text == "if_false") return base::IRCondition::IF_FALSE;
+        if (text == "e") return base::IRCondition::E;
+        if (text == "ne") return base::IRCondition::NE;
+        if (text == "l") return base::IRCondition::L;
+        if (text == "le") return base::IRCondition::LE;
+        if (text == "g") return base::IRCondition::G;
+        if (text == "ge") return base::IRCondition::GE;
+        throw std::runtime_error("Invalid condition");
+    }
+
 
     std::string IRParser::getTargetRegisterName(LGIRGrammarParser::RegisterNameContext* context)
     {

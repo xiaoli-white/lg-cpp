@@ -55,7 +55,11 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitStack_alloc(LGIRGrammarParser::Stack_allocContext *ctx) override {
+  virtual std::any visitNop(LGIRGrammarParser::NopContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitStackAlloc(LGIRGrammarParser::StackAllocContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -136,6 +140,14 @@ public:
   }
 
   virtual std::any visitStructureType(LGIRGrammarParser::StructureTypeContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitFunctionReferenceType(LGIRGrammarParser::FunctionReferenceTypeContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitTypes(LGIRGrammarParser::TypesContext *ctx) override {
     return visitChildren(ctx);
   }
 

@@ -44,8 +44,11 @@ public:
   virtual void enterStatement(LGIRGrammarParser::StatementContext *ctx) = 0;
   virtual void exitStatement(LGIRGrammarParser::StatementContext *ctx) = 0;
 
-  virtual void enterStack_alloc(LGIRGrammarParser::Stack_allocContext *ctx) = 0;
-  virtual void exitStack_alloc(LGIRGrammarParser::Stack_allocContext *ctx) = 0;
+  virtual void enterNop(LGIRGrammarParser::NopContext *ctx) = 0;
+  virtual void exitNop(LGIRGrammarParser::NopContext *ctx) = 0;
+
+  virtual void enterStackAlloc(LGIRGrammarParser::StackAllocContext *ctx) = 0;
+  virtual void exitStackAlloc(LGIRGrammarParser::StackAllocContext *ctx) = 0;
 
   virtual void enterLoad(LGIRGrammarParser::LoadContext *ctx) = 0;
   virtual void exitLoad(LGIRGrammarParser::LoadContext *ctx) = 0;
@@ -106,6 +109,12 @@ public:
 
   virtual void enterStructureType(LGIRGrammarParser::StructureTypeContext *ctx) = 0;
   virtual void exitStructureType(LGIRGrammarParser::StructureTypeContext *ctx) = 0;
+
+  virtual void enterFunctionReferenceType(LGIRGrammarParser::FunctionReferenceTypeContext *ctx) = 0;
+  virtual void exitFunctionReferenceType(LGIRGrammarParser::FunctionReferenceTypeContext *ctx) = 0;
+
+  virtual void enterTypes(LGIRGrammarParser::TypesContext *ctx) = 0;
+  virtual void exitTypes(LGIRGrammarParser::TypesContext *ctx) = 0;
 
   virtual void enterValues(LGIRGrammarParser::ValuesContext *ctx) = 0;
   virtual void exitValues(LGIRGrammarParser::ValuesContext *ctx) = 0;

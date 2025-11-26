@@ -15,32 +15,34 @@ public:
     T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, T__5 = 6, T__6 = 7, 
     T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, T__11 = 12, T__12 = 13, T__13 = 14, 
     T__14 = 15, T__15 = 16, T__16 = 17, T__17 = 18, T__18 = 19, T__19 = 20, 
-    I1 = 21, I8 = 22, U8 = 23, I16 = 24, U16 = 25, I32 = 26, U32 = 27, I64 = 28, 
-    U64 = 29, FLOAT = 30, DOUBLE = 31, VOID = 32, GLOBAL = 33, STRUCTURE = 34, 
-    FUNCTION = 35, NOP = 36, STACK_ALLOC = 37, LOAD = 38, STORE = 39, ASM = 40, 
-    GOTO = 41, INVOKE = 42, RETURN = 43, GETELEMENTPTR = 44, CMP = 45, CONDITIONAL_JUMP = 46, 
-    INC = 47, DEC = 48, NOT = 49, NEG = 50, ADD = 51, SUB = 52, MUL = 53, 
-    DIV = 54, MOD = 55, AND = 56, OR = 57, XOR = 58, SHL = 59, SHR = 60, 
-    USHR = 61, ZEXT = 62, SEXT = 63, TRUNC = 64, ITOF = 65, FTOI = 66, ITOP = 67, 
-    PTOI = 68, PTOP = 69, FEXT = 70, FTRUNC = 71, FUNCREF = 72, GLOBALREF = 73, 
-    LOCALREF = 74, LABEL = 75, INT_NUMBER = 76, DECIMAL_NUMBER = 77, WS = 78, 
-    STRING_LITERAL = 79, IDENTIFIER = 80
+    T__20 = 21, I1 = 22, I8 = 23, U8 = 24, I16 = 25, U16 = 26, I32 = 27, 
+    U32 = 28, I64 = 29, U64 = 30, FLOAT = 31, DOUBLE = 32, VOID = 33, GLOBAL = 34, 
+    STRUCTURE = 35, FUNCTION = 36, NOP = 37, STACK_ALLOC = 38, LOAD = 39, 
+    STORE = 40, ASM = 41, GOTO = 42, INVOKE = 43, RETURN = 44, GETELEMENTPTR = 45, 
+    CMP = 46, CONDITIONAL_JUMP = 47, INC = 48, DEC = 49, NOT = 50, NEG = 51, 
+    ADD = 52, SUB = 53, MUL = 54, DIV = 55, MOD = 56, AND = 57, OR = 58, 
+    XOR = 59, SHL = 60, SHR = 61, USHR = 62, ZEXT = 63, SEXT = 64, TRUNC = 65, 
+    ITOF = 66, FTOI = 67, ITOP = 68, PTOI = 69, PTOP = 70, FEXT = 71, FTRUNC = 72, 
+    FUNCREF = 73, GLOBALREF = 74, LOCALREF = 75, LABEL = 76, ELLIPSIS = 77, 
+    INT_NUMBER = 78, DECIMAL_NUMBER = 79, WS = 80, STRING_LITERAL = 81, 
+    IDENTIFIER = 82
   };
 
   enum {
     RuleProgram = 0, RuleGlobalVariable = 1, RuleStructure = 2, RuleFields = 3, 
     RuleField = 4, RuleFunction = 5, RuleLocalVariables = 6, RuleLocalVariable = 7, 
-    RuleBasicBlock = 8, RuleStatement = 9, RuleStack_alloc = 10, RuleLoad = 11, 
-    RuleStore = 12, RuleAsm = 13, RuleGoto = 14, RuleInvoke = 15, RuleReturn = 16, 
-    RuleSetRegister = 17, RuleGetElementPointer = 18, RuleCmp = 19, RuleConditionalJump = 20, 
-    RuleUnaryOperates = 21, RuleBinaryOperates = 22, RuleTypeCast = 23, 
-    RuleType = 24, RuleBaseType = 25, RuleIntegerType = 26, RuleDecimalType = 27, 
-    RuleArrayType = 28, RuleVoidType = 29, RuleStructureType = 30, RuleValues = 31, 
-    RuleValue = 32, RuleConstant = 33, RuleIntegerConstant = 34, RuleDecimalConstant = 35, 
-    RuleArrayConstant = 36, RuleFunctionReference = 37, RuleGlobalReference = 38, 
-    RuleLocalReference = 39, RuleRegister = 40, RuleRegisterName = 41, RuleLabel = 42, 
-    RuleCondition = 43, RuleUnaryOperator = 44, RuleBinaryOperator = 45, 
-    RuleTypeCastKind = 46
+    RuleBasicBlock = 8, RuleStatement = 9, RuleNop = 10, RuleStackAlloc = 11, 
+    RuleLoad = 12, RuleStore = 13, RuleAsm = 14, RuleGoto = 15, RuleInvoke = 16, 
+    RuleReturn = 17, RuleSetRegister = 18, RuleGetElementPointer = 19, RuleCmp = 20, 
+    RuleConditionalJump = 21, RuleUnaryOperates = 22, RuleBinaryOperates = 23, 
+    RuleTypeCast = 24, RuleType = 25, RuleBaseType = 26, RuleIntegerType = 27, 
+    RuleDecimalType = 28, RuleArrayType = 29, RuleVoidType = 30, RuleStructureType = 31, 
+    RuleFunctionReferenceType = 32, RuleTypes = 33, RuleValues = 34, RuleValue = 35, 
+    RuleConstant = 36, RuleIntegerConstant = 37, RuleDecimalConstant = 38, 
+    RuleArrayConstant = 39, RuleFunctionReference = 40, RuleGlobalReference = 41, 
+    RuleLocalReference = 42, RuleRegister = 43, RuleRegisterName = 44, RuleLabel = 45, 
+    RuleCondition = 46, RuleUnaryOperator = 47, RuleBinaryOperator = 48, 
+    RuleTypeCastKind = 49
   };
 
   explicit LGIRGrammarParser(antlr4::TokenStream *input);
@@ -70,7 +72,8 @@ public:
   class LocalVariableContext;
   class BasicBlockContext;
   class StatementContext;
-  class Stack_allocContext;
+  class NopContext;
+  class StackAllocContext;
   class LoadContext;
   class StoreContext;
   class AsmContext;
@@ -91,6 +94,8 @@ public:
   class ArrayTypeContext;
   class VoidTypeContext;
   class StructureTypeContext;
+  class FunctionReferenceTypeContext;
+  class TypesContext;
   class ValuesContext;
   class ValueContext;
   class ConstantContext;
@@ -269,8 +274,8 @@ public:
   public:
     StatementContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *NOP();
-    Stack_allocContext *stack_alloc();
+    NopContext *nop();
+    StackAllocContext *stackAlloc();
     LoadContext *load();
     StoreContext *store();
     AsmContext *asm_();
@@ -283,6 +288,7 @@ public:
     ConditionalJumpContext *conditionalJump();
     UnaryOperatesContext *unaryOperates();
     BinaryOperatesContext *binaryOperates();
+    TypeCastContext *typeCast();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -293,9 +299,24 @@ public:
 
   StatementContext* statement();
 
-  class  Stack_allocContext : public antlr4::ParserRuleContext {
+  class  NopContext : public antlr4::ParserRuleContext {
   public:
-    Stack_allocContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    NopContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *NOP();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  NopContext* nop();
+
+  class  StackAllocContext : public antlr4::ParserRuleContext {
+  public:
+    StackAllocContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     RegisterNameContext *registerName();
     antlr4::tree::TerminalNode *STACK_ALLOC();
@@ -308,7 +329,7 @@ public:
    
   };
 
-  Stack_allocContext* stack_alloc();
+  StackAllocContext* stackAlloc();
 
   class  LoadContext : public antlr4::ParserRuleContext {
   public:
@@ -561,6 +582,7 @@ public:
     ArrayTypeContext *arrayType();
     VoidTypeContext *voidType();
     StructureTypeContext *structureType();
+    FunctionReferenceTypeContext *functionReferenceType();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -656,6 +678,39 @@ public:
   };
 
   StructureTypeContext* structureType();
+
+  class  FunctionReferenceTypeContext : public antlr4::ParserRuleContext {
+  public:
+    FunctionReferenceTypeContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    TypesContext *types();
+    TypeContext *type();
+    antlr4::tree::TerminalNode *ELLIPSIS();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  FunctionReferenceTypeContext* functionReferenceType();
+
+  class  TypesContext : public antlr4::ParserRuleContext {
+  public:
+    TypesContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    std::vector<TypeContext *> type();
+    TypeContext* type(size_t i);
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  TypesContext* types();
 
   class  ValuesContext : public antlr4::ParserRuleContext {
   public:

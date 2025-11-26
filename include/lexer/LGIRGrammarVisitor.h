@@ -39,7 +39,9 @@ public:
 
     virtual std::any visitStatement(LGIRGrammarParser::StatementContext *context) = 0;
 
-    virtual std::any visitStack_alloc(LGIRGrammarParser::Stack_allocContext *context) = 0;
+    virtual std::any visitNop(LGIRGrammarParser::NopContext *context) = 0;
+
+    virtual std::any visitStackAlloc(LGIRGrammarParser::StackAllocContext *context) = 0;
 
     virtual std::any visitLoad(LGIRGrammarParser::LoadContext *context) = 0;
 
@@ -80,6 +82,10 @@ public:
     virtual std::any visitVoidType(LGIRGrammarParser::VoidTypeContext *context) = 0;
 
     virtual std::any visitStructureType(LGIRGrammarParser::StructureTypeContext *context) = 0;
+
+    virtual std::any visitFunctionReferenceType(LGIRGrammarParser::FunctionReferenceTypeContext *context) = 0;
+
+    virtual std::any visitTypes(LGIRGrammarParser::TypesContext *context) = 0;
 
     virtual std::any visitValues(LGIRGrammarParser::ValuesContext *context) = 0;
 

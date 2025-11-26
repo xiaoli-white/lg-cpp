@@ -37,6 +37,7 @@ namespace lg::ir
         class IRArrayType;
         class IRPointerType;
         class IRVoidType;
+        class IRFunctionReferenceType;
     }
 
     namespace value
@@ -265,7 +266,7 @@ namespace lg::ir
             static IRPointerType* get(IRType* base);
         };
 
-        class IRVoidType : public IRType
+        class IRVoidType final : public IRType
         {
         private:
             IRVoidType() = default;
@@ -276,6 +277,22 @@ namespace lg::ir
             bool operator==(const IRType& other) override;
 
             static IRVoidType* get();
+        };
+
+        class IRFunctionReferenceType final : public IRType
+        {
+        private:
+            IRFunctionReferenceType(IRType* returnType, std::vector<IRType*> parameterTypes, bool isVarArg);
+
+        public:
+            IRType* returnType;
+            std::vector<IRType*> parameterTypes;
+            bool isVarArg;
+            std::any accept(IRVisitor* visitor, std::any additional) override;
+            std::string toString() override;
+            bool operator==(const IRType& other) override;
+
+            static IRFunctionReferenceType* get(IRType* returnType, std::vector<IRType*> parameterTypes, bool isVarArg);
         };
     }
 
@@ -421,7 +438,7 @@ namespace lg::ir
             std::string toString() override;
 
             void addBasicBlock(base::IRBasicBlock* basicBlock) const;
-            base::IRBasicBlock* getBasicBlock(const std::string& name) const;
+            [[nodiscard]] base::IRBasicBlock* getBasicBlock(const std::string& name) const;
         };
 
         class IRLocalVariable final : public base::IRNode
@@ -692,6 +709,8 @@ namespace lg::ir
         virtual std::any visitArrayType(type::IRArrayType* irArrayType, std::any additional);
         virtual std::any visitPointerType(type::IRPointerType* irPointerType, std::any additional);
         virtual std::any visitVoidType(type::IRVoidType* irVoidType, std::any additional);
+        virtual std::any visitFunctionReferenceType(type::IRFunctionReferenceType* irFunctionReferenceType,
+                                                    std::any additional);
         virtual std::any visitRegister(value::IRRegister* irRegister, std::any additional);
         virtual std::any visitFunctionReference(value::IRFunctionReference* irFunctionReference, std::any additional);
         virtual std::any visitGlobalVariableReference(value::IRGlobalVariableReference* irGlobalVariableReference,

@@ -89,6 +89,18 @@ public:
   virtual void enterTypeCast(LGIRGrammarParser::TypeCastContext *ctx) = 0;
   virtual void exitTypeCast(LGIRGrammarParser::TypeCastContext *ctx) = 0;
 
+  virtual void enterPhi(LGIRGrammarParser::PhiContext *ctx) = 0;
+  virtual void exitPhi(LGIRGrammarParser::PhiContext *ctx) = 0;
+
+  virtual void enterSwitch(LGIRGrammarParser::SwitchContext *ctx) = 0;
+  virtual void exitSwitch(LGIRGrammarParser::SwitchContext *ctx) = 0;
+
+  virtual void enterPhiValue(LGIRGrammarParser::PhiValueContext *ctx) = 0;
+  virtual void exitPhiValue(LGIRGrammarParser::PhiValueContext *ctx) = 0;
+
+  virtual void enterSwitchCase(LGIRGrammarParser::SwitchCaseContext *ctx) = 0;
+  virtual void exitSwitchCase(LGIRGrammarParser::SwitchCaseContext *ctx) = 0;
+
   virtual void enterType(LGIRGrammarParser::TypeContext *ctx) = 0;
   virtual void exitType(LGIRGrammarParser::TypeContext *ctx) = 0;
 
@@ -122,6 +134,9 @@ public:
   virtual void enterValue(LGIRGrammarParser::ValueContext *ctx) = 0;
   virtual void exitValue(LGIRGrammarParser::ValueContext *ctx) = 0;
 
+  virtual void enterConstants(LGIRGrammarParser::ConstantsContext *ctx) = 0;
+  virtual void exitConstants(LGIRGrammarParser::ConstantsContext *ctx) = 0;
+
   virtual void enterConstant(LGIRGrammarParser::ConstantContext *ctx) = 0;
   virtual void exitConstant(LGIRGrammarParser::ConstantContext *ctx) = 0;
 
@@ -133,6 +148,9 @@ public:
 
   virtual void enterArrayConstant(LGIRGrammarParser::ArrayConstantContext *ctx) = 0;
   virtual void exitArrayConstant(LGIRGrammarParser::ArrayConstantContext *ctx) = 0;
+
+  virtual void enterStructureInitializer(LGIRGrammarParser::StructureInitializerContext *ctx) = 0;
+  virtual void exitStructureInitializer(LGIRGrammarParser::StructureInitializerContext *ctx) = 0;
 
   virtual void enterFunctionReference(LGIRGrammarParser::FunctionReferenceContext *ctx) = 0;
   virtual void exitFunctionReference(LGIRGrammarParser::FunctionReferenceContext *ctx) = 0;

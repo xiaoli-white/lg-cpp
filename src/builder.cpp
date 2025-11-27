@@ -639,6 +639,26 @@ namespace lg::ir
         return createGetElementPointer(ptr, std::move(indices), allocateRegisterName());
     }
 
+    value::IRRegister* IRBuilder::createPhi(std::unordered_map<base::IRBasicBlock*, value::IRValue*> values) const
+    {
+        return createPhi(std::move(values), allocateRegisterName());
+    }
+
+    value::IRRegister* IRBuilder::createPhi(std::unordered_map<base::IRBasicBlock*, value::IRValue*> values,
+                                            const std::string& targetName) const
+    {
+        const auto reg = new value::IRRegister(targetName);
+        insertPoint->addInstruction(new instruction::IRPhi(std::move(values), reg));
+        return reg;
+    }
+
+    void IRBuilder::createSwitch(value::IRValue* value, base::IRBasicBlock* defaultCase,
+                                 std::unordered_map<value::constant::IRIntegerConstant*, base::IRBasicBlock*> cases)
+    const
+    {
+        insertPoint->addInstruction(new instruction::IRSwitch(value, defaultCase, std::move(cases)));
+    }
+
     void IRBuilder::createAsm(std::string assembly, std::string constraints, std::vector<value::IRValue*> args) const
     {
         insertPoint->addInstruction(

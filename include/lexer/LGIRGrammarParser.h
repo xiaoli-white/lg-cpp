@@ -19,13 +19,13 @@ public:
     U32 = 28, I64 = 29, U64 = 30, FLOAT = 31, DOUBLE = 32, VOID = 33, GLOBAL = 34, 
     STRUCTURE = 35, FUNCTION = 36, NOP = 37, STACK_ALLOC = 38, LOAD = 39, 
     STORE = 40, ASM = 41, GOTO = 42, INVOKE = 43, RETURN = 44, GETELEMENTPTR = 45, 
-    CMP = 46, CONDITIONAL_JUMP = 47, INC = 48, DEC = 49, NOT = 50, NEG = 51, 
-    ADD = 52, SUB = 53, MUL = 54, DIV = 55, MOD = 56, AND = 57, OR = 58, 
-    XOR = 59, SHL = 60, SHR = 61, USHR = 62, ZEXT = 63, SEXT = 64, TRUNC = 65, 
-    ITOF = 66, FTOI = 67, ITOP = 68, PTOI = 69, PTOP = 70, FEXT = 71, FTRUNC = 72, 
-    FUNCREF = 73, GLOBALREF = 74, LOCALREF = 75, LABEL = 76, ELLIPSIS = 77, 
-    MULTIPLY = 78, INT_NUMBER = 79, DECIMAL_NUMBER = 80, WS = 81, STRING_LITERAL = 82, 
-    IDENTIFIER = 83
+    CMP = 46, CONDITIONAL_JUMP = 47, PHI = 48, SWITCH = 49, INC = 50, DEC = 51, 
+    NOT = 52, NEG = 53, ADD = 54, SUB = 55, MUL = 56, DIV = 57, MOD = 58, 
+    AND = 59, OR = 60, XOR = 61, SHL = 62, SHR = 63, USHR = 64, ZEXT = 65, 
+    SEXT = 66, TRUNC = 67, ITOF = 68, FTOI = 69, ITOP = 70, PTOI = 71, PTOP = 72, 
+    FEXT = 73, FTRUNC = 74, FUNCREF = 75, GLOBALREF = 76, LOCALREF = 77, 
+    CONSTANT = 78, LABEL = 79, ELLIPSIS = 80, MULTIPLY = 81, INT_NUMBER = 82, 
+    DECIMAL_NUMBER = 83, WS = 84, STRING_LITERAL = 85, IDENTIFIER = 86
   };
 
   enum {
@@ -35,14 +35,15 @@ public:
     RuleLoad = 12, RuleStore = 13, RuleAsm = 14, RuleGoto = 15, RuleInvoke = 16, 
     RuleReturn = 17, RuleSetRegister = 18, RuleGetElementPointer = 19, RuleCmp = 20, 
     RuleConditionalJump = 21, RuleUnaryOperates = 22, RuleBinaryOperates = 23, 
-    RuleTypeCast = 24, RuleType = 25, RuleBaseType = 26, RuleIntegerType = 27, 
-    RuleDecimalType = 28, RuleArrayType = 29, RuleVoidType = 30, RuleStructureType = 31, 
-    RuleFunctionReferenceType = 32, RuleTypes = 33, RuleValues = 34, RuleValue = 35, 
-    RuleConstant = 36, RuleIntegerConstant = 37, RuleDecimalConstant = 38, 
-    RuleArrayConstant = 39, RuleFunctionReference = 40, RuleGlobalReference = 41, 
-    RuleLocalReference = 42, RuleRegister = 43, RuleRegisterName = 44, RuleLabel = 45, 
-    RuleCondition = 46, RuleUnaryOperator = 47, RuleBinaryOperator = 48, 
-    RuleTypeCastKind = 49
+    RuleTypeCast = 24, RulePhi = 25, RuleSwitch = 26, RulePhiValue = 27, 
+    RuleSwitchCase = 28, RuleType = 29, RuleBaseType = 30, RuleIntegerType = 31, 
+    RuleDecimalType = 32, RuleArrayType = 33, RuleVoidType = 34, RuleStructureType = 35, 
+    RuleFunctionReferenceType = 36, RuleTypes = 37, RuleValues = 38, RuleValue = 39, 
+    RuleConstants = 40, RuleConstant = 41, RuleIntegerConstant = 42, RuleDecimalConstant = 43, 
+    RuleArrayConstant = 44, RuleStructureInitializer = 45, RuleFunctionReference = 46, 
+    RuleGlobalReference = 47, RuleLocalReference = 48, RuleRegister = 49, 
+    RuleRegisterName = 50, RuleLabel = 51, RuleCondition = 52, RuleUnaryOperator = 53, 
+    RuleBinaryOperator = 54, RuleTypeCastKind = 55
   };
 
   explicit LGIRGrammarParser(antlr4::TokenStream *input);
@@ -87,6 +88,10 @@ public:
   class UnaryOperatesContext;
   class BinaryOperatesContext;
   class TypeCastContext;
+  class PhiContext;
+  class SwitchContext;
+  class PhiValueContext;
+  class SwitchCaseContext;
   class TypeContext;
   class BaseTypeContext;
   class IntegerTypeContext;
@@ -98,10 +103,12 @@ public:
   class TypesContext;
   class ValuesContext;
   class ValueContext;
+  class ConstantsContext;
   class ConstantContext;
   class IntegerConstantContext;
   class DecimalConstantContext;
   class ArrayConstantContext;
+  class StructureInitializerContext;
   class FunctionReferenceContext;
   class GlobalReferenceContext;
   class LocalReferenceContext;
@@ -289,6 +296,8 @@ public:
     UnaryOperatesContext *unaryOperates();
     BinaryOperatesContext *binaryOperates();
     TypeCastContext *typeCast();
+    PhiContext *phi();
+    SwitchContext *switch_();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -559,6 +568,75 @@ public:
 
   TypeCastContext* typeCast();
 
+  class  PhiContext : public antlr4::ParserRuleContext {
+  public:
+    PhiContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    RegisterNameContext *registerName();
+    antlr4::tree::TerminalNode *PHI();
+    std::vector<PhiValueContext *> phiValue();
+    PhiValueContext* phiValue(size_t i);
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  PhiContext* phi();
+
+  class  SwitchContext : public antlr4::ParserRuleContext {
+  public:
+    SwitchContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *SWITCH();
+    ValueContext *value();
+    LabelContext *label();
+    std::vector<SwitchCaseContext *> switchCase();
+    SwitchCaseContext* switchCase(size_t i);
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  SwitchContext* switch_();
+
+  class  PhiValueContext : public antlr4::ParserRuleContext {
+  public:
+    PhiValueContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    LabelContext *label();
+    ValueContext *value();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  PhiValueContext* phiValue();
+
+  class  SwitchCaseContext : public antlr4::ParserRuleContext {
+  public:
+    SwitchCaseContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    IntegerConstantContext *integerConstant();
+    LabelContext *label();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  SwitchCaseContext* switchCase();
+
   class  TypeContext : public antlr4::ParserRuleContext {
   public:
     TypeContext(antlr4::ParserRuleContext *parent, size_t invokingState);
@@ -750,6 +828,22 @@ public:
 
   ValueContext* value();
 
+  class  ConstantsContext : public antlr4::ParserRuleContext {
+  public:
+    ConstantsContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    std::vector<ConstantContext *> constant();
+    ConstantContext* constant(size_t i);
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ConstantsContext* constants();
+
   class  ConstantContext : public antlr4::ParserRuleContext {
   public:
     ConstantContext(antlr4::ParserRuleContext *parent, size_t invokingState);
@@ -757,6 +851,7 @@ public:
     IntegerConstantContext *integerConstant();
     DecimalConstantContext *decimalConstant();
     ArrayConstantContext *arrayConstant();
+    StructureInitializerContext *structureInitializer();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -804,8 +899,7 @@ public:
     ArrayConstantContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     ArrayTypeContext *arrayType();
-    std::vector<ConstantContext *> constant();
-    ConstantContext* constant(size_t i);
+    ConstantsContext *constants();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -815,6 +909,23 @@ public:
   };
 
   ArrayConstantContext* arrayConstant();
+
+  class  StructureInitializerContext : public antlr4::ParserRuleContext {
+  public:
+    StructureInitializerContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *CONSTANT();
+    TypeContext *type();
+    ConstantsContext *constants();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  StructureInitializerContext* structureInitializer();
 
   class  FunctionReferenceContext : public antlr4::ParserRuleContext {
   public:

@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <map>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 #include "ir.h"
@@ -57,6 +58,7 @@ namespace lg::ir
             class IRArrayConstant;
             class IRStringConstant;
             class IRNullptrConstant;
+            class IRStructureInitializer;
         }
     }
 
@@ -90,6 +92,8 @@ namespace lg::ir
         class IRSetRegister;
         class IRStackAllocate;
         class IRTypeCast;
+        class IRPhi;
+        class IRSwitch;
     }
 
     namespace base
@@ -415,6 +419,17 @@ namespace lg::ir
                 std::any accept(IRVisitor* visitor, std::any additional) override;
                 std::string toString() override;
             };
+
+            class IRStructureInitializer final : public IRConstant
+            {
+            public:
+                type::IRStructureType* type;
+                std::vector<IRConstant*> elements;
+                IRStructureInitializer(type::IRStructureType* type, std::vector<IRConstant*> elements);
+                type::IRType* getType() override;
+                std::any accept(IRVisitor* visitor, std::any additional) override;
+                std::string toString() override;
+            };
         }
     }
 
@@ -688,6 +703,28 @@ namespace lg::ir
             std::string toString() override;
             static std::string kindToString(Kind kind);
         };
+
+        class IRPhi final : public IRInstruction
+        {
+        public:
+            std::unordered_map<base::IRBasicBlock*, value::IRValue*> values;
+            value::IRRegister* target;
+            IRPhi(std::unordered_map<base::IRBasicBlock*, value::IRValue*> values, value::IRRegister* target);
+            std::any accept(IRVisitor* visitor, std::any additional) override;
+            std::string toString() override;
+        };
+
+        class IRSwitch final : public IRInstruction
+        {
+        public:
+            value::IRValue* value;
+            base::IRBasicBlock* defaultCase;
+            std::unordered_map<value::constant::IRIntegerConstant*, base::IRBasicBlock*> cases;
+            IRSwitch(value::IRValue* value, base::IRBasicBlock* defaultCase,
+                     std::unordered_map<value::constant::IRIntegerConstant*, base::IRBasicBlock*> cases);
+            std::any accept(IRVisitor* visitor, std::any additional) override;
+            std::string toString() override;
+        };
     }
 
     class IRVisitor
@@ -724,6 +761,8 @@ namespace lg::ir
         virtual std::any visitStringConstant(value::constant::IRStringConstant* irStringConstant, std::any additional);
         virtual std::any visitNullptrConstant(value::constant::IRNullptrConstant* irNullptrConstant,
                                               std::any additional);
+        virtual std::any visitStructureInitializer(value::constant::IRStructureInitializer* irStructureInitializer,
+                                                   std::any additional);
         virtual std::any visitAssembly(instruction::IRAssembly* irAssembly, std::any additional);
         virtual std::any visitBinaryOperates(instruction::IRBinaryOperates* irBinaryOperates, std::any additional);
         virtual std::any visitUnaryOperates(instruction::IRUnaryOperates* irUnaryOperates, std::any additional);
@@ -740,9 +779,11 @@ namespace lg::ir
         virtual std::any visitSetRegister(instruction::IRSetRegister* irSetRegister, std::any additional);
         virtual std::any visitStackAllocate(instruction::IRStackAllocate* irStackAllocate, std::any additional);
         virtual std::any visitTypeCast(instruction::IRTypeCast* irTypeCast, std::any additional);
+        virtual std::any visitPhi(instruction::IRPhi* irPhi, std::any additional);
+        virtual std::any visitSwitch(instruction::IRSwitch* irSwitch, std::any additional);
     };
 
-    class IRModule : public base::IRNode
+    class IRModule final : public base::IRNode
     {
     public:
         std::map<std::string, base::IRGlobalVariable*> globals;

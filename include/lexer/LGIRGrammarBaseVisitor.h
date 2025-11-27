@@ -115,6 +115,22 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual std::any visitPhi(LGIRGrammarParser::PhiContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitSwitch(LGIRGrammarParser::SwitchContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitPhiValue(LGIRGrammarParser::PhiValueContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitSwitchCase(LGIRGrammarParser::SwitchCaseContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual std::any visitType(LGIRGrammarParser::TypeContext *ctx) override {
     return visitChildren(ctx);
   }
@@ -159,6 +175,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual std::any visitConstants(LGIRGrammarParser::ConstantsContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual std::any visitConstant(LGIRGrammarParser::ConstantContext *ctx) override {
     return visitChildren(ctx);
   }
@@ -172,6 +192,10 @@ public:
   }
 
   virtual std::any visitArrayConstant(LGIRGrammarParser::ArrayConstantContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitStructureInitializer(LGIRGrammarParser::StructureInitializerContext *ctx) override {
     return visitChildren(ctx);
   }
 

@@ -548,6 +548,34 @@ namespace lg::ir
             {
                 return type->toString() + " nullptr";
             }
+
+            IRStructureInitializer::IRStructureInitializer(type::IRStructureType* type,
+                                                           std::vector<IRConstant*> elements) : type(type),
+                elements(std::move(elements))
+            {
+            }
+
+            type::IRType* IRStructureInitializer::getType()
+            {
+                return type;
+            }
+
+            std::any IRStructureInitializer::accept(IRVisitor* visitor, std::any additional)
+            {
+                return visitor->visitStructureInitializer(this, std::move(additional));
+            }
+
+            std::string IRStructureInitializer::toString()
+            {
+                std::string s = "constant " + type->toString() + " {";
+                for (int i = 0; i < elements.size(); i++)
+                {
+                    s += elements[i]->toString();
+                    if (i < elements.size() - 1)s += ", ";
+                }
+                s += "}";
+                return s;
+            }
         }
     }
 
@@ -1008,6 +1036,50 @@ namespace lg::ir
                 return "";
             }
         }
+
+        IRPhi::IRPhi(std::unordered_map<base::IRBasicBlock*, value::IRValue*> values,
+                     value::IRRegister* target) : values(std::move(values)), target(target)
+        {
+            target->def = this;
+            target->type = values.begin()->second->getType();
+        }
+
+        std::any IRPhi::accept(IRVisitor* visitor, std::any additional)
+        {
+            return visitor->visitPhi(this, std::move(additional));
+        }
+
+        std::string IRPhi::toString()
+        {
+            std::string result = "%" + target->name + " = phi ";
+            for (auto& [block, value] : values)
+            {
+                result += ", [label: " + block->name + ", " + value->toString() + "]";
+            }
+            return result;
+        }
+
+        IRSwitch::IRSwitch(value::IRValue* value, base::IRBasicBlock* defaultCase,
+                           std::unordered_map<value::constant::IRIntegerConstant*, base::IRBasicBlock*> cases) :
+            value(value),
+            defaultCase(defaultCase), cases(std::move(cases))
+        {
+        }
+
+        std::any IRSwitch::accept(IRVisitor* visitor, std::any additional)
+        {
+            return visitor->visitSwitch(this, std::move(additional));
+        }
+
+        std::string IRSwitch::toString()
+        {
+            std::string s = "switch " + value->toString() + ", label" + defaultCase->name;
+            for (auto& [value, block] : cases)
+            {
+                s += ", [" + value->toString() + ", label" + block->name + "]";
+            }
+            return s;
+        }
     }
 
     std::any IRVisitor::visit(base::IRNode* node, std::any additional)
@@ -1185,6 +1257,17 @@ namespace lg::ir
         return nullptr;
     }
 
+    std::any IRVisitor::visitStructureInitializer(value::constant::IRStructureInitializer* irStructureInitializer,
+                                                  std::any additional)
+    {
+        visit(irStructureInitializer->type, additional);
+        for (const auto& element : irStructureInitializer->elements)
+        {
+            visit(element, additional);
+        }
+        return nullptr;
+    }
+
     std::any IRVisitor::visitAssembly(instruction::IRAssembly* irAssembly, std::any additional)
     {
         for (auto& operand : irAssembly->operands)
@@ -1309,6 +1392,25 @@ namespace lg::ir
         return nullptr;
     }
 
+    std::any IRVisitor::visitPhi(instruction::IRPhi* irPhi, std::any additional)
+    {
+        for (const auto& value : irPhi->values | std::views::values)
+        {
+            visit(value, additional);
+        }
+        visit(irPhi->target, std::move(additional));
+        return nullptr;
+    }
+
+    std::any IRVisitor::visitSwitch(instruction::IRSwitch* irSwitch, std::any additional)
+    {
+        visit(irSwitch->value, additional);
+        for (const auto& constant : irSwitch->cases | std::views::keys)
+        {
+            visit(constant, additional);
+        }
+        return nullptr;
+    }
 
     std::any IRModule::accept(IRVisitor* visitor, std::any additional)
     {

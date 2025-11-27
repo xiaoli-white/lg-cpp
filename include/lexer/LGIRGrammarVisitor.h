@@ -69,6 +69,14 @@ public:
 
     virtual std::any visitTypeCast(LGIRGrammarParser::TypeCastContext *context) = 0;
 
+    virtual std::any visitPhi(LGIRGrammarParser::PhiContext *context) = 0;
+
+    virtual std::any visitSwitch(LGIRGrammarParser::SwitchContext *context) = 0;
+
+    virtual std::any visitPhiValue(LGIRGrammarParser::PhiValueContext *context) = 0;
+
+    virtual std::any visitSwitchCase(LGIRGrammarParser::SwitchCaseContext *context) = 0;
+
     virtual std::any visitType(LGIRGrammarParser::TypeContext *context) = 0;
 
     virtual std::any visitBaseType(LGIRGrammarParser::BaseTypeContext *context) = 0;
@@ -91,6 +99,8 @@ public:
 
     virtual std::any visitValue(LGIRGrammarParser::ValueContext *context) = 0;
 
+    virtual std::any visitConstants(LGIRGrammarParser::ConstantsContext *context) = 0;
+
     virtual std::any visitConstant(LGIRGrammarParser::ConstantContext *context) = 0;
 
     virtual std::any visitIntegerConstant(LGIRGrammarParser::IntegerConstantContext *context) = 0;
@@ -98,6 +108,8 @@ public:
     virtual std::any visitDecimalConstant(LGIRGrammarParser::DecimalConstantContext *context) = 0;
 
     virtual std::any visitArrayConstant(LGIRGrammarParser::ArrayConstantContext *context) = 0;
+
+    virtual std::any visitStructureInitializer(LGIRGrammarParser::StructureInitializerContext *context) = 0;
 
     virtual std::any visitFunctionReference(LGIRGrammarParser::FunctionReferenceContext *context) = 0;
 

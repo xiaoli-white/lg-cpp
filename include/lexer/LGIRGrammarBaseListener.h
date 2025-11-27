@@ -91,6 +91,18 @@ public:
   virtual void enterTypeCast(LGIRGrammarParser::TypeCastContext * /*ctx*/) override { }
   virtual void exitTypeCast(LGIRGrammarParser::TypeCastContext * /*ctx*/) override { }
 
+  virtual void enterPhi(LGIRGrammarParser::PhiContext * /*ctx*/) override { }
+  virtual void exitPhi(LGIRGrammarParser::PhiContext * /*ctx*/) override { }
+
+  virtual void enterSwitch(LGIRGrammarParser::SwitchContext * /*ctx*/) override { }
+  virtual void exitSwitch(LGIRGrammarParser::SwitchContext * /*ctx*/) override { }
+
+  virtual void enterPhiValue(LGIRGrammarParser::PhiValueContext * /*ctx*/) override { }
+  virtual void exitPhiValue(LGIRGrammarParser::PhiValueContext * /*ctx*/) override { }
+
+  virtual void enterSwitchCase(LGIRGrammarParser::SwitchCaseContext * /*ctx*/) override { }
+  virtual void exitSwitchCase(LGIRGrammarParser::SwitchCaseContext * /*ctx*/) override { }
+
   virtual void enterType(LGIRGrammarParser::TypeContext * /*ctx*/) override { }
   virtual void exitType(LGIRGrammarParser::TypeContext * /*ctx*/) override { }
 
@@ -124,6 +136,9 @@ public:
   virtual void enterValue(LGIRGrammarParser::ValueContext * /*ctx*/) override { }
   virtual void exitValue(LGIRGrammarParser::ValueContext * /*ctx*/) override { }
 
+  virtual void enterConstants(LGIRGrammarParser::ConstantsContext * /*ctx*/) override { }
+  virtual void exitConstants(LGIRGrammarParser::ConstantsContext * /*ctx*/) override { }
+
   virtual void enterConstant(LGIRGrammarParser::ConstantContext * /*ctx*/) override { }
   virtual void exitConstant(LGIRGrammarParser::ConstantContext * /*ctx*/) override { }
 
@@ -135,6 +150,9 @@ public:
 
   virtual void enterArrayConstant(LGIRGrammarParser::ArrayConstantContext * /*ctx*/) override { }
   virtual void exitArrayConstant(LGIRGrammarParser::ArrayConstantContext * /*ctx*/) override { }
+
+  virtual void enterStructureInitializer(LGIRGrammarParser::StructureInitializerContext * /*ctx*/) override { }
+  virtual void exitStructureInitializer(LGIRGrammarParser::StructureInitializerContext * /*ctx*/) override { }
 
   virtual void enterFunctionReference(LGIRGrammarParser::FunctionReferenceContext * /*ctx*/) override { }
   virtual void exitFunctionReference(LGIRGrammarParser::FunctionReferenceContext * /*ctx*/) override { }

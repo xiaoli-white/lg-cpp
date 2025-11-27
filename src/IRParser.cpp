@@ -339,6 +339,62 @@ namespace lg::ir::parser
         return nullptr;
     }
 
+    std::any IRParser::visitPhi(LGIRGrammarParser::PhiContext* context)
+    {
+        std::unordered_map<base::IRBasicBlock*, value::IRValue*> values;
+        for (const auto& value : context->phiValue())
+        {
+            visit(value);
+            values.emplace(std::any_cast<std::pair<base::IRBasicBlock*, value::IRValue*>>(stack.top()));
+            stack.pop();
+        }
+        const auto regName = getTargetRegisterName(context->registerName());
+        auto* reg = builder.createPhi(std::move(values), regName);
+        name2Register[regName] = reg;
+        return nullptr;
+    }
+
+    std::any IRParser::visitSwitch(LGIRGrammarParser::SwitchContext* context)
+    {
+        visit(context->value());
+        auto* value = std::any_cast<value::IRValue*>(stack.top());
+        stack.pop();
+        auto* basicBlock = currentFunction->getBasicBlock(context->label()->IDENTIFIER()->getText());
+        std::unordered_map<value::constant::IRIntegerConstant*, base::IRBasicBlock*> cases;
+        for (const auto& case_ : context->switchCase())
+        {
+            visit(case_);
+            cases.emplace(
+                std::any_cast<std::pair<value::constant::IRIntegerConstant*, base::IRBasicBlock*>>(stack.top()));
+            stack.pop();
+        }
+        builder.createSwitch(value, basicBlock, std::move(cases));
+        return nullptr;
+    }
+
+    std::any IRParser::visitPhiValue(LGIRGrammarParser::PhiValueContext* context)
+    {
+        auto* basicBlock = currentFunction->getBasicBlock(context->label()->IDENTIFIER()->getText());
+        visit(context->value());
+        auto* value = std::any_cast<value::IRValue*>(stack.top());
+        stack.pop();
+        stack.emplace(
+            std::make_any<std::pair<base::IRBasicBlock*, value::IRValue*>>(std::make_pair(basicBlock, value)));
+        return nullptr;
+    }
+
+    std::any IRParser::visitSwitchCase(LGIRGrammarParser::SwitchCaseContext* context)
+    {
+        visit(context->integerConstant());
+        auto* value = std::any_cast<value::IRValue*>(stack.top());
+        stack.pop();
+        auto* constant = dynamic_cast<value::constant::IRIntegerConstant*>(value);
+        if (constant == nullptr) throw std::runtime_error("phi value must be integer constant");
+        auto* basicBlock = currentFunction->getBasicBlock(context->label()->IDENTIFIER()->getText());
+        stack.emplace(std::make_any<std::pair<value::constant::IRIntegerConstant*, base::IRBasicBlock*>>(
+            std::make_pair(constant, basicBlock)));
+        return nullptr;
+    }
 
     std::any IRParser::visitValues(LGIRGrammarParser::ValuesContext* context)
     {

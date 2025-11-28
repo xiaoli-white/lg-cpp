@@ -668,7 +668,6 @@ namespace lg::ir::parser
 
     std::any IRParser::visitLabel(LGIRGrammarParser::LabelContext* context)
     {
-        std::cout << context->IDENTIFIER()->getText() << std::endl;
         stack.emplace(currentFunction->getBasicBlock(context->IDENTIFIER()->getText()));
         return nullptr;
     }

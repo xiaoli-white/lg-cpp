@@ -1106,17 +1106,17 @@ namespace lg::ir
 
     std::any IRVisitor::visitModule(IRModule* module, std::any additional)
     {
-        for (auto& function : module->functions | std::views::values)
-        {
-            visit(function, additional);
-        }
-        for (auto& structure : module->structures | std::views::values)
+        for (const auto& structure : module->structures | std::views::values)
         {
             visit(structure, additional);
         }
-        for (auto& global : module->globals | std::views::values)
+        for (const auto& global : module->globals | std::views::values)
         {
             visit(global, additional);
+        }
+        for (const auto& function : module->functions | std::views::values)
+        {
+            visit(function, additional);
         }
         return nullptr;
     }

@@ -7,10 +7,11 @@ namespace lg::ir
 {
     namespace base
     {
-        IRGlobalVariable::IRGlobalVariable(std::string name,
-                                           value::constant::IRConstant* initializer) : type(initializer->getType()),
-            name(std::move(name)), initializer(initializer)
+        IRGlobalVariable::IRGlobalVariable(std::string name, value::constant::IRConstant* initializer) :
+            name(std::move(name)),
+            initializer(initializer)
         {
+            if (initializer != nullptr) type = initializer->getType();
         }
 
         std::any IRGlobalVariable::accept(IRVisitor* visitor, std::any additional)
@@ -22,6 +23,13 @@ namespace lg::ir
         {
             return name + " = " + initializer->toString();
         }
+
+        void IRGlobalVariable::setInitializer(value::constant::IRConstant* initializer)
+        {
+            this->initializer = initializer;
+            type = initializer->getType();
+        }
+
 
         std::string IRControlFlowGraph::toString()
         {

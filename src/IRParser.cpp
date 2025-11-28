@@ -45,7 +45,7 @@ namespace lg::ir::parser
         auto* value = std::any_cast<value::IRValue*>(stack.top());
         auto* constant = dynamic_cast<value::constant::IRConstant*>(value);
         if (constant == nullptr) throw std::runtime_error("Initializer must be a constant");
-        module->getGlobalVariable(context->IDENTIFIER()->getText())->initializer = constant;
+        module->getGlobalVariable(context->IDENTIFIER()->getText())->setInitializer(constant);
         return nullptr;
     }
 

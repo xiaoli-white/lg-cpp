@@ -21,7 +21,7 @@ namespace lg::ir
 
         std::string IRGlobalVariable::toString()
         {
-            return name + " = " + initializer->toString();
+            return std::string(isConstant ? "constant " : "") + "global " + name + " = " + initializer->toString();
         }
 
         void IRGlobalVariable::setInitializer(value::constant::IRConstant* initializer)

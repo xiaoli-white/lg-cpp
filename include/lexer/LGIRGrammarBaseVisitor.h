@@ -199,6 +199,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual std::any visitStringConstant(LGIRGrammarParser::StringConstantContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual std::any visitFunctionReference(LGIRGrammarParser::FunctionReferenceContext *ctx) override {
     return visitChildren(ctx);
   }

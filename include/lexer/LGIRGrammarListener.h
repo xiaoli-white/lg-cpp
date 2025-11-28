@@ -152,6 +152,9 @@ public:
   virtual void enterStructureInitializer(LGIRGrammarParser::StructureInitializerContext *ctx) = 0;
   virtual void exitStructureInitializer(LGIRGrammarParser::StructureInitializerContext *ctx) = 0;
 
+  virtual void enterStringConstant(LGIRGrammarParser::StringConstantContext *ctx) = 0;
+  virtual void exitStringConstant(LGIRGrammarParser::StringConstantContext *ctx) = 0;
+
   virtual void enterFunctionReference(LGIRGrammarParser::FunctionReferenceContext *ctx) = 0;
   virtual void exitFunctionReference(LGIRGrammarParser::FunctionReferenceContext *ctx) = 0;
 

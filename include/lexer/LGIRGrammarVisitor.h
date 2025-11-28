@@ -111,6 +111,8 @@ public:
 
     virtual std::any visitStructureInitializer(LGIRGrammarParser::StructureInitializerContext *context) = 0;
 
+    virtual std::any visitStringConstant(LGIRGrammarParser::StringConstantContext *context) = 0;
+
     virtual std::any visitFunctionReference(LGIRGrammarParser::FunctionReferenceContext *context) = 0;
 
     virtual std::any visitGlobalReference(LGIRGrammarParser::GlobalReferenceContext *context) = 0;

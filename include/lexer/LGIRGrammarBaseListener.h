@@ -154,6 +154,9 @@ public:
   virtual void enterStructureInitializer(LGIRGrammarParser::StructureInitializerContext * /*ctx*/) override { }
   virtual void exitStructureInitializer(LGIRGrammarParser::StructureInitializerContext * /*ctx*/) override { }
 
+  virtual void enterStringConstant(LGIRGrammarParser::StringConstantContext * /*ctx*/) override { }
+  virtual void exitStringConstant(LGIRGrammarParser::StringConstantContext * /*ctx*/) override { }
+
   virtual void enterFunctionReference(LGIRGrammarParser::FunctionReferenceContext * /*ctx*/) override { }
   virtual void exitFunctionReference(LGIRGrammarParser::FunctionReferenceContext * /*ctx*/) override { }
 

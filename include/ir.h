@@ -437,6 +437,9 @@ namespace lg::ir
     {
         class IRFunction final : public base::IRNode
         {
+        private:
+            std::unordered_map<std::string, IRLocalVariable*> name2LocalVariable;
+
         public:
             std::vector<std::string> attributes;
             type::IRType* returnType;
@@ -453,6 +456,7 @@ namespace lg::ir
 
             void addBasicBlock(base::IRBasicBlock* basicBlock) const;
             [[nodiscard]] base::IRBasicBlock* getBasicBlock(const std::string& name) const;
+            IRLocalVariable* getLocalVariable(const std::string& name);
         };
 
         class IRLocalVariable final : public base::IRNode

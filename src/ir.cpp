@@ -484,7 +484,8 @@ namespace lg::ir
             }
 
             IRArrayConstant::IRArrayConstant(type::IRArrayType* type,
-                                             std::vector<IRConstant*> elements) : type(type), elements(std::move(elements))
+                                             std::vector<IRConstant*> elements) : type(type),
+                elements(std::move(elements))
             {
             }
 
@@ -589,6 +590,8 @@ namespace lg::ir
                                                                 cfg(cfg)
         {
             if (cfg != nullptr) cfg->function = this;
+            for (const auto& arg : args) name2LocalVariable[arg->name] = arg;
+            for (const auto& local : locals) name2LocalVariable[local->name] = local;
         }
 
         std::any IRFunction::accept(IRVisitor* visitor, std::any additional)
@@ -610,6 +613,12 @@ namespace lg::ir
         {
             return cfg->basicBlocks[name];
         }
+
+        IRLocalVariable* IRFunction::getLocalVariable(const std::string& name)
+        {
+            return name2LocalVariable[name];
+        }
+
 
         IRLocalVariable::IRLocalVariable(type::IRType* type, std::string name) : type(type), name(std::move(name))
         {

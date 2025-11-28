@@ -24,8 +24,9 @@ public:
     AND = 59, OR = 60, XOR = 61, SHL = 62, SHR = 63, USHR = 64, ZEXT = 65, 
     SEXT = 66, TRUNC = 67, ITOF = 68, FTOI = 69, ITOP = 70, PTOI = 71, PTOP = 72, 
     FEXT = 73, FTRUNC = 74, FUNCREF = 75, GLOBALREF = 76, LOCALREF = 77, 
-    CONSTANT = 78, LABEL = 79, ELLIPSIS = 80, MULTIPLY = 81, INT_NUMBER = 82, 
-    DECIMAL_NUMBER = 83, WS = 84, STRING_LITERAL = 85, IDENTIFIER = 86
+    CONSTANT = 78, LABEL = 79, STRING = 80, ELLIPSIS = 81, MULTIPLY = 82, 
+    INT_NUMBER = 83, DECIMAL_NUMBER = 84, WS = 85, STRING_LITERAL = 86, 
+    IDENTIFIER = 87
   };
 
   enum {
@@ -40,10 +41,10 @@ public:
     RuleDecimalType = 32, RuleArrayType = 33, RuleVoidType = 34, RuleStructureType = 35, 
     RuleFunctionReferenceType = 36, RuleTypes = 37, RuleValues = 38, RuleValue = 39, 
     RuleConstants = 40, RuleConstant = 41, RuleIntegerConstant = 42, RuleDecimalConstant = 43, 
-    RuleArrayConstant = 44, RuleStructureInitializer = 45, RuleFunctionReference = 46, 
-    RuleGlobalReference = 47, RuleLocalReference = 48, RuleRegister = 49, 
-    RuleRegisterName = 50, RuleLabel = 51, RuleCondition = 52, RuleUnaryOperator = 53, 
-    RuleBinaryOperator = 54, RuleTypeCastKind = 55
+    RuleArrayConstant = 44, RuleStructureInitializer = 45, RuleStringConstant = 46, 
+    RuleFunctionReference = 47, RuleGlobalReference = 48, RuleLocalReference = 49, 
+    RuleRegister = 50, RuleRegisterName = 51, RuleLabel = 52, RuleCondition = 53, 
+    RuleUnaryOperator = 54, RuleBinaryOperator = 55, RuleTypeCastKind = 56
   };
 
   explicit LGIRGrammarParser(antlr4::TokenStream *input);
@@ -109,6 +110,7 @@ public:
   class DecimalConstantContext;
   class ArrayConstantContext;
   class StructureInitializerContext;
+  class StringConstantContext;
   class FunctionReferenceContext;
   class GlobalReferenceContext;
   class LocalReferenceContext;
@@ -852,6 +854,7 @@ public:
     DecimalConstantContext *decimalConstant();
     ArrayConstantContext *arrayConstant();
     StructureInitializerContext *structureInitializer();
+    StringConstantContext *stringConstant();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -926,6 +929,22 @@ public:
   };
 
   StructureInitializerContext* structureInitializer();
+
+  class  StringConstantContext : public antlr4::ParserRuleContext {
+  public:
+    StringConstantContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *STRING();
+    antlr4::tree::TerminalNode *STRING_LITERAL();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  StringConstantContext* stringConstant();
 
   class  FunctionReferenceContext : public antlr4::ParserRuleContext {
   public:

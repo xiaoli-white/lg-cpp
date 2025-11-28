@@ -423,6 +423,41 @@ namespace lg::ir::parser
         return nullptr;
     }
 
+    std::any IRParser::visitFunctionReference(LGIRGrammarParser::FunctionReferenceContext* context)
+    {
+        auto* func = module->getFunction(context->IDENTIFIER()->getText());
+        stack.emplace(std::make_any<value::IRValue*>(new value::IRFunctionReference(func)));
+        return nullptr;
+    }
+
+    std::any IRParser::visitGlobalReference(LGIRGrammarParser::GlobalReferenceContext* context)
+    {
+        auto* global = module->getGlobalVariable(context->IDENTIFIER()->getText());
+        stack.emplace(std::make_any<value::IRValue*>(new value::IRGlobalVariableReference(global)));
+        return nullptr;
+    }
+
+    std::any IRParser::visitLocalReference(LGIRGrammarParser::LocalReferenceContext* context)
+    {
+        auto* local = currentFunction->getLocalVariable(context->IDENTIFIER()->getText());
+        stack.emplace(std::make_any<value::IRValue*>(new value::IRLocalVariableReference(local)));
+        return nullptr;
+    }
+
+    std::any IRParser::visitConstants(LGIRGrammarParser::ConstantsContext* context)
+    {
+        std::vector<value::constant::IRConstant*> constants;
+        for (const auto& constant : context->constant())
+        {
+            visit(constant);
+            auto* value = std::any_cast<value::IRValue*>(stack.top());
+            stack.pop();
+            constants.push_back(dynamic_cast<value::constant::IRConstant*>(value));
+        }
+        stack.emplace(std::make_any<std::vector<value::constant::IRConstant*>>(std::move(constants)));
+        return nullptr;
+    }
+
 
     std::any IRParser::visitIntegerConstant(LGIRGrammarParser::IntegerConstantContext* context)
     {
@@ -471,6 +506,30 @@ namespace lg::ir::parser
             new value::constant::IRArrayConstant(arrayType, std::move(elements))));
         return nullptr;
     }
+
+    std::any IRParser::visitStructureInitializer(LGIRGrammarParser::StructureInitializerContext* context)
+    {
+        visit(context->structureType());
+        auto* type = std::any_cast<type::IRType*>(stack.top());
+        stack.pop();
+        auto* structureType = dynamic_cast<type::IRStructureType*>(type);
+        if (structureType == nullptr) throw std::runtime_error("structure constant type mismatch");
+        visit(context->constants());
+        auto elements = std::any_cast<std::vector<value::constant::IRConstant*>>(stack.top());
+        stack.pop();
+        stack.emplace(std::make_any<value::IRValue*>(
+            new value::constant::IRStructureInitializer(structureType, std::move(elements))));
+        return nullptr;
+    }
+
+    std::any IRParser::visitStringConstant(LGIRGrammarParser::StringConstantContext* context)
+    {
+        const auto text = context->STRING_LITERAL()->getText();
+        stack.emplace(std::make_any<value::IRValue*>(
+            new value::constant::IRStringConstant(text.substr(1, text.size() - 2))));
+        return nullptr;
+    }
+
 
     std::any IRParser::visitTypes(LGIRGrammarParser::TypesContext* context)
     {
@@ -556,6 +615,37 @@ namespace lg::ir::parser
             return nullptr;
         }
         throw std::runtime_error("Invalid decimal type: " + context->getText());
+    }
+
+    std::any IRParser::visitArrayType(LGIRGrammarParser::ArrayTypeContext* context)
+    {
+        visit(context->type());
+        auto* base = std::any_cast<type::IRType*>(stack.top());
+        stack.pop();
+        stack.emplace(
+            std::make_any<type::IRType*>(type::IRArrayType::get(base, std::stoll(context->INT_NUMBER()->getText()))));
+        return nullptr;
+    }
+
+    std::any IRParser::visitStructureType(LGIRGrammarParser::StructureTypeContext* context)
+    {
+        auto* structure = module->getStructure(context->IDENTIFIER()->getText());
+        stack.emplace(std::make_any<type::IRType*>(type::IRStructureType::get(structure)));
+        return nullptr;
+    }
+
+    std::any IRParser::visitFunctionReferenceType(LGIRGrammarParser::FunctionReferenceTypeContext* context)
+    {
+        visit(context->types());
+        auto types = std::any_cast<std::vector<type::IRType*>>(stack.top());
+        stack.pop();
+        visit(context->type());
+        auto* returnType = std::any_cast<type::IRType*>(stack.top());
+        stack.pop();
+        const bool isVarArg = (context->ELLIPSIS() != nullptr);
+        stack.emplace(
+            std::make_any<type::IRType*>(type::IRFunctionReferenceType::get(returnType, std::move(types), isVarArg)));
+        return nullptr;
     }
 
     std::any IRParser::visitVoidType(LGIRGrammarParser::VoidTypeContext* context)

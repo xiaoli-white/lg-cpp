@@ -59,15 +59,22 @@ namespace lg::ir::parser
         std::any visitSwitchCase(LGIRGrammarParser::SwitchCaseContext* context) override;
         std::any visitValues(LGIRGrammarParser::ValuesContext* context) override;
         std::any visitRegister(LGIRGrammarParser::RegisterContext* context) override;
+        std::any visitFunctionReference(LGIRGrammarParser::FunctionReferenceContext* context) override;
+        std::any visitGlobalReference(LGIRGrammarParser::GlobalReferenceContext* context) override;
+        std::any visitLocalReference(LGIRGrammarParser::LocalReferenceContext* context) override;
         std::any visitConstants(LGIRGrammarParser::ConstantsContext* context) override;
         std::any visitIntegerConstant(LGIRGrammarParser::IntegerConstantContext* context) override;
         std::any visitDecimalConstant(LGIRGrammarParser::DecimalConstantContext* context) override;
         std::any visitArrayConstant(LGIRGrammarParser::ArrayConstantContext* context) override;
         std::any visitStructureInitializer(LGIRGrammarParser::StructureInitializerContext* context) override;
+        std::any visitStringConstant(LGIRGrammarParser::StringConstantContext* context) override;
         std::any visitTypes(LGIRGrammarParser::TypesContext* context) override;
         std::any visitType(LGIRGrammarParser::TypeContext* context) override;
         std::any visitIntegerType(LGIRGrammarParser::IntegerTypeContext* context) override;
         std::any visitDecimalType(LGIRGrammarParser::DecimalTypeContext* context) override;
+        std::any visitArrayType(LGIRGrammarParser::ArrayTypeContext* context) override;
+        std::any visitFunctionReferenceType(LGIRGrammarParser::FunctionReferenceTypeContext* context) override;
+        std::any visitStructureType(LGIRGrammarParser::StructureTypeContext* context) override;
         std::any visitVoidType(LGIRGrammarParser::VoidTypeContext* context) override;
         std::any visitLabel(LGIRGrammarParser::LabelContext* context) override;
 

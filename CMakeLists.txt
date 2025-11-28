@@ -7,7 +7,7 @@ find_package(antlr4-runtime REQUIRED)
 
 include_directories(${ANTLR4_INCLUDE_DIR} include/)
 
-add_library(lg_cpp_binding SHARED
+add_library(lg SHARED
         src/lexer/LGIRGrammarParser.cpp
         src/lexer/LGIRGrammarListener.cpp
         src/lexer/LGIRGrammarLexer.cpp
@@ -49,5 +49,5 @@ add_executable(lg_cpp_binding_test
         include/lexer/LGIRGrammarBaseVisitor.h
 )
 
-target_link_libraries(lg_cpp_binding antlr4-runtime)
+target_link_libraries(lg antlr4-runtime)
 target_link_libraries(lg_cpp_binding_test antlr4-runtime)

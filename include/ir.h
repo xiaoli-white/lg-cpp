@@ -675,9 +675,10 @@ namespace lg::ir
         class IRStackAllocate final : public IRInstruction
         {
         public:
+            type::IRType* type;
             value::IRValue* size;
             value::IRRegister* target;
-            IRStackAllocate(value::IRValue* size, value::IRRegister* target);
+            IRStackAllocate(type::IRType* type, value::IRValue* size, value::IRRegister* target);
             std::any accept(IRVisitor* visitor, std::any additional) override;
             std::string toString() override;
         };

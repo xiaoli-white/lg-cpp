@@ -404,24 +404,34 @@ namespace lg::ir
         return reg;
     }
 
-
     value::IRRegister* IRBuilder::createNeg(value::IRValue* operand) const
     {
         return createNeg(operand, allocateRegisterName());
     }
 
-    value::IRRegister* IRBuilder::createStackAlloc(value::IRValue* size, const std::string& targetName) const
+    value::IRRegister* IRBuilder::createStackAlloc(type::IRType* type, value::IRValue* size,
+                                                   const std::string& targetName) const
     {
         const auto reg = new value::IRRegister(targetName);
-        insertPoint->addInstruction(new instruction::IRStackAllocate(size, reg));
+        insertPoint->addInstruction(new instruction::IRStackAllocate(type, size, reg));
         return reg;
     }
 
-
-    value::IRRegister* IRBuilder::createStackAlloc(value::IRValue* size) const
+    value::IRRegister* IRBuilder::createStackAlloc(type::IRType* type, value::IRValue* size) const
     {
-        return createStackAlloc(size, allocateRegisterName());
+        return createStackAlloc(type, size, allocateRegisterName());
     }
+
+    value::IRRegister* IRBuilder::createStackAlloc(type::IRType* type, const std::string& targetName) const
+    {
+        return createStackAlloc(type, nullptr, targetName);
+    }
+
+    value::IRRegister* IRBuilder::createStackAlloc(type::IRType* type) const
+    {
+        return createStackAlloc(type, allocateRegisterName());
+    }
+
 
     value::IRRegister* IRBuilder::createSetRegister(value::IRValue* value, const std::string& targetName) const
     {
@@ -601,7 +611,8 @@ namespace lg::ir
                               ? new value::IRRegister(allocateRegisterName())
                               : nullptr);
         insertPoint->addInstruction(
-            new instruction::IRInvoke(returnType, new value::constant::IRFunctionReference(function), std::move(args), reg));
+            new instruction::IRInvoke(returnType, new value::constant::IRFunctionReference(function), std::move(args),
+                                      reg));
         return reg;
     }
 

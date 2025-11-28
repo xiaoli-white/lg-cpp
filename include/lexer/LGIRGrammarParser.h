@@ -332,6 +332,7 @@ public:
     virtual size_t getRuleIndex() const override;
     RegisterNameContext *registerName();
     antlr4::tree::TerminalNode *STACK_ALLOC();
+    TypeContext *type();
     ValueContext *value();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;

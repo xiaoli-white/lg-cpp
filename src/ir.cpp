@@ -991,10 +991,11 @@ namespace lg::ir
             return "%" + target->name + " = " + value->toString();
         }
 
-        IRStackAllocate::IRStackAllocate(value::IRValue* size, value::IRRegister* target) : size(size), target(target)
+        IRStackAllocate::IRStackAllocate(type::IRType* type, value::IRValue* size,
+                                         value::IRRegister* target) : type(type), size(size), target(target)
         {
             target->def = this;
-            target->type = type::IRPointerType::get(type::IRVoidType::get());
+            target->type = type::IRPointerType::get(type);
         }
 
         std::any IRStackAllocate::accept(IRVisitor* visitor, std::any additional)
@@ -1004,7 +1005,9 @@ namespace lg::ir
 
         std::string IRStackAllocate::toString()
         {
-            return "%" + target->name + " = stack_alloc " + size->toString();
+            return "%" + target->name + " = stack_alloc " + type->toString() + (size != nullptr
+                    ? ", " + size->toString()
+                    : "");
         }
 
         IRTypeCast::IRTypeCast(Kind kind, value::IRValue* source, type::IRType* targetType, value::IRRegister* target) :
@@ -1398,7 +1401,11 @@ namespace lg::ir
 
     std::any IRVisitor::visitStackAllocate(instruction::IRStackAllocate* irStackAllocate, std::any additional)
     {
-        visit(irStackAllocate->size, additional);
+        visit(irStackAllocate->type, additional);
+        if (irStackAllocate->size != nullptr)
+        {
+            visit(irStackAllocate->size, additional);
+        }
         visit(irStackAllocate->target, std::move(additional));
         return nullptr;
     }

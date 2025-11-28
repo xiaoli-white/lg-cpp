@@ -12,7 +12,7 @@ localVariable: type IDENTIFIER;
 basicBlock: IDENTIFIER ':' (statement)*;
 statement: nop | stackAlloc | load | store | asm | goto | invoke | return | setRegister | getElementPointer | cmp | conditionalJump | unaryOperates | binaryOperates | typeCast | phi | switch;
 nop: NOP;
-stackAlloc: registerName '=' STACK_ALLOC value;
+stackAlloc: registerName '=' STACK_ALLOC type (',' value)?;
 load: registerName '=' LOAD value;
 store: STORE value value;
 asm: ASM STRING_LITERAL ',' STRING_LITERAL '(' values ')';

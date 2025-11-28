@@ -97,8 +97,11 @@ namespace lg::ir
         value::IRRegister* createNot(value::IRValue* operand) const;
         value::IRRegister* createNeg(value::IRValue* operand, const std::string& targetName) const;
         value::IRRegister* createNeg(value::IRValue* operand) const;
-        value::IRRegister* createStackAlloc(value::IRValue* size, const std::string& targetName) const;
-        value::IRRegister* createStackAlloc(value::IRValue* size) const;
+        value::IRRegister* createStackAlloc(type::IRType* type, value::IRValue* size,
+                                            const std::string& targetName) const;
+        value::IRRegister* createStackAlloc(type::IRType* type, value::IRValue* size) const;
+        value::IRRegister* createStackAlloc(type::IRType* type, const std::string& targetName) const;
+        value::IRRegister* createStackAlloc(type::IRType* type) const;
         value::IRRegister* createSetRegister(value::IRValue* value, const std::string& targetName) const;
         value::IRRegister* createSetRegister(value::IRValue* value) const;
         value::IRRegister* createZeroExtend(value::IRValue* source, type::IRType* targetType,
@@ -144,8 +147,9 @@ namespace lg::ir
         value::IRRegister* createGetElementPointer(value::IRValue* ptr,
                                                    std::vector<value::constant::IRIntegerConstant*> indices) const;
         [[nodiscard]] value::IRRegister* createPhi(std::unordered_map<base::IRBasicBlock*, value::IRValue*> values,
-                                     const std::string& targetName) const;
-        [[nodiscard]] value::IRRegister* createPhi(std::unordered_map<base::IRBasicBlock*, value::IRValue*> values) const;
+                                                   const std::string& targetName) const;
+        [[nodiscard]] value::IRRegister* createPhi(
+            std::unordered_map<base::IRBasicBlock*, value::IRValue*> values) const;
         void createSwitch(value::IRValue* value, base::IRBasicBlock* defaultCase,
                           std::unordered_map<value::constant::IRIntegerConstant*, base::IRBasicBlock*> cases) const;
         void createAsm(std::string assembly, std::string constraints, std::vector<value::IRValue*> args) const;

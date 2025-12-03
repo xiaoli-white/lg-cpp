@@ -704,7 +704,8 @@ namespace lg::ir
                 PTRTOINT,
                 PTRTOPTR,
                 FEXT,
-                FTRUNC
+                FTRUNC,
+                BITCAST
             };
 
             Kind kind;

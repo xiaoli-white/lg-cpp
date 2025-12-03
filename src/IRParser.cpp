@@ -765,6 +765,7 @@ namespace lg::ir::parser
         if (context->PTRTOPTR()) return instruction::IRTypeCast::Kind::PTRTOPTR;
         if (context->FEXT()) return instruction::IRTypeCast::Kind::FEXT;
         if (context->FTRUNC()) return instruction::IRTypeCast::Kind::FTRUNC;
+        if (context->BITCAST()) return instruction::IRTypeCast::Kind::BITCAST;
         throw std::runtime_error("Invalid type cast kind: " + context->getText());
     }
 

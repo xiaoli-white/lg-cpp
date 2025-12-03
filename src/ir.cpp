@@ -1024,8 +1024,8 @@ namespace lg::ir
         std::string IRStackAllocate::toString()
         {
             return "%" + target->name + " = stack_alloc " + type->toString() + (size != nullptr
-                ? ", " + size->toString()
-                : "");
+                    ? ", " + size->toString()
+                    : "");
         }
 
         IRTypeCast::IRTypeCast(Kind kind, value::IRValue* source, type::IRType* targetType, value::IRRegister* target) :
@@ -1070,6 +1070,8 @@ namespace lg::ir
                 return "fext";
             case Kind::FTRUNC:
                 return "ftrunc";
+            case Kind::BITCAST:
+                return "bitcast";
             default:
                 return "";
             }

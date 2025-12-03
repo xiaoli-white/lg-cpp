@@ -16,7 +16,6 @@ namespace lg::ir::parser
     {
         for (const auto& structure : context->structure())
             module->putStructure(new structure::IRStructure({}, structure->IDENTIFIER()->getText(), {}));
-        for (const auto& structure : context->structure()) visit(structure);
         for (const auto& globalVariable : context->globalVariable())
         {
             if (globalVariable->EXTERN())
@@ -35,7 +34,6 @@ namespace lg::ir::parser
                                                                          nullptr)));
             }
         }
-        for (const auto& globalVariable : context->globalVariable()) visit(globalVariable);
         for (const auto& func : context->function())
         {
             visit(func->type());
@@ -59,6 +57,8 @@ namespace lg::ir::parser
             }
             module->putFunction(function);
         }
+        for (const auto& structure : context->structure()) visit(structure);
+        for (const auto& globalVariable : context->globalVariable()) visit(globalVariable);
         for (const auto& func : context->function()) visit(func);
         return nullptr;
     }

@@ -3,8 +3,8 @@
 //
 
 #pragma once
-#ifndef LG_CPP_BINDING_BUILDER_H
-#define LG_CPP_BINDING_BUILDER_H
+#ifndef LG_CPP_BUILDER_H
+#define LG_CPP_BUILDER_H
 
 #include <ir.h>
 
@@ -163,4 +163,4 @@ namespace lg::ir
     };
 }
 
-#endif //LG_CPP_BINDING_BUILDER_H
+#endif //LG_CPP_BUILDER_H

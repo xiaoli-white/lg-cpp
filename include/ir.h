@@ -3,8 +3,8 @@
 //
 
 #pragma once
-#ifndef LG_CPP_BINDING_IR_H
-#define LG_CPP_BINDING_IR_H
+#ifndef LG_CPP_IR_H
+#define LG_CPP_IR_H
 #include <any>
 #include <cstdint>
 #include <map>
@@ -923,4 +923,4 @@ namespace lg::ir
     };
 }
 
-#endif //LG_CPP_BINDING_IR_H
+#endif //LG_CPP_IR_H

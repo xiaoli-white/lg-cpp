@@ -16,7 +16,6 @@ add_library(lg SHARED
         include/lexer/LGIRGrammarBaseListener.h
         src/ir.cpp
         include/ir.h
-        include/lg-cpp-binding.h
         include/builder.h
         src/builder.cpp
         include/dumper.h

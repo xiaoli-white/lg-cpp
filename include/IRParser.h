@@ -3,8 +3,8 @@
 //
 
 #pragma once
-#ifndef LG_CPP_BINDING_IRPARSER_H
-#define LG_CPP_BINDING_IRPARSER_H
+#ifndef LG_CPP_IRPARSER_H
+#define LG_CPP_IRPARSER_H
 
 #include <ir.h>
 #include <builder.h>
@@ -94,4 +94,4 @@ namespace lg::ir::parser
     IRModule* parse(antlr4::ANTLRInputStream& stream);
 }
 
-#endif //LG_CPP_BINDING_IRPARSER_H
+#endif //LG_CPP_IRPARSER_H

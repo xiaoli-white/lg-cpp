@@ -3,8 +3,8 @@
 //
 
 #pragma once
-#ifndef LG_CPP_BINDING_DUMPER_H
-#define LG_CPP_BINDING_DUMPER_H
+#ifndef LG_CPP_DUMPER_H
+#define LG_CPP_DUMPER_H
 
 #include <ir.h>
 
@@ -25,4 +25,4 @@ namespace lg::ir
     };
 }
 
-#endif //LG_CPP_BINDING_DUMPER_H
+#endif //LG_CPP_DUMPER_H

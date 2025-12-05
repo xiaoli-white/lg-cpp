@@ -733,8 +733,8 @@ namespace lg::ir
                                base::IRControlFlowGraph* cfg) : attributes(std::move(attributes)),
                                                                 isExtern(cfg == nullptr),
                                                                 returnType(returnType), name(std::move(name)),
-                                                                args(std::move(args)), isVarArg(isVarArg),
-                                                                locals(std::move(locals)),
+                                                                args(args), isVarArg(isVarArg),
+                                                                locals(locals),
                                                                 cfg(cfg)
         {
             if (cfg != nullptr) cfg->function = this;
@@ -748,6 +748,7 @@ namespace lg::ir
                                std::vector<IRLocalVariable*> args, bool isVarArg) : IRFunction(module,
             std::move(attributes), returnType, std::move(name), std::move(args), isVarArg, {}, nullptr)
         {
+            for (const auto& arg : args) name2LocalVariable[arg->name] = arg;
         }
 
         IRFunction::~IRFunction()
@@ -1291,7 +1292,7 @@ namespace lg::ir
         }
 
         IRPhi::IRPhi(std::unordered_map<base::IRBasicBlock*, value::IRValue*> values,
-                     value::IRRegister* target) : values(std::move(values)), target(target)
+                     value::IRRegister* target) : values(values), target(target)
         {
             target->def = this;
             target->type = values.begin()->second->getType();
@@ -1638,7 +1639,7 @@ namespace lg::ir
 
     std::any IRVisitor::visitSetRegister(instruction::IRSetRegister* irSetRegister, std::any additional)
     {
-        visit(irSetRegister->value, std::move(additional));
+        visit(irSetRegister->value, additional);
         visit(irSetRegister->target, std::move(additional));
         return nullptr;
     }

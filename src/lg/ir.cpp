@@ -1,3 +1,4 @@
+#include <iostream>
 #include <lg/ir.h>
 #include <ranges>
 
@@ -569,7 +570,7 @@ namespace lg::ir
                 return instance;
             }
 
-            IRStringConstant::IRStringConstant(IRModule* module, std::string value) : value(std::move(value))
+            IRStringConstant::IRStringConstant(IRModule* module, std::string value) : value(value)
             {
                 type = type::IRArrayType::get(module, type::IRIntegerType::getUnsignedInt8Type(), value.length() + 1);
             }

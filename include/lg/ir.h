@@ -109,6 +109,7 @@ namespace lg::ir
         class IRGlobalVariable final : public IRNode
         {
         private:
+            IRModule* module;
             value::constant::IRGlobalVariableReference* reference;
 
         public:

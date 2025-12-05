@@ -11,7 +11,7 @@ namespace lg::ir
         IRGlobalVariable::IRGlobalVariable(IRModule* module, std::vector<std::string> attributes, bool isConstant,
                                            std::string name,
                                            type::IRType* type,
-                                           value::constant::IRConstant* initializer) :
+                                           value::constant::IRConstant* initializer) : module(module),
             attributes(std::move(attributes)), isExtern(false),
             isConstant(isConstant), type(type), name(std::move(name)), initializer(initializer)
         {
@@ -20,17 +20,25 @@ namespace lg::ir
 
         IRGlobalVariable::IRGlobalVariable(IRModule* module, std::vector<std::string> attributes, bool isConstant,
                                            std::string name,
-                                           value::constant::IRConstant* initializer) :
+                                           value::constant::IRConstant* initializer) : module(module),
             attributes(std::move(attributes)), isExtern(false),
-            isConstant(isConstant), type(initializer != nullptr ? initializer->getType() : nullptr),
-            name(std::move(name)), initializer(initializer)
+            isConstant(isConstant), name(std::move(name)), initializer(initializer)
         {
-            reference = new value::constant::IRGlobalVariableReference(module, this);
+            if (initializer != nullptr)
+            {
+                type = initializer->getType();
+                reference = new value::constant::IRGlobalVariableReference(module, this);
+            }
+            else
+            {
+                type = nullptr;
+            }
         }
 
         IRGlobalVariable::IRGlobalVariable(IRModule* module, std::vector<std::string> attributes, bool isConstant,
                                            std::string name,
-                                           type::IRType* type) : attributes(std::move(attributes)), isExtern(false),
+                                           type::IRType* type) : module(module), attributes(std::move(attributes)),
+                                                                 isExtern(false),
                                                                  isConstant(isConstant), type(type),
                                                                  name(std::move(name))
         {
@@ -63,6 +71,7 @@ namespace lg::ir
         {
             this->initializer = initializer;
             type = initializer->getType();
+            reference = new value::constant::IRGlobalVariableReference(module, this);
         }
 
         value::constant::IRGlobalVariableReference* IRGlobalVariable::getReference() const
@@ -1223,8 +1232,8 @@ namespace lg::ir
         std::string IRStackAllocate::toString()
         {
             return "%" + target->name + " = stack_alloc " + type->toString() + (size != nullptr
-                    ? ", " + size->toString()
-                    : "");
+                ? ", " + size->toString()
+                : "");
         }
 
         IRTypeCast::IRTypeCast(Kind kind, value::IRValue* source, type::IRType* targetType, value::IRRegister* target) :

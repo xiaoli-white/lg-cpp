@@ -1,4 +1,3 @@
-#include <iostream>
 #include <lg/ir.h>
 #include <ranges>
 

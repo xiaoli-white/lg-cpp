@@ -537,6 +537,8 @@ namespace lg::ir
             void addBasicBlock(base::IRBasicBlock* basicBlock) const;
             [[nodiscard]] base::IRBasicBlock* getBasicBlock(const std::string& name) const;
             IRLocalVariable* getLocalVariable(const std::string& name);
+            void addArg(IRLocalVariable* arg);
+            void addLocal(IRLocalVariable* local);
 
             value::constant::IRFunctionReference* getReference() const;
         };

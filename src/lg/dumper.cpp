@@ -26,7 +26,7 @@ namespace lg::ir
         const auto pre = std::any_cast<std::string>(prefix);
         out << pre;
         for (const auto& attribute : irStructure->attributes) out << "__attribute__(\"" << attribute << "\") ";
-        out << "structure " << irStructure->name << " {" << std::endl;
+        out << "structure \"" << irStructure->name << "\" {" << std::endl;
         for (int i = 0; i < irStructure->fields.size(); ++i)
         {
             out << pre << "\t" << irStructure->fields[i]->toString();
@@ -43,7 +43,7 @@ namespace lg::ir
         out << pre;
         for (const auto& attribute : irFunction->attributes) out << "__attribute__(\"" << attribute << "\") ";
         if (irFunction->isExtern) out << "extern ";
-        out << "function " << irFunction->returnType->toString() << " " << irFunction->name << "(";
+        out << "function " << irFunction->returnType->toString() << " \"" << irFunction->name << "\"(";
         for (int i = 0; i < irFunction->args.size(); ++i)
         {
             out << irFunction->args[i]->toString();

@@ -61,7 +61,7 @@ namespace lg::ir
             for (const auto& attribute : attributes)s += "__attribute__(\"" + attribute + "\") ";
             if (isExtern) s += "extern ";
             if (isConstant) s += "constant ";
-            s += "global " + name;
+            s += "global \"" + name + "\"";
             if (isExtern) s += ": " + type->toString();
             else s += " = " + initializer->toString();
             return s;
@@ -275,7 +275,7 @@ namespace lg::ir
 
         std::string IRStructureType::toString()
         {
-            return "structure " + structure->name;
+            return "structure \"" + structure->name + "\"";
         }
 
         bool IRStructureType::operator==(const IRType& other)
@@ -455,7 +455,7 @@ namespace lg::ir
 
         std::string IRLocalVariableReference::toString()
         {
-            return "localref " + variable->name;
+            return "localref \"" + variable->name + "\"";
         }
 
         IRLocalVariableReference* IRLocalVariableReference::get(function::IRLocalVariable* variable)
@@ -689,7 +689,7 @@ namespace lg::ir
 
             std::string IRFunctionReference::toString()
             {
-                return "funcref " + function->name;
+                return "funcref \"" + function->name + "\"";
             }
 
             IRFunctionReference* IRFunctionReference::get(const function::IRFunction* function)
@@ -715,7 +715,7 @@ namespace lg::ir
 
             std::string IRGlobalVariableReference::toString()
             {
-                return "globalref " + variable->name;
+                return "globalref \"" + variable->name + "\"";
             }
 
             IRGlobalVariableReference* IRGlobalVariableReference::get(const base::IRGlobalVariable* variable)
@@ -783,6 +783,18 @@ namespace lg::ir
         IRLocalVariable* IRFunction::getLocalVariable(const std::string& name)
         {
             return name2LocalVariable[name];
+        }
+
+        void IRFunction::addArg(IRLocalVariable* arg)
+        {
+            name2LocalVariable[arg->name] = arg;
+            args.push_back(arg);
+        }
+
+        void IRFunction::addLocal(IRLocalVariable* local)
+        {
+            name2LocalVariable[local->name] = local;
+            locals.push_back(local);
         }
 
         value::constant::IRFunctionReference* IRFunction::getReference() const
@@ -905,7 +917,8 @@ namespace lg::ir
 
         std::string IRBinaryOperates::toString()
         {
-            return "%" + target->name + " = " + operatorToString(op) + " " + operand1->toString() + ", " + operand2->
+            return "%\"" + target->name + "\" = " + operatorToString(op) + " " + operand1->toString() + ", " + operand2
+                ->
                 toString();
         }
 
@@ -960,7 +973,7 @@ namespace lg::ir
 
         std::string IRUnaryOperates::toString()
         {
-            return "%" + target->name + " = " + operatorToString(op) + " " + operand->toString();
+            return "%\"" + target->name + "\" = " + operatorToString(op) + " " + operand->toString();
         }
 
         std::string IRUnaryOperates::operatorToString(Operator op)
@@ -1018,7 +1031,7 @@ namespace lg::ir
 
         std::string IRGetElementPointer::toString()
         {
-            std::string result = "%" + target->name + " = getelementptr " + pointer->toString();
+            std::string result = "%\"" + target->name + "\" = getelementptr " + pointer->toString();
             for (const auto& index : indices)
             {
                 result += ", " + index->toString();
@@ -1046,7 +1059,8 @@ namespace lg::ir
 
         std::string IRCompare::toString()
         {
-            return "%" + target->name + " = cmp " + conditionToString(condition) + ", " + operand1->toString() + ", " +
+            return "%\"" + target->name + "\" = cmp " + conditionToString(condition) + ", " + operand1->toString() +
+                ", " +
                 operand2->toString();
         }
 
@@ -1071,7 +1085,7 @@ namespace lg::ir
         std::string IRConditionalJump::toString()
         {
             return "conditional_jump " + conditionToString(condition) + ", " + operand1->toString() + (
-                operand2 != nullptr ? ", " + operand2->toString() : "") + ", label " + target->name;
+                operand2 != nullptr ? ", " + operand2->toString() : "") + ", label \"" + target->name + "\"";
         }
 
         IRGoto::IRGoto(base::IRBasicBlock* target) : target(target)
@@ -1085,7 +1099,7 @@ namespace lg::ir
 
         std::string IRGoto::toString()
         {
-            return "goto label " + target->name;
+            return "goto label \"" + target->name + "\"";
         }
 
         IRInvoke::IRInvoke(type::IRType* returnType, value::IRValue* func, std::vector<value::IRValue*> arguments,
@@ -1114,7 +1128,7 @@ namespace lg::ir
             std::string result;
             if (target != nullptr)
             {
-                result += "%" + target->name + " = ";
+                result += "%\"" + target->name + "\" = ";
             }
             result += "invoke " + returnType->toString() + " " + func->toString() + "(";
             for (int i = 0; i < arguments.size(); i++)
@@ -1165,7 +1179,7 @@ namespace lg::ir
 
         std::string IRLoad::toString()
         {
-            return "%" + target->name + " = load " + ptr->toString();
+            return "%\"" + target->name + "\" = load " + ptr->toString();
         }
 
         IRStore::IRStore(value::IRValue* ptr, value::IRValue* value) : ptr(ptr), value(value)
@@ -1210,7 +1224,7 @@ namespace lg::ir
 
         std::string IRSetRegister::toString()
         {
-            return "%" + target->name + " = " + value->toString();
+            return "%\"" + target->name + "\" = " + value->toString();
         }
 
         IRStackAllocate::IRStackAllocate(IRModule* module, type::IRType* type, value::IRValue* size,
@@ -1232,9 +1246,9 @@ namespace lg::ir
 
         std::string IRStackAllocate::toString()
         {
-            return "%" + target->name + " = stack_alloc " + type->toString() + (size != nullptr
-                ? ", " + size->toString()
-                : "");
+            return "%\"" + target->name + "\" = stack_alloc " + type->toString() + (size != nullptr
+                    ? ", " + size->toString()
+                    : "");
         }
 
         IRTypeCast::IRTypeCast(Kind kind, value::IRValue* source, type::IRType* targetType, value::IRRegister* target) :
@@ -1256,7 +1270,8 @@ namespace lg::ir
 
         std::string IRTypeCast::toString()
         {
-            return "%" + target->name + " = " + kindToString(kind) + " " + source->toString() + " to " + targetType->
+            return "%\"" + target->name + "\" = " + kindToString(kind) + " " + source->toString() + " to " + targetType
+                ->
                 toString();
         }
 
@@ -1311,10 +1326,10 @@ namespace lg::ir
 
         std::string IRPhi::toString()
         {
-            std::string result = "%" + target->name + " = phi ";
+            std::string result = "%\"" + target->name + "\" = phi ";
             for (auto& [block, value] : values)
             {
-                result += ", [label: " + block->name + ", " + value->toString() + "]";
+                result += ", [label \"" + block->name + "\", " + value->toString() + "]";
             }
             return result;
         }
@@ -1333,10 +1348,10 @@ namespace lg::ir
 
         std::string IRSwitch::toString()
         {
-            std::string s = "switch " + value->toString() + ", label" + defaultCase->name;
+            std::string s = "switch " + value->toString() + ", label \"" + defaultCase->name + "\"";
             for (auto& [value, block] : cases)
             {
-                s += ", [" + value->toString() + ", label" + block->name + "]";
+                s += ", [" + value->toString() + ", label \"" + block->name + "\"]";
             }
             return s;
         }

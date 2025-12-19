@@ -43,11 +43,24 @@ namespace lg::ir::parser
             }
             else
             {
-                module->putGlobalVariable(new base::IRGlobalVariable(module, std::move(attributes),
-                                                                     globalVariable->CONST() != nullptr,
-                                                                     parseIDENTIFIER(globalVariable->IDENTIFIER()),
-                                                                     static_cast<value::constant::IRConstant*>(
-                                                                         nullptr)));
+                if (globalVariable->type())
+                {
+                    visit(globalVariable->type());
+                    auto* type = std::any_cast<type::IRType*>(stack.top());
+                    stack.pop();
+                    module->putGlobalVariable(new base::IRGlobalVariable(module, std::move(attributes),
+                                                                         globalVariable->CONST() != nullptr,
+                                                                         parseIDENTIFIER(globalVariable->IDENTIFIER()),
+                                                                         type, nullptr));
+                }
+                else
+                {
+                    module->putGlobalVariable(new base::IRGlobalVariable(module, std::move(attributes),
+                                                                         globalVariable->CONST() != nullptr,
+                                                                         parseIDENTIFIER(globalVariable->IDENTIFIER()),
+                                                                         static_cast<value::constant::IRConstant*>(
+                                                                             nullptr)));
+                }
             }
         }
         for (const auto& func : context->function())
@@ -90,7 +103,7 @@ namespace lg::ir::parser
 
     std::any parser::visitGlobalVariable(LGIRGrammarParser::GlobalVariableContext* context)
     {
-        if (!context->EXTERN())
+        if (context->constant())
         {
             visit(context->constant());
             auto* value = std::any_cast<value::IRValue*>(stack.top());
@@ -228,20 +241,13 @@ namespace lg::ir::parser
         visit(context->value(0));
         auto* ptr = std::any_cast<value::IRValue*>(stack.top());
         stack.pop();
-        std::vector<value::constant::IRIntegerConstant*> indices;
+        std::vector<value::IRValue*> indices;
         for (int i = 1; i < context->value().size(); i++)
         {
             visit(context->value(i));
             auto* index = std::any_cast<value::IRValue*>(stack.top());
             stack.pop();
-            if (auto* constant = dynamic_cast<value::constant::IRIntegerConstant*>(index))
-            {
-                indices.push_back(constant);
-            }
-            else
-            {
-                throw std::runtime_error("index must be integer constant");
-            }
+            indices.push_back(index);
         }
         const auto regName = getTargetRegisterName(context->registerName());
         auto* reg = builder.createGetElementPointer(ptr, indices, regName);

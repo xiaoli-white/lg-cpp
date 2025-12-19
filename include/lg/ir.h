@@ -662,10 +662,10 @@ namespace lg::ir
         {
         public:
             value::IRValue* pointer;
-            std::vector<value::constant::IRIntegerConstant*> indices;
+            std::vector<value::IRValue*> indices;
             value::IRRegister* target;
             IRGetElementPointer(IRModule* module, value::IRValue* pointer,
-                                std::vector<value::constant::IRIntegerConstant*> indices,
+                                std::vector<value::IRValue*> indices,
                                 value::IRRegister* target);
             ~IRGetElementPointer() override;
             std::any accept(IRVisitor* visitor, std::any additional) override;

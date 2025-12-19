@@ -61,7 +61,7 @@ namespace lg::ir
             if (isExtern) s += "extern ";
             if (isConstant) s += "constant ";
             s += "global \"" + name + "\"";
-            if (isExtern) s += ": " + type->toString();
+            if (type != nullptr) s += ": " + type->toString();
             else s += " = " + initializer->toString();
             return s;
         }
@@ -993,7 +993,7 @@ namespace lg::ir
         }
 
         IRGetElementPointer::IRGetElementPointer(IRModule* module, value::IRValue* pointer,
-                                                 std::vector<value::constant::IRIntegerConstant*> indices,
+                                                 std::vector<value::IRValue*> indices,
                                                  value::IRRegister* target) : pointer(pointer),
                                                                               indices(indices),
                                                                               target(target)
@@ -1012,7 +1012,7 @@ namespace lg::ir
                 }
                 else if (auto structureType = dynamic_cast<type::IRStructureType*>(ty))
                 {
-                    ty = structureType->structure->fields[index->value]->type;
+                    ty = structureType->structure->fields[dynamic_cast<value::constant::IRIntegerConstant*>(index)->value]->type;
                 }
             }
             target->type = type::IRPointerType::get(module, ty);

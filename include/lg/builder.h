@@ -146,10 +146,10 @@ namespace lg::ir
         value::IRRegister* createInvoke(type::IRType* returnType, value::IRValue* func,
                                         std::vector<value::IRValue*> args) const;
         value::IRRegister* createGetElementPointer(value::IRValue* ptr,
-                                                   std::vector<value::constant::IRIntegerConstant*> indices,
+                                                   std::vector<value::IRValue*> indices,
                                                    const std::string& targetName) const;
         value::IRRegister* createGetElementPointer(value::IRValue* ptr,
-                                                   std::vector<value::constant::IRIntegerConstant*> indices) const;
+                                                   std::vector<value::IRValue*> indices) const;
         [[nodiscard]] value::IRRegister* createPhi(std::unordered_map<base::IRBasicBlock*, value::IRValue*> values,
                                                    const std::string& targetName) const;
         [[nodiscard]] value::IRRegister* createPhi(

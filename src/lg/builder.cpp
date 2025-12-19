@@ -655,7 +655,7 @@ namespace lg::ir
     }
 
     value::IRRegister* IRBuilder::createGetElementPointer(value::IRValue* ptr,
-                                                          std::vector<value::constant::IRIntegerConstant*> indices,
+                                                          std::vector<value::IRValue*> indices,
                                                           const std::string& targetName) const
     {
         const auto reg = new value::IRRegister(targetName);
@@ -665,7 +665,7 @@ namespace lg::ir
 
 
     value::IRRegister* IRBuilder::createGetElementPointer(value::IRValue* ptr,
-                                                          std::vector<value::constant::IRIntegerConstant*> indices)
+                                                          std::vector<value::IRValue*> indices)
     const
     {
         return createGetElementPointer(ptr, std::move(indices), allocateRegisterName());

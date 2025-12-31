@@ -38,7 +38,7 @@ integerType: I1 | I8 | U8 | I16 | U16 | I32 | U32 | I64 | U64;
 decimalType: FLOAT | DOUBLE;
 arrayType: '[' INT_NUMBER 'x' type ']';
 voidType: VOID;
-structureType: STRUCTURE IDENTIFIER;
+structureType: '#' IDENTIFIER;
 functionReferenceType: '(' types (',' ELLIPSIS)? ')' '->' type;
 types: type (',' type)* | ;
 values: value (',' value)* | ;

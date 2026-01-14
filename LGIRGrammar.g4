@@ -143,6 +143,7 @@ INT_NUMBER : [0-9]+;
 DECIMAL_NUMBER: [0-9]+ '.' [0-9]+;
 WS : [ \t\r\n]+ -> skip;
 
+IDENTIFIER: [\p{L}_] [\p{L}0-9_]* | STRING_LITERAL;
 STRING_LITERAL: '"' ( ~["\\] | ESCAPE_SEQUENCE)* '"';
 fragment ESCAPE_SEQUENCE
     : '\\' [btnfr"'\\]
@@ -151,4 +152,3 @@ fragment ESCAPE_SEQUENCE
     | '\\' [0-3]? [0-7] [0-7]?
     ;
 fragment HEX_DIGIT: [0-9a-fA-F];
-IDENTIFIER: [\p{L}_] [\p{L}0-9_]* | STRING_LITERAL;

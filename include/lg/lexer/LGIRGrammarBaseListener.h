@@ -5,7 +5,7 @@
 
 
 #include "antlr4-runtime.h"
-#include "../../../LGIRGrammarListener.h"
+#include "LGIRGrammarListener.h"
 
 
 /**
@@ -150,6 +150,9 @@ public:
 
   virtual void enterArrayConstant(LGIRGrammarParser::ArrayConstantContext * /*ctx*/) override { }
   virtual void exitArrayConstant(LGIRGrammarParser::ArrayConstantContext * /*ctx*/) override { }
+
+  virtual void enterNullptrConstant(LGIRGrammarParser::NullptrConstantContext * /*ctx*/) override { }
+  virtual void exitNullptrConstant(LGIRGrammarParser::NullptrConstantContext * /*ctx*/) override { }
 
   virtual void enterStructureInitializer(LGIRGrammarParser::StructureInitializerContext * /*ctx*/) override { }
   virtual void exitStructureInitializer(LGIRGrammarParser::StructureInitializerContext * /*ctx*/) override { }

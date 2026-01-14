@@ -44,10 +44,11 @@ types: type (',' type)* | ;
 values: value (',' value)* | ;
 value: register | constant | localReference;
 constants: constant (',' constant)* | ;
-constant: integerConstant | decimalConstant | arrayConstant | structureInitializer | stringConstant | functionReference | globalReference;
+constant: integerConstant | decimalConstant | arrayConstant | structureInitializer | stringConstant | functionReference | globalReference | nullptrConstant;
 integerConstant: integerType INT_NUMBER;
 decimalConstant: decimalType DECIMAL_NUMBER;
 arrayConstant: arrayType '[' constants ']';
+nullptrConstant: type NULLPTR;
 structureInitializer: CONSTANT structureType '{' constants '}';
 stringConstant: STRING STRING_LITERAL;
 functionReference: FUNCREF IDENTIFIER;
@@ -138,6 +139,8 @@ ELLIPSIS: '...';
 MULTIPLY: '*';
 
 ATTRIBUTE: '__attribute__';
+
+NULLPTR: 'nullptr';
 
 INT_NUMBER : [0-9]+;
 DECIMAL_NUMBER: [0-9]+ '.' [0-9]+;

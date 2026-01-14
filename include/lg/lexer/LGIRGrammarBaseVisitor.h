@@ -195,6 +195,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual std::any visitNullptrConstant(LGIRGrammarParser::NullptrConstantContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual std::any visitStructureInitializer(LGIRGrammarParser::StructureInitializerContext *ctx) override {
     return visitChildren(ctx);
   }

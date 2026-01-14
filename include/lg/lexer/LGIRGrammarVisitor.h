@@ -109,6 +109,8 @@ public:
 
     virtual std::any visitArrayConstant(LGIRGrammarParser::ArrayConstantContext *context) = 0;
 
+    virtual std::any visitNullptrConstant(LGIRGrammarParser::NullptrConstantContext *context) = 0;
+
     virtual std::any visitStructureInitializer(LGIRGrammarParser::StructureInitializerContext *context) = 0;
 
     virtual std::any visitStringConstant(LGIRGrammarParser::StringConstantContext *context) = 0;

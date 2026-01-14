@@ -149,6 +149,9 @@ public:
   virtual void enterArrayConstant(LGIRGrammarParser::ArrayConstantContext *ctx) = 0;
   virtual void exitArrayConstant(LGIRGrammarParser::ArrayConstantContext *ctx) = 0;
 
+  virtual void enterNullptrConstant(LGIRGrammarParser::NullptrConstantContext *ctx) = 0;
+  virtual void exitNullptrConstant(LGIRGrammarParser::NullptrConstantContext *ctx) = 0;
+
   virtual void enterStructureInitializer(LGIRGrammarParser::StructureInitializerContext *ctx) = 0;
   virtual void exitStructureInitializer(LGIRGrammarParser::StructureInitializerContext *ctx) = 0;
 
